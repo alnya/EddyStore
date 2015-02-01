@@ -1,0 +1,83 @@
+﻿.form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.spacer {
+    margin-top: 20px;
+}
+
+h1 {
+   margin-top: 10px;
+}
+
+.checkbox .form-control, .radio .form-control {
+     height: auto;width: auto;
+}
+
+.progress-spinner {
+  display: inline-block;
+  opacity: 0;
+  width: 0;
+
+  -webkit-transition: opacity 0.25s, width 0.25s;
+  -moz-transition: opacity 0.25s, width 0.25s;
+  -o-transition: opacity 0.25s, width 0.25s;
+  transition: opacity 0.25s, width 0.25s;
+}
+
+.progress-spinner .glyphicon {
+    display: inline-block;
+    -moz-animation: rotate 2s infinite linear;
+    -o-animation: rotate 2s infinite linear;
+    -webkit-animation: rotate 2s infinite linear;
+    animation: rotate 2s infinite linear;
+}
+
+@-webkit-keyframes rotate {
+    from { -webkit-transform: rotate(0deg); }
+    to { -webkit-transform: rotate(360deg); }
+}
+@keyframes "rotate" {
+  from { transform: scale( 1 ) rotate( 0deg );   }
+  to   { transform: scale( 1 ) rotate( 360deg ); }
+}
+
+.progress-spinner.active {
+  opacity: 1;
+  width: 16px;
+}
+
+.nav .progress-spinner {margin-top: 15px;}
+
+.table th.sortable { cursor: pointer; }
+
+.caret-up {
+  display: inline-block;
+  width: 0px;
+  height: 0px;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: none;
+  border-bottom: 4px solid #000000;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  border-top-width: 0px;
+  border-top-style: dotted;
+  content: "";
+}
+
+.dashboardActions .panel-heading h3 { margin-top: 0px;}
+.dashboardActions .panel-heading .glyphicon { font-size: 40px;}
+
+#accordion .panel-heading a { display: block;}
+#accordion .panel-heading a:after {
+    font-family:'Glyphicons Halflings';
+    content:"\e114";
+    float: right;
+    color: grey;
+}
+#accordion .panel-heading a.collapsed:after {
+    content:"\e080";
+}

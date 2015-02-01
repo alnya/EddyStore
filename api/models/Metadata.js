@@ -28,6 +28,10 @@ module.exports = {
     Columns: {
       collection: 'MetadataColumn',
       via: 'Metadata'
+    },
+
+    user: {
+      model: 'User'
     }
   }
 };
