@@ -8,8 +8,8 @@
 module.exports = {
 
   attributes: {
-    Metadata: {model: 'metadata'},
-    Instrument: {model: 'MetadataInstrument'},
+    Data: {model: 'Data'},
+    Instrument: {model: 'StationInstrument'},
 
     Column_Number: {type: 'integer'},
     Ignore: {type: 'boolean'},

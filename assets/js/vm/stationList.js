@@ -6,18 +6,18 @@
     var metadataListViewModel = new function() {
         this.tableViewModel = new baseTable.GridViewModel({
             columns: [
-                { name: "Added", value: "createdAt", sortDescending: false, template: "nameCellTemplate" }
+                { name: "Name", value: "Name", sortDescending: false, template: "nameCellTemplate" }
             ],
             sortable: false,
             filterMode: 'search',
             pageSize: 10,
-            emptyRowMessage: "No Metadata found",
-            url: "/Metadata/",
+            emptyRowMessage: "No Stations found",
+            url: "/Station/",
             successCallback: function(model) {
                 messageBox.Hide();
             },
             errorCallback: function(errorResponse) {
-                messageBox.ShowError("Error retrieving Metadata.");
+                messageBox.ShowError("Error retrieving Stations.");
             }
         });
     };

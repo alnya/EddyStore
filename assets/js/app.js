@@ -10,11 +10,12 @@
         'webApiClient': 'js/webApiClient',
         'common': 'js/common',
         'baseForm': 'js/baseForm',
+        'modalDialog': 'js/modalDialog',
         'baseTable': 'js/baseTable',
         // View Models
         'messageBox': 'js/vm/messageBox',
         'login': 'js/vm/login',
-        'metadata': 'js/vm/metadata'
+        'station': 'js/vm/station'
     },
     shim: {
         "bootstrap": {

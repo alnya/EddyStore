@@ -1,5 +1,5 @@
-﻿define(['knockout', 'common', 'webApiClient', 'messageBox', 'jquery'],
-    function ( ko, common, webApiClient, messageBox, $) {
+﻿define(['knockout', 'common', 'webApiClient', 'messageBox', 'jquery', 'modalDialog'],
+    function ( ko, common, webApiClient, messageBox, $, modalDialog) {
 
     "use strict";
 
@@ -131,6 +131,21 @@
             }
 
             return false;
+        };
+
+        self.ShowCancelModalDialog = function () {
+
+          if (self.IsDirty()) {
+            modalDialog.ShowModalDialogOkCancel("Cancel", "Are you sure you want to cancel this edit?", "CANCEL");
+            return;
+          }
+
+          self.GetEntity();
+        };
+
+        self.ShowDeleteModalDialog = function () {
+
+          modalDialog.ShowModalDialogOkCancel("Delete", "Are you sure you want to delete this record?", "DELETE");
         };
 
         self.DisplayForm = function () {

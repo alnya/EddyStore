@@ -8,7 +8,7 @@
 module.exports = {
 
   attributes: {
-    Metadata: {model: 'metadata'},
+    Station: {model: 'Station'},
     Instrument_Type: {type: 'string', enum: ['Anemometer', 'Gas']},
     Manufacturer: {type: 'string'},
     Model: {type: 'string'},

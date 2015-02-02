@@ -32,6 +32,6 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': { view: 'login', locals: {title: 'Eddy Store'}}
+  '/': { view: 'login', locals: {title: 'Login'}}
 
 };
