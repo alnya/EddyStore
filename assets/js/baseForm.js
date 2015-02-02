@@ -1,5 +1,5 @@
-﻿define(['knockout', 'common', 'modalDialog', 'webApiClient', 'messageBox', 'jquery'],
-    function ( ko, common, modalDialog, webApiClient, messageBox, $) {
+﻿define(['knockout', 'common', 'webApiClient', 'messageBox', 'jquery'],
+    function ( ko, common, webApiClient, messageBox, $) {
 
     "use strict";
 
@@ -86,31 +86,6 @@
         self.Mode = ko.observable('VIEW');
         self.ModeText = ko.observable("");
         self.OriginalModel = "";
-
-        if (modalDialog != null) {
-            modalDialog.DoAction.subscribe(function (action) {
-                if (action.indexOf("CANCEL") === 0) {
-                    self.GetEntity();
-                } else if (action.indexOf("DELETE") === 0) {
-                    self.DeleteEntity();
-                }
-            });
-        }
-        
-        self.ShowCancelModalDialog = function () {
-
-            if (self.IsDirty()) {
-                modalDialog.ShowModalDialogOkCancel("Cancel", "Are you sure you want to cancel this edit?", "CANCEL");
-                return;
-            }
-
-            self.GetEntity();
-        };
-
-        self.ShowDeleteModalDialog = function () {
-
-            modalDialog.ShowModalDialogOkCancel("Delete", "Are you sure you want to delete this record?", "DELETE");
-        };
 
         self.IsInMode = function (mode) { return self.Mode() == mode; };
 
@@ -228,7 +203,7 @@
                 self.EntityViewModel.errors.showAllMessages();
             } else {
 
-                var entityId = self.EntityViewModel.EntityId;
+                var entityId = common.getId();
                 var entityModel = self.EntityViewModel.GetEntityModel();
 
                 if (entityId != 'add') {
@@ -262,7 +237,7 @@
 
         self.GetEntity = function() {
 
-            var entityId = self.EntityViewModel.EntityId;
+            var entityId = common.getId();
 
             if (entityId != 'add') {
 
@@ -286,7 +261,7 @@
 
         self.DeleteEntity = function () {
 
-            var entityId = self.EntityViewModel.EntityId;
+            var entityId = common.getId();
 
             if (entityId != null) {
 

@@ -1,0 +1,160 @@
+﻿<span data-bind="dataTable: tableViewModel">
+  <!-- -->
+</span>
+<script type='text/html' id='ko-table-template'>
+  <div class="spacer"></div>
+  <!-- ko if: filterMode == 'search' -->
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Search</h3>
+    </div>
+    <div class="panel-body">
+      <form class="form-inline" data-bind="submit: reload" role="form">
+        <div class="form-group">
+          <!-- ko foreach: allFilterableFields -->
+          <!-- ko if: $data.filterable -->
+          <!-- ko ifnot: $data.labelText == '' -->
+          <label class="control-label" data-bind="text: labelText, attr:{for : 'searchField' + value}"></label>
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'String' -->
+          <input type="text" class="form-control" data-bind="value: filterValue, attr:{placeholder: name, id : 'searchField' + value}"/>
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'Number' -->
+          <input type="number" class="form-control" data-bind="value: filterValue, attr:{placeholder: name, id : 'searchField' + value}"/>
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'List' -->
+          <select class="form-control" data-bind="options: filterValues, value: filterValue, optionsCaption: 'Any ' + name, attr:{id : 'searchField' + value}"></select>
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'EntityList' -->
+          <select class="form-control" data-bind="options: $data.Options, value: filterValue, optionsText:'Name', optionsValue:'Id', optionsCaption: 'Any ' + name, attr:{id : 'searchField' + value}"></select>
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'Date' -->
+          <input type="date" class="form-control" data-bind="value: filterValue, attr:{id : 'searchField' + value}"/>
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'DateRange' -->
+          <div class="input-group dateRange">
+            <div class="input-group-addon"><i class="panel-title glyphicon glyphicon-calendar"></i></div>
+            <input type="text" class="form-control" data-bind="value: filterValue, attr:{placeholder: name, id : 'searchField' + value}" />
+          </div>
+          <!-- /ko -->
+          <!-- /ko -->
+          <!-- /ko -->
+        </div>
+        <button id="searchButton" type="submit" class="btn btn-default">
+          <span class="panel-title glyphicon glyphicon-search"></span>
+          <span>Search</span>
+        </button>
+        <button id="clearButton" type="button" class="btn btn-danger" data-bind="click: clearFilter, visible: filterApplied()">
+          <span class="glyphicon glyphicon-remove"></span> Clear
+        </button>
+      </form>
+    </div>
+  </div>
+  <!-- /ko -->
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped">
+      <thead>
+      <tr class="columns" data-bind="foreach: columns">
+        <!-- ko if: $data.sortable -->
+        <th class="header" data-bind="style: { width: width }, click: $root.sort">
+          <span data-bind="text:name"></span>
+          <!-- ko if: $data === $root.sortColumn() -->
+          <span class="pull-right" data-bind="css: {'caret-up': !$data.sortDescending(), 'caret': $data.sortDescending()}"></span>
+          <!-- /ko -->
+        </th>
+        <!-- /ko -->
+        <!-- ko ifnot: $data.sortable -->
+        <th class="header" data-bind="text: name, style: { width: width }"></th>
+        <!-- /ko -->
+      </tr>
+      </thead>
+      <tbody>
+      <!-- ko if: filterMode == 'filter' -->
+      <tr class="header-filters" data-bind="foreach: columns">
+        <td>
+          <!-- ko if: $data.filterable -->
+          <!-- ko if: $data.dataType == 'String' -->
+          <input type="text" class="form-control" data-bind="value: filterValue, valueUpdate: 'afterkeydown'">
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'Number' -->
+          <input type="number" class="form-control" data-bind="value: filterValue, valueUpdate: 'afterkeydown'">
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'List' -->
+          <select class="form-control" data-bind="options: filterValues, value: filterValue, optionsCaption: 'Any ' + name"></select>
+          <!-- /ko -->
+          <!-- ko if: $data.dataType == 'Date' -->
+          <input type="date" class="form-control" data-bind="value: filterValue">
+          <!-- /ko -->
+          <!-- /ko -->
+        </td>
+      </tr>
+      <!-- /ko -->
+      </tbody>
+      <tbody data-bind="foreach: items">
+      <tr class="table-data-row" data-bind="attr:{'data-id':Id}">
+        <!-- ko foreach: $parent.columns -->
+        <!-- ko if: template -->
+        <td data-bind="template: { name: template, data: $parent }"></td>
+        <!-- /ko -->
+        <!-- ko ifnot: template -->
+        <!-- ko if: ($data.dataType == 'Date' || $data.dataType == 'DateRange') -->
+        <td data-bind="text: moment(typeof value == 'function' ? value($parent) : $parent[value]).isValid() ? moment(typeof value == 'function' ? value($parent) : $parent[value]).format('DD-MM-YYYY HH:mm') : ''"></td>
+        <!-- /ko -->
+        <!-- ko ifnot: ($data.dataType == 'Date' || $data.dataType == 'DateRange') -->
+        <td data-bind="text: typeof value == 'function' ? value($parent) : $parent[value] "></td>
+        <!-- /ko -->
+        <!-- /ko -->
+        <!-- /ko -->
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr data-bind="if: items().length == 0">
+        <td data-bind="attr: {colspan: columns.length}">
+          <div class="text-center">
+            <span id="emptyRowText" data-bind="text: emptyRowText"></span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td data-bind="attr: {colspan: columns.length}">
+          <a id="downloadButton" type="button" class="btn btn-xs btn-info pull-right" data-bind="attr:{href: downloadUrl()}, css: { disabled:items().length == 0 }, visible: downloadEnabled">
+            <span class="glyphicon glyphicon-download"></span> Download CSV
+          </a>
+          <div data-bind="foreach: [10, 25, 50, 100]">
+            <!-- ko if: $data == $root.pageSize() -->
+            <span data-bind="text: $data + ' '" />
+            <!-- /ko -->
+            <!-- ko if: $data != $root.pageSize() -->
+            <a href="#" data-bind="text: $data + ' ', click: function() { $root.pageSize($data) }" />
+            <!-- /ko -->
+          </div>
+          <div class="text-center">
+            <div data-bind="if: totalPages() > 1">
+              <ul class="pagination">
+                <li data-bind="css: { disabled: isFirstPage() }">
+                  <a href="#" data-bind="click: prevPage">&laquo;</a>
+                </li>
+                <!-- ko foreach: pages() -->
+                <!-- ko if: $data == "ellipsis" -->
+                <li>
+                  <span>...</span>
+                </li>
+                <!-- /ko -->
+                <!-- ko if: $data != "ellipsis" -->
+                <li data-bind="css: { active: $data === ($root.pageIndex() + 1)}">
+                  <a href="#" data-bind="text: $data, click: $root.moveToPage" />
+                </li>
+                <!-- /ko -->
+                <!-- /ko -->
+                <li data-bind="css: { disabled: isLastPage() }">
+                  <a href="#" data-bind="click: nextPage">&raquo;</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</script>

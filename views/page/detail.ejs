@@ -1,0 +1,8 @@
+<%- partial('../includes/baseFormTemplate.ejs') %>
+
+<script type="text/javascript">
+  require(['knockout', 'baseForm', '<%= vm %>'],
+    function(ko, baseForm, vm) {
+      baseForm.Initialise(vm());
+    });
+</script>

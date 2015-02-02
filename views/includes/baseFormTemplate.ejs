@@ -1,0 +1,90 @@
+﻿<script type="text/html" id="fieldTemplate">
+    <!-- ko if: $root.controlIsVisible(Permissions) -->
+    <div class="form-group" data-bind="attr:{ id:Property }, validationElement: $root.getProperty(Property)">
+      <!-- ko if: Type == 'Checkbox' -->
+        <!-- ko if: $root.controlIsReadOnly(Permissions) -->
+        <div class="form-control-static">
+          <label data-bind="text: Name" />
+          <span data-bind="text: $root.getProperty(Property)"/>
+        </div>
+        <!-- /ko -->
+        <!-- ko ifnot: $root.controlIsReadOnly(Permissions) -->
+        <div class="checkbox">
+          <label>
+              <input class="form-control" type="checkbox" data-bind="checked: $root.getProperty(Property)" />
+              <span data-bind="text: Name"></span>
+          </label>
+        </div>
+        <!-- /ko -->
+      <!-- ko if: $data.HelpText --><p class="help-block" data-bind="text:$data.HelpText"></p><!-- /ko -->
+      <!-- /ko -->
+
+      <!-- ko ifnot: Type == 'Checkbox' -->
+      <label class="control-label" data-bind="text: Name" />
+
+        <!-- ko if: $root.controlIsReadOnly(Permissions) -->
+        <p class="form-control-static" data-bind="text: $root.getProperty(Property, $data.Options)"></p>
+        <!-- /ko -->
+        <!-- ko ifnot: $root.controlIsReadOnly(Permissions) -->
+          <!-- ko if: Type == 'String' --><input type="text" class="form-control" data-bind="value: $root.getProperty(Property)" /><!-- /ko -->
+          <!-- ko if: Type == 'Password' --><input type="password" class="form-control" data-bind="value: $root.getProperty(Property)" /><!-- /ko -->
+          <!-- ko if: Type == 'Text' --><textarea class="form-control" rows="4" data-bind="value: $root.getProperty(Property)" /><!-- /ko -->
+          <!-- ko if: Type == 'Number' --><input type="number" class="form-control" data-bind="value: $root.getProperty(Property)" /><!-- /ko -->
+          <!-- ko if: Type == 'List' --><select class="form-control" data-bind="options: $data.Options, optionsCaption: Caption, value: $root.getProperty(Property)"></select><!-- /ko -->
+          <!-- ko if: Type == 'EntityList' --><select class="form-control" data-bind="options: $data.Options, optionsCaption: Caption, optionsText:'Name', optionsValue:'Id', value:$root.getProperty(Property)"></select><!-- /ko -->
+          <!-- ko if: Type == 'Date' -->
+          <div class="input-group">
+            <div class="input-group-addon">
+              <i class="panel-title glyphicon glyphicon-calendar"></i>
+            </div>
+            <input type="text" class="form-control" data-bind="datePicker: $root.getProperty(Property)" />
+          </div>
+          <!-- /ko -->
+          <!-- ko if: Type == 'Radio' -->
+            <!-- ko foreach: Options -->
+            <div class="radio">
+              <label>
+                <input type="radio" class="form-control" data-bind="value: $data, checked: $root.getProperty($parent.Property)" />
+                <span data-bind="text: $data"></span>
+              </label>
+            </div>
+            <!-- /ko -->
+          <!-- /ko -->
+
+          <!-- ko if: $data.HelpText --><p class="help-block" data-bind="text:$data.HelpText"></p><!-- /ko -->
+        <!-- /ko -->
+
+      <!-- /ko -->
+    </div>
+    <!-- /ko -->
+</script>
+
+<form id="entityForm" style="display:none;" role="form" data-bind="visible: DisplayForm()">
+  <div data-bind="foreach: EntityViewModel.Panels">
+    <div class="panel panel-default spacer">
+        <div class="panel-heading">
+        <h2 class="panel-title" data-bind="text: Title"></h2></div>
+        <div class="panel-body">
+            <div class="row" data-bind="foreach: Columns">
+                <div class="col-sm-6" data-bind="template: { name: 'fieldTemplate', foreach: Fields }"></div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  ﻿<div class="pull-right">
+    <span id="customFormButtons"></span>
+    <button id="deleteButton" type="button" class="btn btn-default" data-bind="click: ShowDeleteDialog, visible: CanDeleteEntity()">
+      <span class="glyphicon glyphicon-trash"></span> Delete
+    </button>
+    <button id="editButton" type="button" class="btn btn-default" data-bind="click: SetEditMode, visible: CanEditEntity()">
+      <span class="glyphicon glyphicon-pencil"></span> Edit
+    </button>
+    <button id="viewButton" type="button" class="btn btn-danger" data-bind="click: ShowCancelDialog, visible: IsInMode('EDIT')">
+      <span class="glyphicon glyphicon-remove"></span> Cancel
+    </button>
+    <button id="saveButton" type="button" class="btn btn-success" data-bind="click: Submit, visible: !IsInMode('VIEW')">
+      <span class="glyphicon glyphicon-ok"></span> Save
+    </button>
+  </div>
+</form>

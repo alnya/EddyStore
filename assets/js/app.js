@@ -13,7 +13,8 @@
         'baseTable': 'js/baseTable',
         // View Models
         'messageBox': 'js/vm/messageBox',
-        'login': 'js/vm/login'
+        'login': 'js/vm/login',
+        'metadata': 'js/vm/metadata'
     },
     shim: {
         "bootstrap": {

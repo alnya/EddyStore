@@ -14,6 +14,11 @@
             return params;
         },
 
+        getId: function() {
+          var pathArray = window.location.pathname.split( '/' );
+          return pathArray[pathArray.length-1];
+        },
+
         localRepository: new function () {
             return {
                 saveJson: function (key, value) {

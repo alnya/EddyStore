@@ -1,0 +1,10 @@
+<div id="listView">
+
+  <script type="text/html" id="nameCellTemplate">
+    <a class="select-item" data-bind="text: Id, attr: { href:'/page/metadata/'+Id }"></a>
+  </script>
+
+  <%- partial('../includes/baseTableTemplate.ejs') %>
+
+  <script type="text/javascript" src="\js\vm\<%= vm %>.js"></script>
+</div>
