@@ -5,6 +5,7 @@ function (ko, moment, api) {
 
 	var detailViewModel = ko.validatedObservable({
 
+    id: 0,
     EntityName: "Upload", // name of this entity
     Url: "/Data/",  // url to call to load / save / delete
 
@@ -44,6 +45,7 @@ function (ko, moment, api) {
 			var self = this;
 			if (!objFromServer) return;
 
+      self.id = objFromServer.id;
       self.Folder_Path(objFromServer.Folder_Path);
       self.Status(objFromServer.Status);
       self.Number_Of_Rows(objFromServer.Number_Of_Rows);
@@ -68,10 +70,53 @@ function (ko, moment, api) {
       self.Longitude(objFromServer.Longitude);
 
       if (objFromServer.Columns) {
-        self.Columns(objFromServer.Columns);
+        ko.utils.arrayForEach(objFromServer.Columns, function(column) {
+          self.Columns.push({
+            id: column.id,
+            Instrument: ko.observable(column.Instrument).extend(),
+            Column_Number: column.Column_Number,
+            Ignore: ko.observable(column.Ignore).extend(),
+            Numeric: ko.observable(column.Numeric).extend(),
+            Variable: ko.observable(column.Variable).extend(),
+            Measurement_Type: ko.observable(column.Measurement_Type).extend(),
+            Input_Unit: ko.observable(column.Input_Unit).extend(),
+            Linear_Scaling: ko.observable(column.Linear_Scaling).extend(),
+            Output_Unit: ko.observable(column.Output_Unit).extend(),
+            Gain_Value: ko.observable(column.Gain_Value).extend(),
+            Offset_Value: ko.observable(column.Offset_Value).extend(),
+            Nominal_Time_Lag: ko.observable(column.Nominal_Time_Lag).extend({numeric:true}),
+            Minimum_Time_Lag: ko.observable(column.Minimum_Time_Lag).extend({numeric:true}),
+            Maximum_Time_Lag: ko.observable(column.Maximum_Time_Lag).extend({numeric:true})
+          });
+        });
       }
       if (objFromServer.Instruments) {
-        self.Instruments(objFromServer.Instruments);
+        ko.utils.arrayForEach(objFromServer.Instruments, function(instrument) {
+          self.Instruments.push({
+            id: instrument.id,
+            Instrument_Type: instrument.Instrument_Type,
+            Manufacturer: ko.observable(instrument.Manufacturer).extend({required: true}),
+            Model: ko.observable(instrument.Model).extend({required: true}),
+            Instrument_Id: ko.observable(instrument.Instrument_Id).extend(),
+            Height:ko.observable(instrument.Height).extend({required: true, numeric:true}),
+            Wind_Data_Format: ko.observable(instrument.Wind_Data_Format).extend(),
+            North_Alignment: ko.observable(instrument.North_Alignment).extend(),
+            North_Offset: ko.observable(instrument.North_Offset).extend(),
+            Northward_Separation: ko.observable(instrument.Northward_Separation).extend(),
+            Eastward_Separation: ko.observable(instrument.Eastward_Separation).extend(),
+            Vertical_Separation: ko.observable(instrument.Vertical_Separation).extend(),
+            Longitudinal_Path_Length: ko.observable(instrument.Longitudinal_Path_Length).extend(),
+            Transversal_Path_Length: ko.observable(instrument.Transversal_Path_Length).extend(),
+            Time_Response: ko.observable(instrument.Time_Response).extend(),
+            Tube_Length: ko.observable(instrument.Tube_Length).extend(),
+            Tube_Inner_Diameter: ko.observable(instrument.Tube_Inner_Diameter).extend(),
+            Nominal_Tube_Flow_Rate: ko.observable(instrument.Nominal_Tube_Flow_Rate).extend(),
+            Software_Version: ko.observable(instrument.Software_Version).extend(),
+            Extinction_Coefficient_In_Water_KW: ko.observable(instrument.Extinction_Coefficient_In_Water_KW).extend(),
+            Extinction_Coefficient_In_Water_KO: ko.observable(instrument.Extinction_Coefficient_In_Water_KO).extend(),
+            Models: []
+          })
+        });
       }
     },
 
@@ -80,6 +125,7 @@ function (ko, moment, api) {
 			var self = this;
 
 			var result= {
+        id: self.id,
         Status: self.Status(),
         Number_Of_Rows: self.Number_Of_Rows(),
         Date_From: self.Date_From(),
@@ -103,7 +149,7 @@ function (ko, moment, api) {
 
       ko.utils.arrayForEach(this.Columns(), function(column) {
         result.Columns.push({
-          Id: column.Id,
+          id: column.id,
           Instrument: column.Instrument(),
           Column_Number: column.Column_Number,
           Ignore: column.Ignore(),
@@ -123,7 +169,7 @@ function (ko, moment, api) {
 
       ko.utils.arrayForEach(this.Instruments(), function(instrument) {
         result.Instruments.push({
-          Id: instrument.Id,
+          id: instrument.id,
           Instrument_Type: instrument.Instrument_Type,
           Manufacturer: instrument.Manufacturer,
           Model: instrument.Model,
