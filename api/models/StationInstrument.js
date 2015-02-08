@@ -8,10 +8,13 @@
 module.exports = {
 
   attributes: {
-    Station: {model: 'Station'},
+
+    Data: {model: 'Data'},
+
     Instrument_Type: {type: 'string', enum: ['Anemometer', 'Gas']},
     Manufacturer: {type: 'string'},
     Model: {type: 'string'},
+    Software_Version: {type:'String'},
     Instrument_Id: {type: 'string'},
     Height: {type: 'float'},
     Wind_Data_Format: {type: 'string', enum: ['U', 'V', 'W: Polar', 'W','axis velocities']},
@@ -25,6 +28,7 @@ module.exports = {
     Tube_Length: {type: 'float'},
     Tube_Inner_Diameter: {type: 'float'},
     Nominal_Tube_Flow_Rate: {type: 'string'},
+    Time_Response: {type: 'string'},
     Extinction_Coefficient_In_Water_KW: {type: 'string'},
     Extinction_Coefficient_In_Water_KO: {type: 'string'}
   }

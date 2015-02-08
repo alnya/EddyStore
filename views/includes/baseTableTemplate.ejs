@@ -91,7 +91,7 @@
       <!-- /ko -->
       </tbody>
       <tbody data-bind="foreach: items">
-      <tr class="table-data-row" data-bind="attr:{'data-id':Id}">
+      <tr class="table-data-row" data-bind="attr:{'data-id':id}">
         <!-- ko foreach: $parent.columns -->
         <!-- ko if: template -->
         <td data-bind="template: { name: template, data: $parent }"></td>

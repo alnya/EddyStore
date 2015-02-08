@@ -32,6 +32,14 @@ module.exports = {
         next();
       });
     });
-  }
+  },
+
+  seedData:[
+    {
+      name: 'Administrator',
+      email: 'rory.wilson@gmail.com',
+      password: 'password'
+    }
+  ]
 };
 

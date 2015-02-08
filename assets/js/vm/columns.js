@@ -5,23 +5,24 @@
 
     var metadataListViewModel = new function() {
         this.tableViewModel = new baseTable.GridViewModel({
-            columns: [
-                { name: "Name", value: "Name", sortDescending: false, template: "nameCellTemplate" }
+          uploadId: 1,
+          columns: [
+                { name: "Name", value: "Name", template: "nameCellTemplate" }
             ],
             sortable: false,
-            filterMode: 'search',
+            filterMode: 'none',
             pageSize: 10,
-            emptyRowMessage: "No Stations found",
-            url: "/Station/",
+            emptyRowMessage: "No Raw Data Columns found",
+            url: "/DataColumn?where={Data:" + this.uploadId + "}",
             successCallback: function(model) {
                 messageBox.Hide();
             },
             errorCallback: function(errorResponse) {
-                messageBox.ShowError("Error retrieving Stations.");
+                messageBox.ShowError("Error retrieving Columns.");
             }
         });
     };
 
-    ko.applyBindings(metadataListViewModel, $("#listView")[0]);
+    ko.applyBindings(metadataListViewModel, $("#columnsList")[0]);
     return metadataListViewModel;
 });

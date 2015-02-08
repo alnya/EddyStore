@@ -6,7 +6,7 @@ module.exports = function(req, res, next) {
   // User is allowed, proceed to controller
   if (req.session.user) {
     if (req.body != null) {
-      req.body.userId = req.session.user;
+      req.body.User = req.session.user;
     }
     return next();
   }

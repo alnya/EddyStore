@@ -1,9 +1,11 @@
 <div id="listView">
 
+  <a id="createNewButton" href="<%= vm %>/add" class="btn btn-success">
+    <i class="glyphicon glyphicon-plus"></i> Create New
+  </a>
   <script type="text/html" id="nameCellTemplate">
-    <a class="select-item" data-bind="text: Id, attr: { href:'/page/metadata/'+Id }"></a>
+    <a class="select-item" data-bind="text: Name, attr: { href:'<%= vm %>/'+id }"></a>
   </script>
-
   <%- partial('../includes/baseTableTemplate.ejs') %>
 
   <script type="text/javascript" src="\js\vm\<%= vm %>.js"></script>

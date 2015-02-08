@@ -1,0 +1,457 @@
+<form id="entityForm" role="form">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-primary spacer" data-bind="with: EntityViewModel">
+        <div class="panel-heading">
+          <h2 class="panel-title">Upload Details</h2>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group" id="Status">
+                <label class="control-label" for="Status">Status</label>
+                <p class="form-control-static" data-bind="text: Status"></p>
+              </div>
+              <div class="form-group" id="Date_From">
+                <label class="control-label" for="Date_From">Date From</label>
+                <p class="form-control-static" data-bind="text: Date_From"></p>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group" id="Number_Of_Rows">
+                <label class="control-label" for="Number_Of_Rows">Number Of Rows</label>
+                <p class="form-control-static" data-bind="text: Number_Of_Rows"></p>
+              </div>
+              <div class="form-group" id="Date_To">
+                <label class="control-label" for="Date_To">Date To</label>
+                <p class="form-control-static" data-bind="text: Date_To"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="panel panel-default spacer" data-bind="with: EntityViewModel">
+        <div class="panel-heading">
+          <h2 class="panel-title">File Settings</h2>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group" data-bind="validationElement: Field_Separator_Character" id="Field_Separator_Character">
+                <label class="control-label" for="Field_Separator_Character">Field Separator Character</label>
+                <input type="text" maxlength="1" class="form-control" data-bind="value: Field_Separator_Character" />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group" data-bind="validationElement: Number_Of_Header_Rows" id="Number_Of_Header_Rows">
+                <label class="control-label" for="Number_Of_Header_Rows">Number Of Header Rows</label>
+                <input type="number" maxlength="6" max="999999" min="0" class="form-control" data-bind="value: Number_Of_Header_Rows"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#station" aria-controls="profile" role="tab" data-toggle="tab">Station</a></li>
+      <li role="presentation"><a href="#instruments" aria-controls="messages" role="tab" data-toggle="tab">Instruments</a></li>
+      <li role="presentation"><a href="#columns" aria-controls="settings" role="tab" data-toggle="tab">Raw File Description</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="station">
+        <div class="panel panel-default" data-bind="with: EntityViewModel">
+          <div class="panel-heading">
+            <h3 class="panel-title">Station</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="form-group" data-bind="validationElement: Name" id="Name">
+                  <label class="control-label">Name</label>
+                  <input type="text" class="form-control" data-bind="value: Name" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="form-group" data-bind="validationElement: Timestamp_Refers_To" id="Timestamp_Refers_To">
+                  <label class="control-label">Timestamp Refers To</label>
+                  <select class="form-control" data-bind="value: Timestamp_Refers_To">
+                    <option value="">Select</option>
+                    <option value="Beginning">Beginning of averaging period</option>
+                    <option value="End">End of averaging period</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: File_Duration" id="File_Duration">
+                  <label class="control-label" for="File_Duration">File Duration</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: File_Duration"/>
+                    <span class="input-group-addon">min</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: Canopy_Height" id="Canopy_Height">
+                  <label class="control-label" for="Canopy_Height">Canopy Height</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: Canopy_Height"/>
+                    <span class="input-group-addon">m</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: Altitude" id="Altitude">
+                  <label class="control-label" for="Altitude">Altitude</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: Altitude"/>
+                    <span class="input-group-addon">m</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: Acquisition_Frequency" id="Acquisition_Frequency">
+                  <label class="control-label" for="Acquisition_Frequency">Acquisition Frequency</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: Acquisition_Frequency"/>
+                    <span class="input-group-addon">Hz</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: Displacement_Height" id="Displacement_Height">
+                  <label class="control-label" for="Displacement_Height">Displacement Height</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: Displacement_Height"/>
+                    <span class="input-group-addon">m</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: Latitude" id="Latitude">
+                  <label class="control-label" for="Latitude">Latitude</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: Latitude"/>
+                    <span class="input-group-addon">N</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: Roughness_Length" id="Roughness_Length">
+                  <label class="control-label" for="Roughness_Length">Roughness Length</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: Roughness_Length"/>
+                    <span class="input-group-addon">m</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="form-group" data-bind="validationElement: Longitude" id="Longitude">
+                  <label class="control-label" for="Longitude">Longitude</label>
+                  <div class="input-group">
+                    <input type="number"  min="0" class="form-control" data-bind="value: Longitude"/>
+                    <span class="input-group-addon">E</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script type="text/html" id="instrumentTemplate">
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <div class="form-group" data-bind="validationElement: Manufacturer" id="Manufacturer">
+              <label class="control-label">Manufacturer</label>
+              <!-- ko if: Instrument_Type == 'Anemometer' -->
+              <select class="form-control" data-bind="value: Manufacturer,
+                options: $root.EntityViewModel.AnemometerManufacturers,
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select'"></select>
+              <!-- /ko -->
+              <!-- ko if: Instrument_Type == 'Gas' -->
+              <select class="form-control" data-bind="value: Manufacturer,
+                options: $root.EntityViewModel.GasManufacturers,
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select'"></select>
+              <!-- /ko -->
+            </div>
+            <div class="form-group" data-bind="validationElement: Model" id="Model">
+              <label class="control-label">Model</label>
+              <select class="form-control" data-bind="value: Model,
+                options: Models,
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select a Manufacturer'"></select>
+            </div>
+            <!-- ko if: Instrument_Type == 'Gas' -->
+            <div class="form-group" id="Software_Version">
+              <label class="control-label" for="Software_Version">Software Version</label>
+              <input type="text" maxlength="1" class="form-control" data-bind="value: Software_Version" />
+            </div>
+            <!-- /ko -->
+            <div class="form-group" id="Instrument_Id">
+              <label class="control-label" for="Instrument_Id">Instrument Id</label>
+              <input type="text"  class="form-control" data-bind="value: Instrument_Id" />
+            </div>
+            <div class="form-group" data-bind="validationElement: Height" id="Height">
+              <label class="control-label" for="Height">Height</label>
+              <div class="input-group">
+                <input type="number"  min="0" class="form-control" data-bind="value: Height"/>
+                <span class="input-group-addon">m</span>
+              </div>
+            </div>
+            <!-- ko if: Instrument_Type == 'Anemometer' -->
+            <div class="form-group"  id="Wind_Data_Format">
+              <label class="control-label" for="Wind_Data_Format">Wind Data Format</label>
+              <input type="text"  class="form-control" data-bind="value: Wind_Data_Format" />
+            </div>
+            <div class="form-group"  id="North_Alignment">
+              <label class="control-label" for="North_Alignment">North Alignment</label>
+              <input type="text"  class="form-control" data-bind="value: North_Alignment" />
+            </div>
+            <div class="form-group"  id="North_Offset">
+              <label class="control-label" for="North_Offset">North Offset</label>
+              <input type="text"  class="form-control" data-bind="value: North_Offset" />
+            </div>
+            <div class="form-group"  id="Time_Response">
+              <label class="control-label" for="Time_Response">Time Response</label>
+              <input type="text"  class="form-control" data-bind="value: Time_Response" />
+            </div>
+            <!-- /ko -->
+            <!-- ko if: Instrument_Type == 'Gas' -->
+            <div class="form-group"  id="Tube_Length">
+              <label class="control-label" for="Tube_Length">Tube Length</label>
+              <div class="input-group">
+                <input type="number"  min="0" class="form-control" data-bind="value: Tube_Length"/>
+                <span class="input-group-addon">cm</span>
+              </div>
+            </div>
+            <div class="form-group" id="Tube_Inner_Diameter">
+              <label class="control-label" for="Tube_Inner_Diameter">Tube Inner Diameter</label>
+              <div class="input-group">
+                <input type="number"  min="0" class="form-control" data-bind="value: Tube_Inner_Diameter"/>
+                <span class="input-group-addon">cm</span>
+              </div>
+            </div>
+            <div class="form-group"  id="Nominal_Tube_Flow_Rate">
+              <label class="control-label" for="Nominal_Tube_Flow_Rate">Nominal Tube Flow Rate</label>
+              <input type="text"  class="form-control" data-bind="value: Nominal_Tube_Flow_Rate" />
+            </div>
+            <div class="form-group"  id="Extinction_Coefficient_In_Water_KW">
+              <label class="control-label" for="Tube_Inner_Diameter">Extinction Coefficient In Water</label>
+              <div class="input-group">
+                <input type="number"  min="0" class="form-control" data-bind="value: Extinction_Coefficient_In_Water_KW"/>
+                <span class="input-group-addon">Kw</span>
+              </div>
+            </div>
+            <div class="form-group"  id="Extinction_Coefficient_In_Water_KO">
+              <label class="control-label" for="Tube_Inner_Diameter">Extinction Coefficient In Water</label>
+              <div class="input-group">
+                <input type="number"  min="0" class="form-control" data-bind="value: Extinction_Coefficient_In_Water_KO"/>
+                <span class="input-group-addon">Ko</span>
+              </div>
+            </div>
+            <!-- /ko -->
+            <div class="form-group" id="Northward_Separation">
+              <label class="control-label" for="Northward_Separation">Northward Separation</label>
+              <input type="text"  class="form-control" data-bind="value: Northward_Separation" />
+            </div>
+            <div class="form-group" id="Eastward_Separation">
+              <label class="control-label" for="Eastward_Separation">Eastward Separation</label>
+              <input type="text"  class="form-control" data-bind="value: Eastward_Separation" />
+            </div>
+            <div class="form-group" id="Vertical_Separation">
+              <label class="control-label" for="Vertical_Separation">Vertical Separation</label>
+              <input type="text"  class="form-control" data-bind="value: Vertical_Separation" />
+            </div>
+            <div class="form-group" id="Longitudinal_Path_Length">
+              <label class="control-label" for="Longitudinal_Path_Length">Longitudinal Path Length</label>
+              <input type="text"  class="form-control" data-bind="value: Longitudinal_Path_Length" />
+            </div>
+            <div class="form-group" id="Transversal_Path_Length">
+              <label class="control-label" for="Transversal_Path_Length">Transversal Path Length</label>
+              <input type="text"  class="form-control" data-bind="value: Transversal_Path_Length" />
+            </div>
+            <div>
+              <button id="deleteButton" type="button" class="btn btn-danger pull-right"
+                      data-bind="click: $root.EntityViewModel.RemoveInstrument.bind($root.EntityViewModel, $data)">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </script>
+
+      <div role="tabpanel" class="tab-pane" id="instruments" data-bind="with: EntityViewModel">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="panel panel-default">
+              <div class="panel-heading clearfix">
+                <h3 class="panel-title">Anemometer Information
+                  <button type="button" data-bind="click: AddAnemometer" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+                </h3>
+              </div>
+              <div class="panel-body">
+                <div data-bind="foreach: Instruments">
+                  <!-- ko if: Instrument_Type == 'Anemometer' -->
+                    <span data-bind="template:{name:'instrumentTemplate', data: $data}"></span>
+                  <!-- /ko -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title clearfix">Gas Analyzer Information
+                  <button type="button" data-bind="click: AddGasAnalyzer" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+                </h3>
+              </div>
+              <div class="panel-body">
+                <div data-bind="foreach: Instruments">
+                  <!-- ko if: Instrument_Type == 'Gas' -->
+                    <span data-bind="template:{name:'instrumentTemplate', data: $data}"></span>
+                  <!-- /ko -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="columns" data-bind="with: EntityViewModel">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title clearfix">File Description
+              <button type="button" data-bind="click: AddColumn" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+          <div class="col-sm-2 bg-info columnsLegend">
+            <div class="form-group">&nbsp;</div>
+
+            <div class="form-group"><label>Ignore</label></div>
+            <div class="form-group"><label>Numeric</label></div>
+            <div class="form-group"><label>Variable</label></div>
+            <div class="form-group"><label>Instrument</label></div>
+            <div class="form-group"><label>Measurement Type</label></div>
+            <div class="form-group"><label>Input Unit</label></div>
+            <div class="form-group"><label>Linear Scaling</label></div>
+            <div class="form-group"><label>Output Unit</label></div>
+            <div class="form-group"><label>Gain Value</label></div>
+            <div class="form-group"><label>Offset Value</label></div>
+            <div class="form-group"><label>Nominal Time Lag</label></div>
+            <div class="form-group"><label>Minimum Time Lag</label></div>
+            <div class="form-group"><label>Maximum Time Lag</label></div>
+          </div>
+          <div class="col-sm-10">
+            <div class="DocumentList">
+              <ul class="list-inline" data-bind="foreach:Columns">
+                <li class="DocumentItem">
+                  <div class="form-group" id="Column_Number">
+                    <label data-bind="text: Column_Number" />
+                  </div>
+                  <div class="form-group" id="Ignore">
+                    <input type="checkbox" data-bind="checked: Ignore" />
+                  </div>
+                  <div class="form-group" id="Numeric">
+                    <input type="checkbox" data-bind="checked: Numeric" />
+                  </div>
+                  <div class="form-group" id="Variable">
+                    <input class="form-control" type="text" data-bind="value: Variable" />
+                  </div>
+                  <div class="form-group">
+                    <select class="form-control"
+                            data-bind="value: Instrument,
+                            options: $root.EntityViewModel.Instruments(),
+                            optionsText: 'Model', optionsValue: 'Model', optionsCaption:'Select'"></select>
+                  </div>
+                  <div class="form-group" id="Measurement_Type">
+                    <input class="form-control" type="text" data-bind="value: Measurement_Type" />
+                  </div>
+                  <div class="form-group" id="Input_Unit">
+                    <input class="form-control" type="text" data-bind="value: Input_Unit" />
+                  </div>
+                  <div class="form-group" id="Linear_Scaling">
+                    <input class="form-control" type="text" data-bind="value: Linear_Scaling" />
+                  </div>
+                  <div class="form-group" id="Output_Unit">
+                    <input class="form-control" type="text" data-bind="value: Output_Unit" />
+                  </div>
+                  <div class="form-group" id="Gain_Value">
+                    <input class="form-control" type="text" data-bind="value: Gain_Value" />
+                  </div>
+                  <div class="form-group" id="Offset_Value">
+                    <input class="form-control" type="text" data-bind="value: Offset_Value" />
+                  </div>
+                  <div class="form-group" id="Nominal_Time_Lag">
+                    <div class="input-group">
+                      <input type="number" min="0" class="form-control" data-bind="value: Nominal_Time_Lag"/>
+                      <span class="input-group-addon">s</span>
+                    </div>
+                  </div>
+                  <div class="form-group" id="Maximum_Time_Lag">
+                    <div class="input-group">
+                      <input type="number" min="0" class="form-control" data-bind="value: Maximum_Time_Lag"/>
+                      <span class="input-group-addon">s</span>
+                    </div>
+                  </div>
+                  <div class="form-group" id="Minimum_Time_Lag">
+                    <div class="input-group">
+                      <input type="number" min="0" class="form-control" data-bind="value: Minimum_Time_Lag"/>
+                      <span class="input-group-addon">s</span>
+                    </div>
+                  </div>
+                  <div data-bind="if: ($index() === ($parent.Columns().length - 1))">
+                    <button id="deleteButton" type="button" class="btn btn-danger pull-right"
+                            data-bind="click: $root.EntityViewModel.RemoveColumn.bind($root.EntityViewModel, $data)">
+                      <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="pull-right">
+    <button id="deleteButton" type="button" class="btn btn-default" data-bind="click: ShowDeleteModalDialog, visible: CanDeleteEntity()">
+      <span class="glyphicon glyphicon-trash"></span> Delete
+    </button>
+    <button id="editButton" type="button" class="btn btn-default" data-bind="click: SetEditMode, visible: CanEditEntity()">
+      <span class="glyphicon glyphicon-pencil"></span> Edit
+    </button>
+    <button id="viewButton" type="button" class="btn btn-danger" data-bind="click: ShowCancelModalDialog, visible: IsInMode('EDIT')">
+      <span class="glyphicon glyphicon-remove"></span> Cancel
+    </button>
+    <button id="saveButton" type="button" class="btn btn-success" data-bind="click: Submit, visible: !IsInMode('VIEW')">
+      <span class="glyphicon glyphicon-ok"></span> Save
+    </button>
+  </div>
+</form>
+
+<script type="text/javascript">
+  require(['knockout', 'baseForm', 'upload'],
+    function(ko, baseForm, upload) {
+      baseForm.Initialise(upload());
+    });
+</script>
+
+<%- partial('../includes/ModalDialogBox.ejs') %>

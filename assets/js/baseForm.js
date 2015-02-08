@@ -1,5 +1,5 @@
-﻿define(['knockout', 'common', 'webApiClient', 'messageBox', 'jquery', 'modalDialog'],
-    function ( ko, common, webApiClient, messageBox, $, modalDialog) {
+﻿define(['page','knockout', 'common', 'webApiClient', 'messageBox', 'jquery', 'modalDialog'],
+    function (page, ko, common, webApiClient, messageBox, $, modalDialog) {
 
     "use strict";
 

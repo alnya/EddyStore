@@ -1,11 +1,11 @@
 /**
- * MetadataController
+ * InstrumentModelController
  *
- * @description :: Server-side logic for managing metadatas
+ * @description :: Server-side logic for managing Instrumentmodels
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 
 module.exports = {
-
+	
 };
 

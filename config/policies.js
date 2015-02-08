@@ -33,16 +33,7 @@ module.exports.policies = {
     '*': ['securePage']
   },
 
-  MetadataController: {
+  DataController: {
     '*': ['currentUser','sessionAuth']
-  },
-
-  MetadataColumnController: {
-    '*': ['sessionAuth']
-  },
-
-  MetadataInstrumentController: {
-    '*': ['sessionAuth']
   }
-
 };

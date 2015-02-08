@@ -48,7 +48,7 @@ function (ko, moment) {
         Roughness_Length: self.Roughness_Length(),
         Altitude: self.Altitude(),
         Latitude: self.Latitude(),
-        Longitude: self.Longitude(),
+        Longitude: self.Longitude()
 			};
 		},
 
@@ -63,12 +63,16 @@ function (ko, moment) {
                       { Name: "Acquisition Frequency", Property: "Acquisition_Frequency", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
                       { Name: "Canopy Height", Property: "Canopy_Height", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
                       { Name: "Displacement Height", Property: "Displacement_Height", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Roughness Length", Property: "Roughness_Length", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Altitude", Property: "Altitude", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Latitude", Property: "Latitude", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Longitude", Property: "Longitude", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] }
+                      { Name: "Roughness Length", Property: "Roughness_Length", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] }
                     ]
-                }
+                },
+              {
+                Fields: [
+                  { Name: "Altitude", Property: "Altitude", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
+                  { Name: "Latitude", Property: "Latitude", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
+                  { Name: "Longitude", Property: "Longitude", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] }
+                ]
+              }
             ]
         }]
     });

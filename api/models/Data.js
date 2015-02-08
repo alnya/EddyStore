@@ -8,15 +8,33 @@
 module.exports = {
 
   attributes: {
-    Station: {model: 'Station'},
+
     User: { model: 'User' },
+
     Folder_Path: {type: 'string'},
-    Status: {type: 'string', enum: ['new', 'inprogress','complete']},
+    Status: {type: 'string', enum: ['New', 'InProgress','Processed']},
     Number_Of_Rows: {type: 'integer'},
     Date_From: {type: 'datetime'},
     Date_To: {type: 'datetime'},
     Field_Separator_Character: {type: 'string'},
     Number_Of_Header_Rows: {type: 'integer'},
+
+    Name: {type: 'string'},
+    Timestamp_Refers_To: {type: 'string', enum: ['Beginning', 'End']},
+    File_Duration: {type: 'integer'},
+    Acquisition_Frequency: {type: 'integer'},
+    Canopy_Height: {type: 'float'},
+    Displacement_Height: {type: 'float'},
+    Roughness_Length: {type: 'float'},
+    Altitude: {type: 'float'},
+    Latitude: {type: 'float'},
+    Longitude: {type: 'float'},
+
+    Instruments: {
+      collection: 'StationInstrument',
+      via: 'Data'
+    },
+
     Columns: {
       collection: 'DataColumn',
       via: 'Data'
