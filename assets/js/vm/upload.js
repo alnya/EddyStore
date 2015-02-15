@@ -1,13 +1,12 @@
-﻿define(['knockout', 'moment', 'webApiClient','validation'],
-function (ko, moment, api) {
+﻿define(['knockout', 'moment', 'webApiClient','column', 'instrument', 'validation'],
+function (ko, moment, api, column, instrument) {
 
 	"use strict";
 
-	var detailViewModel = ko.validatedObservable({
+	var uploadViewModel = ko.validatedObservable({
 
-    id: 0,
     EntityName: "Upload", // name of this entity
-    Url: "/Data/",  // url to call to load / save / delete
+    Url: "/Data",  // url to call to load / save / delete
 
     Folder_Path: ko.observable().extend(),
     Status: ko.observable('New').extend(),
@@ -45,7 +44,6 @@ function (ko, moment, api) {
 			var self = this;
 			if (!objFromServer) return;
 
-      self.id = objFromServer.id;
       self.Folder_Path(objFromServer.Folder_Path);
       self.Status(objFromServer.Status);
       self.Number_Of_Rows(objFromServer.Number_Of_Rows);
@@ -70,52 +68,17 @@ function (ko, moment, api) {
       self.Longitude(objFromServer.Longitude);
 
       if (objFromServer.Columns) {
-        ko.utils.arrayForEach(objFromServer.Columns, function(column) {
-          self.Columns.push({
-            id: column.id,
-            Instrument: ko.observable(column.Instrument).extend(),
-            Column_Number: column.Column_Number,
-            Ignore: ko.observable(column.Ignore).extend(),
-            Numeric: ko.observable(column.Numeric).extend(),
-            Variable: ko.observable(column.Variable).extend(),
-            Measurement_Type: ko.observable(column.Measurement_Type).extend(),
-            Input_Unit: ko.observable(column.Input_Unit).extend(),
-            Linear_Scaling: ko.observable(column.Linear_Scaling).extend(),
-            Output_Unit: ko.observable(column.Output_Unit).extend(),
-            Gain_Value: ko.observable(column.Gain_Value).extend(),
-            Offset_Value: ko.observable(column.Offset_Value).extend(),
-            Nominal_Time_Lag: ko.observable(column.Nominal_Time_Lag).extend({numeric:true}),
-            Minimum_Time_Lag: ko.observable(column.Minimum_Time_Lag).extend({numeric:true}),
-            Maximum_Time_Lag: ko.observable(column.Maximum_Time_Lag).extend({numeric:true})
-          });
+        ko.utils.arrayForEach(objFromServer.Columns, function(objColumn) {
+          var c = new column();
+          c.SetModel(objColumn);
+          self.Columns.push(c);
         });
       }
       if (objFromServer.Instruments) {
-        ko.utils.arrayForEach(objFromServer.Instruments, function(instrument) {
-          self.Instruments.push({
-            id: instrument.id,
-            Instrument_Type: instrument.Instrument_Type,
-            Manufacturer: ko.observable(instrument.Manufacturer).extend({required: true}),
-            Model: ko.observable(instrument.Model).extend({required: true}),
-            Instrument_Id: ko.observable(instrument.Instrument_Id).extend(),
-            Height:ko.observable(instrument.Height).extend({required: true, numeric:true}),
-            Wind_Data_Format: ko.observable(instrument.Wind_Data_Format).extend(),
-            North_Alignment: ko.observable(instrument.North_Alignment).extend(),
-            North_Offset: ko.observable(instrument.North_Offset).extend(),
-            Northward_Separation: ko.observable(instrument.Northward_Separation).extend(),
-            Eastward_Separation: ko.observable(instrument.Eastward_Separation).extend(),
-            Vertical_Separation: ko.observable(instrument.Vertical_Separation).extend(),
-            Longitudinal_Path_Length: ko.observable(instrument.Longitudinal_Path_Length).extend(),
-            Transversal_Path_Length: ko.observable(instrument.Transversal_Path_Length).extend(),
-            Time_Response: ko.observable(instrument.Time_Response).extend(),
-            Tube_Length: ko.observable(instrument.Tube_Length).extend(),
-            Tube_Inner_Diameter: ko.observable(instrument.Tube_Inner_Diameter).extend(),
-            Nominal_Tube_Flow_Rate: ko.observable(instrument.Nominal_Tube_Flow_Rate).extend(),
-            Software_Version: ko.observable(instrument.Software_Version).extend(),
-            Extinction_Coefficient_In_Water_KW: ko.observable(instrument.Extinction_Coefficient_In_Water_KW).extend(),
-            Extinction_Coefficient_In_Water_KO: ko.observable(instrument.Extinction_Coefficient_In_Water_KO).extend(),
-            Models: []
-          })
+        ko.utils.arrayForEach(objFromServer.Instruments, function(objInstrument) {
+          var i = new instrument();
+          i.SetModel(objInstrument);
+          self.Instruments.push(i);
         });
       }
     },
@@ -125,7 +88,6 @@ function (ko, moment, api) {
 			var self = this;
 
 			var result= {
-        id: self.id,
         Status: self.Status(),
         Number_Of_Rows: self.Number_Of_Rows(),
         Date_From: self.Date_From(),
@@ -147,50 +109,12 @@ function (ko, moment, api) {
         Columns: []
 			};
 
-      ko.utils.arrayForEach(this.Columns(), function(column) {
-        result.Columns.push({
-          id: column.id,
-          Instrument: column.Instrument(),
-          Column_Number: column.Column_Number,
-          Ignore: column.Ignore(),
-          Numeric: column.Numeric(),
-          Variable: column.Variable(),
-          Measurement_Type: column.Measurement_Type(),
-          Input_Unit: column.Input_Unit(),
-          Linear_Scaling: column.Linear_Scaling(),
-          Output_Unit: column.Output_Unit(),
-          Gain_Value: column.Gain_Value(),
-          Offset_Value: column.Offset_Value(),
-          Nominal_Time_Lag: column.Nominal_Time_Lag(),
-          Minimum_Time_Lag: column.Minimum_Time_Lag(),
-          Maximum_Time_Lag: column.Maximum_Time_Lag()
-        })
+      ko.utils.arrayForEach(this.Columns(), function(c) {
+        result.Columns.push(c.GetEntityModel());
       });
 
-      ko.utils.arrayForEach(this.Instruments(), function(instrument) {
-        result.Instruments.push({
-          id: instrument.id,
-          Instrument_Type: instrument.Instrument_Type,
-          Manufacturer: instrument.Manufacturer,
-          Model: instrument.Model,
-          Software_Version: instrument.Software_Version,
-          Instrument_Id: instrument.Instrument_Id,
-          Height: instrument.Height,
-          Wind_Data_Format: instrument.Wind_Data_Format,
-          North_Alignment: instrument.North_Alignment,
-          North_Offset: instrument.North_Offset,
-          Northward_Separation: instrument.Northward_Separation,
-          Eastward_Separation: instrument.Eastward_Separation,
-          Vertical_Separation: instrument.Vertical_Separation,
-          Longitudinal_Path_Length: instrument.Longitudinal_Path_Length,
-          Transversal_Path_Length: instrument.Transversal_Path_Length,
-          Tube_Length: instrument.Tube_Length,
-          Tube_Inner_Diameter: instrument.Tube_Inner_Diameter,
-          Nominal_Tube_Flow_Rate: instrument.Nominal_Tube_Flow_Rate,
-          Time_Response: instrument.Time_Response,
-          Extinction_Coefficient_In_Water_KW: instrument.Extinction_Coefficient_In_Water_KW,
-          Extinction_Coefficient_In_Water_KO: instrument.Extinction_Coefficient_In_Water_KO
-        })
+      ko.utils.arrayForEach(this.Instruments(), function(i) {
+        result.Instruments.push(i.GetEntityModel())
       });
 
       return result;
@@ -200,121 +124,66 @@ function (ko, moment, api) {
 
     AddAnemometer: function() {
       var self = this;
-
-      var instrument = {
-        Instrument_Type: "Anemometer",
-        Manufacturer: ko.observable().extend({required: true}),
-        Model: ko.observable().extend({required: true}),
-        Instrument_Id: ko.observable().extend(),
-        Height:ko.observable().extend({required: true, numeric:true}),
-        Wind_Data_Format: ko.observable().extend(),
-        North_Alignment: ko.observable().extend(),
-        North_Offset: ko.observable().extend(),
-        Northward_Separation: ko.observable().extend(),
-        Eastward_Separation: ko.observable().extend(),
-        Vertical_Separation: ko.observable().extend(),
-        Longitudinal_Path_Length: ko.observable().extend(),
-        Transversal_Path_Length: ko.observable().extend(),
-        Time_Response: ko.observable().extend()
-      };
-
-      instrument.Models = ko.computed(function() {
-        if (instrument.Manufacturer()) {
-          return (ko.utils.arrayFilter(self.Models(), function(model) {
-            return model.Manufacturer == instrument.Manufacturer();
-          }));
-        } else {
-          return [];
-        }
-      });
-
-      self.Instruments.push(instrument);
+      self.addInstrument('Anemometer');
     },
 
-    AddGasAnalyzer: function() {
+    AddGasAnalyzer: function() {require
       var self = this;
-      var instrument = {
-        Instrument_Type: "Gas",
-        Manufacturer: ko.observable().extend({required: true}),
-        Model: ko.observable().extend({required: true}),
-        Software_Version: ko.observable().extend(),
-        Instrument_Id: ko.observable().extend(),
-        Height:ko.observable().extend({required: true}),
-        Tube_Length: ko.observable().extend(),
-        Tube_Inner_Diameter: ko.observable().extend(),
-        Nominal_Tube_Flow_Rate: ko.observable().extend(),
-        Northward_Separation: ko.observable().extend(),
-        Eastward_Separation: ko.observable().extend(),
-        Vertical_Separation: ko.observable().extend(),
-        Longitudinal_Path_Length: ko.observable().extend(),
-        Transversal_Path_Length: ko.observable().extend(),
-        Time_Response: ko.observable().extend(),
-        Extinction_Coefficient_In_Water_KW: ko.observable().extend(),
-        Extinction_Coefficient_In_Water_KO: ko.observable().extend(),
-        Models: ko.observableArray()
-      };
+      self.addInstrument('Gas');
+    },
 
-      instrument.Models = ko.computed(function() {
-        if (instrument.Manufacturer()) {
+    addInstrument: function (type) {
+      var self = this;
+      var i = new instrument();
+      i.Instrument_Type = type;
+      i.Models = ko.computed(function() {
+        if (i.Manufacturer()) {
           return (ko.utils.arrayFilter(self.Models(), function(model) {
-            return model.Manufacturer == instrument.Manufacturer();
+            return model.Manufacturer == i.Manufacturer();
           }));
         } else {
           return [];
         }
       });
 
-      self.Instruments.push(instrument);
+      self.Instruments.push(i);
     },
 
-    RemoveInstrument: function(instrument) {
+    RemoveInstrument: function(i) {
       var self = this;
       if (confirm("This will remove this instrument.  Are you sure?")) {
-        self.Instruments.remove(instrument);
+        self.Instruments.remove(i);
       }
     },
 
     AddColumn: function() {
       var self = this;
-      self.Columns.push({
-        Instrument: ko.observable().extend(),
-        Column_Number: (self.Columns().length + 1),
-        Ignore: ko.observable().extend(),
-        Numeric: ko.observable().extend(),
-        Variable: ko.observable().extend(),
-        Measurement_Type: ko.observable().extend(),
-        Input_Unit: ko.observable().extend(),
-        Linear_Scaling: ko.observable().extend(),
-        Output_Unit: ko.observable().extend(),
-        Gain_Value: ko.observable().extend(),
-        Offset_Value: ko.observable().extend(),
-        Nominal_Time_Lag: ko.observable({numeric:true}).extend(),
-        Minimum_Time_Lag: ko.observable({numeric:true}).extend(),
-        Maximum_Time_Lag: ko.observable({numeric:true}).extend()
-      });
+      var c = new column();
+      c.Column_Number = (self.Columns().length + 1);
+      self.Columns.push(c);
     },
 
-    RemoveColumn: function(column) {
+    RemoveColumn: function(c) {
       var self = this;
       if (confirm("This will remove this column.  Are you sure?")) {
-        self.Columns.remove(column);
+        self.Columns.remove(c);
       }
     }
 
   });
 
   api.ajaxGet("/InstrumentManufacturer", null, null, function(data, method) {
-    detailViewModel().GasManufacturers(ko.utils.arrayFilter(data.items, function(item) {
+    uploadViewModel().GasManufacturers(ko.utils.arrayFilter(data.items, function(item) {
       return item.Instrument_Type == "Gas";
     }));
-    detailViewModel().AnemometerManufacturers(ko.utils.arrayFilter(data.items, function(item) {
+    uploadViewModel().AnemometerManufacturers(ko.utils.arrayFilter(data.items, function(item) {
       return item.Instrument_Type == "Anemometer";
     }));
   });
   api.ajaxGet("/InstrumentModel", null, null, function(data, method) {
-    detailViewModel().Models(data.items);
+    uploadViewModel().Models(data.items);
   });
 
-	return detailViewModel;
+	return uploadViewModel;
 });
 

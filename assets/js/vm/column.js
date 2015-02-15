@@ -3,18 +3,15 @@ function (ko, moment) {
 
 	"use strict";
 
-	var detailViewModel = ko.validatedObservable({
+	var columnViewModel = function() {
+    return  ({
 
     EntityName: "Raw Data Column", // name of this entity
     Url: "/DataColumn/",  // url to call to load / save / delete
 
-    Data: {model: 'Data'},
-
-    Instrument: ko.observable().extend(),
-    Station: ko.observable().extend(),
-
-    Column_Number: ko.observable().extend(),
+    Column_Number: 1,
     Ignore: ko.observable().extend(),
+    Instrument: ko.observable().extend(),
     Numeric: ko.observable().extend(),
     Variable: ko.observable().extend(),
     Measurement_Type: ko.observable().extend(),
@@ -32,9 +29,8 @@ function (ko, moment) {
 			var self = this;
 			if (!objFromServer) return;
 
-      self.Data(objFromServer.Data);
       self.Instrument(objFromServer.Instrument);
-      self.Column_Number(objFromServer.Column_Number);
+      self.Column_Number = (objFromServer.Column_Number);
       self.Ignore(objFromServer.Ignore);
       self.Numeric(objFromServer.Numeric);
       self.Variable(objFromServer.Variable);
@@ -54,9 +50,8 @@ function (ko, moment) {
 			var self = this;
 
 			return {
-        Data: self.Data(),
         Instrument: self.Instrument(),
-        Column_Number: self.Column_Number(),
+        Column_Number: self.Column_Number,
         Ignore: self.Ignore(),
         Numeric: self.Numeric(),
         Variable: self.Variable(),
@@ -70,33 +65,10 @@ function (ko, moment) {
         Minimum_Time_Lag: self.Minimum_Time_Lag(),
         Maximum_Time_Lag: self.Maximum_Time_Lag()
 			};
-		},
+		}
+  });
+  };
 
-		Panels: [
-        {
-            Title: "Data Columns",
-            Columns: [
-                {
-                    Fields: [
-                      { Name: "Ignore", Property: "Ignore", Type: "Checkbox", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Numeric", Property: "Numeric", Type: "Checkbox", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Instrument", Property: "Instrument", Type: "EntityList", LookupUrl: "/StationInstrument?where={Station: " + this.Station() + "}", Caption: "Select Instrument", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Variable", Property: "Variable", Type: "String", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Measurement Type", Property: "Measurement_Type", ype: "List", Caption:'Select', Options: ['Molar/Mass density','Mole fraction','Mixing Ratio','Other'], Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Input Unit", Property: "Input_Unit", Type: "String", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Linear Scaling", Property: "Linear_Scaling", Type: "String", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Output Unit", Property: "Output_Unit", Type: "String", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Gain Value", Property: "Gain_Value", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Offset Value", Property: "Offset_Value", Type: "Number", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Nominal Time Lag", Property: "Nominal_Time_Lag", Type: "String", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Minimum Time Lag", Property: "Minimum_Time_Lag", Type: "String", Permissions: ["VIEW", "ADD", "EDIT"] },
-                      { Name: "Maximum Time Lag", Property: "Maximum_Time_Lag", Type: "String", Permissions: ["VIEW", "ADD", "EDIT"] }
-                    ]
-                }
-            ]
-        }]
-    });
-
-	return detailViewModel;
+	return columnViewModel;
 });
 

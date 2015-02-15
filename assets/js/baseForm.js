@@ -256,7 +256,7 @@
 
             if (entityId != 'add') {
 
-                webApiClient.ajaxGet(self.EntityViewModel.Url + entityId, null, null, function (model) {
+                webApiClient.ajaxGet(self.EntityViewModel.Url + "/" + entityId, null, null, function (model) {
                         if (model) {
 
                             self.EntityViewModel.SetModel(model);

@@ -41,13 +41,15 @@
             <div class="col-sm-6">
               <div class="form-group" data-bind="validationElement: Field_Separator_Character" id="Field_Separator_Character">
                 <label class="control-label" for="Field_Separator_Character">Field Separator Character</label>
-                <input type="text" maxlength="1" class="form-control" data-bind="value: Field_Separator_Character" />
+                <p class="form-control-static" data-bind="text: Field_Separator_Character, visible: $root.IsInMode('VIEW')"></p>
+                <input type="text" maxlength="1" class="form-control" data-bind="value: Field_Separator_Character, visible: !$root.IsInMode('VIEW')" />
               </div>
             </div>
             <div class="col-sm-6">
               <div class="form-group" data-bind="validationElement: Number_Of_Header_Rows" id="Number_Of_Header_Rows">
                 <label class="control-label" for="Number_Of_Header_Rows">Number Of Header Rows</label>
-                <input type="number" maxlength="6" max="999999" min="0" class="form-control" data-bind="value: Number_Of_Header_Rows"/>
+                <p class="form-control-static" data-bind="text: Number_Of_Header_Rows, visible: $root.IsInMode('VIEW')"></p>
+                <input type="number" maxlength="6" max="999999" min="0" class="form-control" data-bind="value: Number_Of_Header_Rows, visible: !$root.IsInMode('VIEW')"/>
               </div>
             </div>
           </div>
@@ -75,13 +77,16 @@
               <div class="col-sm-3">
                 <div class="form-group" data-bind="validationElement: Name" id="Name">
                   <label class="control-label">Name</label>
-                  <input type="text" class="form-control" data-bind="value: Name" />
+                  <p class="form-control-static" data-bind="text: Name, visible: $root.IsInMode('VIEW')"></p>
+                  <input type="text" class="form-control" data-bind="value: Name, visible: !$root.IsInMode('VIEW')" />
                 </div>
               </div>
               <div class="col-sm-3">
                 <div class="form-group" data-bind="validationElement: Timestamp_Refers_To" id="Timestamp_Refers_To">
                   <label class="control-label">Timestamp Refers To</label>
-                  <select class="form-control" data-bind="value: Timestamp_Refers_To">
+                  <p class="form-control-static" data-bind="text: Timestamp_Refers_To, visible: $root.IsInMode('VIEW')"></p>
+
+                  <select class="form-control" data-bind="value: Timestamp_Refers_To, visible: !$root.IsInMode('VIEW')">
                     <option value="">Select</option>
                     <option value="Beginning">Beginning of averaging period</option>
                     <option value="End">End of averaging period</option>
@@ -93,7 +98,9 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: File_Duration" id="File_Duration">
                   <label class="control-label" for="File_Duration">File Duration</label>
-                  <div class="input-group">
+                  <p class="form-control-static" data-bind="text: File_Duration, visible: $root.IsInMode('VIEW')"></p>
+
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                     <input type="number"  min="0" class="form-control" data-bind="value: File_Duration"/>
                     <span class="input-group-addon">min</span>
                   </div>
@@ -102,7 +109,9 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: Canopy_Height" id="Canopy_Height">
                   <label class="control-label" for="Canopy_Height">Canopy Height</label>
-                  <div class="input-group">
+                  <p class="form-control-static" data-bind="text: Canopy_Height, visible: $root.IsInMode('VIEW')"></p>
+
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                     <input type="number"  min="0" class="form-control" data-bind="value: Canopy_Height"/>
                     <span class="input-group-addon">m</span>
                   </div>
@@ -111,7 +120,9 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: Altitude" id="Altitude">
                   <label class="control-label" for="Altitude">Altitude</label>
-                  <div class="input-group">
+                  <p class="form-control-static" data-bind="text: Altitude, visible: $root.IsInMode('VIEW')"></p>
+
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                     <input type="number"  min="0" class="form-control" data-bind="value: Altitude"/>
                     <span class="input-group-addon">m</span>
                   </div>
@@ -122,8 +133,10 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: Acquisition_Frequency" id="Acquisition_Frequency">
                   <label class="control-label" for="Acquisition_Frequency">Acquisition Frequency</label>
-                  <div class="input-group">
-                    <input type="number"  min="0" class="form-control" data-bind="value: Acquisition_Frequency"/>
+                  <p class="form-control-static" data-bind="text: Acquisition_Frequency, visible: $root.IsInMode('VIEW')"></p>
+
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
+                    <input type="number" min="0" class="form-control" data-bind="value: Acquisition_Frequency"/>
                     <span class="input-group-addon">Hz</span>
                   </div>
                 </div>
@@ -131,7 +144,8 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: Displacement_Height" id="Displacement_Height">
                   <label class="control-label" for="Displacement_Height">Displacement Height</label>
-                  <div class="input-group">
+                  <p class="form-control-static" data-bind="text: Displacement_Height, visible: $root.IsInMode('VIEW')"></p>
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                     <input type="number"  min="0" class="form-control" data-bind="value: Displacement_Height"/>
                     <span class="input-group-addon">m</span>
                   </div>
@@ -140,7 +154,9 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: Latitude" id="Latitude">
                   <label class="control-label" for="Latitude">Latitude</label>
-                  <div class="input-group">
+                  <p class="form-control-static" data-bind="text: Latitude, visible: $root.IsInMode('VIEW')"></p>
+
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                     <input type="number"  min="0" class="form-control" data-bind="value: Latitude"/>
                     <span class="input-group-addon">N</span>
                   </div>
@@ -154,7 +170,8 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: Roughness_Length" id="Roughness_Length">
                   <label class="control-label" for="Roughness_Length">Roughness Length</label>
-                  <div class="input-group">
+                  <p class="form-control-static" data-bind="text: Roughness_Length, visible: $root.IsInMode('VIEW')"></p>
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                     <input type="number"  min="0" class="form-control" data-bind="value: Roughness_Length"/>
                     <span class="input-group-addon">m</span>
                   </div>
@@ -163,7 +180,8 @@
               <div class="col-sm-4">
                 <div class="form-group" data-bind="validationElement: Longitude" id="Longitude">
                   <label class="control-label" for="Longitude">Longitude</label>
-                  <div class="input-group">
+                  <p class="form-control-static" data-bind="text: Longitude, visible: $root.IsInMode('VIEW')"></p>
+                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                     <input type="number"  min="0" class="form-control" data-bind="value: Longitude"/>
                     <span class="input-group-addon">E</span>
                   </div>
@@ -216,11 +234,22 @@
             <!-- ko if: Instrument_Type == 'Anemometer' -->
             <div class="form-group"  id="Wind_Data_Format">
               <label class="control-label" for="Wind_Data_Format">Wind Data Format</label>
-              <input type="text"  class="form-control" data-bind="value: Wind_Data_Format" />
+              <select class="form-control" data-bind="value: Wind_Data_Format">
+                <option value="">Select</option>
+                <option value="U">U</option>
+                <option value="V">V</option>
+                <option value="W: Polar">W: Polar</option>
+                <option value="W">W</option>
+                <option value="axis velocities">axis velocities</option>
+              </select>
             </div>
             <div class="form-group"  id="North_Alignment">
               <label class="control-label" for="North_Alignment">North Alignment</label>
-              <input type="text"  class="form-control" data-bind="value: North_Alignment" />
+              <select class="form-control" data-bind="value: North_Alignment">
+                <option value="">Select</option>
+                <option value="axis">Axis</option>
+                <option value="spar">Spar</option>
+              </select>
             </div>
             <div class="form-group"  id="North_Offset">
               <label class="control-label" for="North_Offset">North Offset</label>
@@ -287,7 +316,7 @@
             </div>
             <div>
               <button id="deleteButton" type="button" class="btn btn-danger pull-right"
-                      data-bind="click: $root.EntityViewModel.RemoveInstrument.bind($root.EntityViewModel, $data)">
+                      data-bind="click: $root.EntityViewModel.RemoveInstrument.bind($root.EntityViewModel, $data), visible: !$root.IsInMode('VIEW')">
                 <span class="glyphicon glyphicon-trash"></span>
               </button>
             </div>
@@ -301,7 +330,7 @@
             <div class="panel panel-default">
               <div class="panel-heading clearfix">
                 <h3 class="panel-title">Anemometer Information
-                  <button type="button" data-bind="click: AddAnemometer" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+                  <button type="button" data-bind="click: AddAnemometer, visible: !$root.IsInMode('VIEW')" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
                 </h3>
               </div>
               <div class="panel-body">
@@ -317,7 +346,7 @@
             <div class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title clearfix">Gas Analyzer Information
-                  <button type="button" data-bind="click: AddGasAnalyzer" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+                  <button type="button" data-bind="click: AddGasAnalyzer, visible: !$root.IsInMode('VIEW')" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
                 </h3>
               </div>
               <div class="panel-body">
@@ -335,7 +364,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title clearfix">File Description
-              <button type="button" data-bind="click: AddColumn" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+              <button type="button" data-bind="click: AddColumn, visible: !$root.IsInMode('VIEW')" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
             </h3>
           </div>
           <div class="panel-body">
@@ -417,7 +446,7 @@
                   </div>
                   <div data-bind="if: ($index() === ($parent.Columns().length - 1))">
                     <button id="deleteButton" type="button" class="btn btn-danger pull-right"
-                            data-bind="click: $root.EntityViewModel.RemoveColumn.bind($root.EntityViewModel, $data)">
+                            data-bind="click: $root.EntityViewModel.RemoveColumn.bind($root.EntityViewModel, $data), visible: !$root.IsInMode('VIEW')">
                       <span class="glyphicon glyphicon-trash"></span>
                     </button>
                   </div>
