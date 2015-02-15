@@ -9,8 +9,8 @@ module.exports = {
 
   attributes: {
     Data: {model: 'Data'},
-    Instrument: {model: 'StationInstrument'},
 
+    Instrument: {type: 'string'},
     Column_Number: {type: 'integer'},
     Ignore: {type: 'boolean'},
     Numeric: {type: 'boolean'},

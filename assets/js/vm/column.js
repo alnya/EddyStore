@@ -10,6 +10,7 @@ function (ko, moment) {
     Url: "/DataColumn/",  // url to call to load / save / delete
 
     Column_Number: 1,
+    Id:  ko.observable(),
     Ignore: ko.observable().extend(),
     Instrument: ko.observable().extend(),
     Numeric: ko.observable().extend(),
@@ -28,7 +29,7 @@ function (ko, moment) {
 		SetModel: function(objFromServer) {
 			var self = this;
 			if (!objFromServer) return;
-
+      self.Id = (objFromServer.id);
       self.Instrument(objFromServer.Instrument);
       self.Column_Number = (objFromServer.Column_Number);
       self.Ignore(objFromServer.Ignore);
@@ -50,6 +51,7 @@ function (ko, moment) {
 			var self = this;
 
 			return {
+        id: self.Id,
         Instrument: self.Instrument(),
         Column_Number: self.Column_Number,
         Ignore: self.Ignore(),

@@ -10,6 +10,7 @@ function (ko, moment) {
       Url: "/StationInstrument/",  // url to call to load / save / delete
 
       Instrument_Type:  'Anemometer',
+      Id:  ko.observable(),
       Manufacturer:  ko.observable().extend({ required: true }),
       Model:  ko.observable().extend({ required: true }),
       Software_Version: ko.observable().extend(),
@@ -36,6 +37,7 @@ function (ko, moment) {
         var self = this;
         if (!objFromServer) return;
 
+        self.Id = (objFromServer.id);
         self.Instrument_Type = (objFromServer.Instrument_Type);
         self.Manufacturer(objFromServer.Manufacturer);
         self.Model(objFromServer.Model);
@@ -63,6 +65,7 @@ function (ko, moment) {
         var self = this;
 
         return {
+          id: self.Id,
           Instrument_Type: self.Instrument_Type,
           Manufacturer: self.Manufacturer(),
           Model: self.Model(),

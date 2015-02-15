@@ -67,6 +67,7 @@ function (ko, moment, api, column, instrument) {
       self.Latitude(objFromServer.Latitude);
       self.Longitude(objFromServer.Longitude);
 
+      self.Columns([]);
       if (objFromServer.Columns) {
         ko.utils.arrayForEach(objFromServer.Columns, function(objColumn) {
           var c = new column();
@@ -74,10 +75,21 @@ function (ko, moment, api, column, instrument) {
           self.Columns.push(c);
         });
       }
+
+      self.Instruments([]);
       if (objFromServer.Instruments) {
         ko.utils.arrayForEach(objFromServer.Instruments, function(objInstrument) {
           var i = new instrument();
           i.SetModel(objInstrument);
+          i.Models = ko.computed(function() {
+            if (i.Manufacturer()) {
+              return (ko.utils.arrayFilter(self.Models(), function(model) {
+                return model.Manufacturer == i.Manufacturer();
+              }));
+            } else {
+              return [];
+            }
+          });
           self.Instruments.push(i);
         });
       }
@@ -179,6 +191,7 @@ function (ko, moment, api, column, instrument) {
     uploadViewModel().AnemometerManufacturers(ko.utils.arrayFilter(data.items, function(item) {
       return item.Instrument_Type == "Anemometer";
     }));
+
   });
   api.ajaxGet("/InstrumentModel", null, null, function(data, method) {
     uploadViewModel().Models(data.items);
