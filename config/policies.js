@@ -35,5 +35,13 @@ module.exports.policies = {
 
   DataController: {
     '*': ['currentUser','sessionAuth']
+  },
+
+  ProcessingOptionController: {
+    '*': ['currentUser','sessionAuth']
+  },
+
+  SpectralCorrectionController: {
+    '*': ['currentUser','sessionAuth']
   }
 };
