@@ -10,23 +10,23 @@ function (ko, moment, api, column, instrument) {
 
     Folder_Path: ko.observable().extend(),
     Status: ko.observable('New').extend(),
-    Number_Of_Rows: ko.observable().extend({numeric:true}),
+    Number_Of_Rows: ko.observable().extend({digit:true}),
     Date_From: ko.observable().extend({date: true}),
     Date_To: ko.observable().extend({date: true}),
     Field_Separator_Character: ko.observable(',').extend(),
-    Number_Of_Header_Rows: ko.observable(1).extend({nullableInt: true, numeric:true}),
+    Number_Of_Header_Rows: ko.observable(1).extend({digit: true}),
 
     // station
     Name: ko.observable().extend({required: true}),
     Timestamp_Refers_To: ko.observable().extend(),
-    File_Duration: ko.observable().extend({numeric:true}),
-    Acquisition_Frequency: ko.observable().extend({numeric:true}),
-    Canopy_Height: ko.observable().extend({numeric:true}),
-    Displacement_Height: ko.observable().extend({numeric:true}),
-    Roughness_Length: ko.observable().extend({numeric:true}),
-    Altitude: ko.observable().extend({numeric:true}),
-    Latitude: ko.observable().extend({numeric:true}),
-    Longitude: ko.observable().extend({numeric:true}),
+    File_Duration: ko.observable().extend({number:true}),
+    Acquisition_Frequency: ko.observable().extend({number:true}),
+    Canopy_Height: ko.observable().extend({number:true}),
+    Displacement_Height: ko.observable().extend({number:true}),
+    Roughness_Length: ko.observable().extend({number:true}),
+    Altitude: ko.observable().extend({number:true}),
+    Latitude: ko.observable().extend({number:true}),
+    Longitude: ko.observable().extend({number:true}),
 
     Instruments: ko.observableArray(),
 

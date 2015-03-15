@@ -1,0 +1,258 @@
+<%- partial('../includes/FormFieldTemplate.ejs') %>
+<form id="entityForm" role="form">
+  <div data-bind='template: { name: "formFieldString", data: {Property: "Name", Name: "Name"}}'></div>
+
+  <div role="tabpanel">
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#raw" aria-controls="profile" role="tab" data-toggle="tab">Raw Data Processing</a></li>
+      <li role="presentation"><a href="#planar" aria-controls="messages" role="tab" data-toggle="tab">Planar Fit</a></li>
+      <li role="presentation"><a href="#lag" aria-controls="settings" role="tab" data-toggle="tab">Time Lag</a></li>
+    </ul>
+    <div class="tab-content" data-bind="with: EntityViewModel">
+      <div role="tabpanel" class="tab-pane active" id="raw">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Raw Data Processing</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <h3>Wind speed measurement offsets</h3>
+              </div>
+              <div class="col-sm-3">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "U", Name: "U", Suffix: "m/s"}}'></div>
+              </div>
+              <div class="col-sm-3">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "V", Name: "V", Suffix: "m/s"}}'></div>
+              </div>
+              <div class="col-sm-3">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "W", Name: "W", Suffix: "m/s"}}'></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldCheckBox",
+                  data: {Property: "Angle_Of_Attack_Correction_For_Wind_Components", Name: "Angle Of Attack Correction For Wind Components"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='visible: $root.getProperty("Angle_Of_Attack_Correction_For_Wind_Components"), template: { name: "formFieldList",
+                      data: {Property: "Angle_Of_Attach_Method", Name: "Method",
+                      Options: ["Field calibration (Nakai and Shimoyama 2012)"], Caption: "Select"}}'></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldCheckBox",
+                  data: {Property: "Axis_Rotation_For_Tilt_Correction", Name: "Axis Rotation For Tilt Correction"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='visible: $root.getProperty("Axis_Rotation_For_Tilt_Correction"), template: { name: "formFieldList",
+                      data: {Property: "Rotation_Method", Name: "Rotation Method",
+                      Options: ["Planar fit (Wilczak et al. 2001)"], Caption: "Select"}}'></div>
+                <div data-bind='template: { name: "formFieldList",
+                      data: {Property: "Detrend_Method", Name: "Detrend Method",
+                      Options: ["Block Average"], Caption: "Select"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Turbulent_Fluctuations_Time_Constant", Name: "Time constant", Suffix: "S"}}'></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldCheckBox",
+                  data: {Property: "Time_Lag_Compensation", Name: "Time Lag Compensation"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='visible: $root.getProperty("Time_Lag_Compensation"), template: { name: "formFieldList",
+                      data: {Property: "Time_Lag_Method", Name: "Time Lag Detection Method",
+                      Options: ["Automatic time lag optimization"], Caption: "Select"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Compensation of density fluctuations</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldCheckBox",
+                  data: {Property: "Compensate_Density_Fluctuations", Name: "Compensate Density Fluctuations"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='visible: $root.getProperty("Compensate_Density_Fluctuations"), template: { name: "formFieldList",
+                      data: {Property: "Compensate_Density_Fluctuations_Method", Name: "Method",
+                      Options: ["Webb et al. 1980"], Caption: "Select"}}'></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldCheckBox",
+                  data: {Property: "Add_Instrument_Sensible_Heat_Components", Name: "Add Instrument Sensible Heat Components"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='visible: $root.getProperty("Add_Instrument_Sensible_Heat_Components"), template: { name: "formFieldList",
+                      data: {Property: "Surface_Temperature_Estimations", Name: "Surface Temperature Estimation",
+                      Options: ["Simple linear regressions", "Multiple regressions"], Caption: "Select"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Fast Fourier Transform</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldList",
+                      data: {Property: "Tapering_Window", Name: "Tapering Window",
+                      Options: ["Hamming"], Caption: "Select"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldString", data: {Property: "Frequency_Bins", Name: "Frequency bins for cospectra reduction"}}'></div>
+                <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Power_Of_Two_Samples", Name: "Use power-of-two samples to speed up the FFT"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Other Options</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldCheckBox",
+                  data: {Property: "Quality_Check", Name: "Quality Check"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='visible: $root.getProperty("Quality_Check"), template: { name: "formFieldList",
+                      data: {Property: "Quality_Check_Flagging_Policy", Name: "Flagging Policy",
+                      Options: ["Mauder and Foken (2004)"], Caption: "Select"}}'></div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldCheckBox",
+                  data: {Property: "Footprint_Estimation", Name: "Footprint Estimation"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='visible: $root.getProperty("Footprint_Estimation"), template: { name: "formFieldList",
+                      data: {Property: "Footprint_Method", Name: "Footprint Method",
+                      Options: ["Kljun et al. (2004)"], Caption: "Select"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="planar">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Planar Fit Settings</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldDate", data: {Property: "Planar_Start", Name: "Subperiod Start"}}'></div>
+                <div data-bind='template: { name: "formFieldString", data: {Property: "Planar_Elements_Per_Sector", Name: "Elements Per Sector"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Planar_Max_Mean_Verticle_Wind_Component", Name: "Max Mean Verticle Wind Component", Suffix: "m/s"}}'></div>
+
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldDate", data: {Property: "Planar_End", Name: "Subperiod Start"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Planar_Min_Mean_Horizontal_Wind_Component", Name: "Min Mean Horizontal Wind Component", Suffix: "m/s"}}'></div>
+                <div data-bind='template: { name: "formFieldList",
+                      data: {Property: "Planar_Calculations_Fail", Name: "If planar fit calculations fail for a sector",
+                      Options: ["Use closest valid sector, clockwise)"], Caption: "Select"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="lag">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Time Lag Optimization Settings</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldDate", data: {Property: "Time_Lag_Start", Name: "Subperiod Start"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Plausibility_Range_Around_Median_Value", Name: "Plausability Range around median", Suffix: "mad"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldDate", data: {Property: "Time_Lag_End", Name: "Subperiod Start"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Water vapor time lag as a function of relative humidity</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldString", data: {Property: "Time_Lag_RH_Classes", Name: "Number of RH Classes"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Minimum_Heat_Flux", Name: "Minimum latent heat flux", Suffix: "W/m2"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Passive Gases</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-4">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Minimum_C02_Flux", Name: "Minimum (absolute) C02 flux", Suffix: "umol/m2s"}}'></div>
+              </div>
+              <div class="col-sm-4">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Minimum_CH4_Flux", Name: "Minimum (absolute) CH4 flux", Suffix: "umol/m2s"}}'></div>
+              </div>
+              <div class="col-sm-4">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Minimum_Gas_Flux", Name: "Minimum (absolute) 4th gas flux", Suffix: "umol/m2s"}}'></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Time lag searching windows</h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_C02_Min", Name: "CO2 Min", Suffix: "s"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_H20_Min", Name: "H20 Min", Suffix: "s"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_CH4_Min", Name: "CH4 Min", Suffix: "s"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_Gas_Min", Name: "4th Gas Min", Suffix: "s"}}'></div>
+              </div>
+              <div class="col-sm-6">
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_C02_Max", Name: "CO2 Max", Suffix: "s"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_H20_Max", Name: "H20 Max", Suffix: "s"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_CH4_Max", Name: "CH4 Max", Suffix: "s"}}'></div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Searching_Gas_Max", Name: "4th Gas Max", Suffix: "s"}}'></div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- partial('../includes/FormButtons.ejs') %>
+</form>
+
+<script type="text/javascript">
+  require(['knockout', 'baseForm', 'option'],
+    function(ko, baseForm, vm) {
+      baseForm.Initialise(vm());
+    });
+</script>
+
+<%- partial('../includes/ModalDialogBox.ejs') %>

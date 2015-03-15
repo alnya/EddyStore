@@ -17,13 +17,13 @@ module.exports = {
   },
   options: function (req, res) {
     if (req.param('id') != null) {
-      return res.view("page/processing", {title:"Processing Options", vm: "option"});
+      return res.view("page/option", {title:"Processing Options", vm: "option"});
     }
     return res.view("page/list", {title:"Processing Options", vm: "options"});
   },
   corrections: function (req, res) {
     if (req.param('id') != null) {
-      return res.view("page/detail", {title:"Spectral Correction", vm: "correction"});
+      return res.view("page/correction", {title:"Spectral Correction", vm: "correction"});
     }
     return res.view("page/list", {title:"Spectral Corrections", vm: "corrections"});
   }

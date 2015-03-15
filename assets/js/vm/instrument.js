@@ -15,7 +15,7 @@ function (ko, moment) {
       Model:  ko.observable().extend({ required: true }),
       Software_Version: ko.observable().extend(),
       Instrument_Id:  ko.observable().extend(),
-      Height:  ko.observable().extend({ required: true, numeric: true }),
+      Height:  ko.observable().extend({ required: true, number: true }),
       Wind_Data_Format:  ko.observable().extend(),
       North_Alignment:  ko.observable().extend(),
       North_Offset:  ko.observable().extend(),

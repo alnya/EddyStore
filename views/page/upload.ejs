@@ -1,3 +1,5 @@
+<%- partial('../includes/FormFieldTemplate.ejs') %>
+
 <form id="entityForm" role="form">
   <div class="row">
     <div class="col-sm-6">
@@ -8,24 +10,12 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
-              <div class="form-group" id="Status">
-                <label class="control-label" for="Status">Status</label>
-                <p class="form-control-static" data-bind="text: Status"></p>
-              </div>
-              <div class="form-group" id="Date_From">
-                <label class="control-label" for="Date_From">Date From</label>
-                <p class="form-control-static" data-bind="text: Date_From"></p>
-              </div>
+              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Status", Name: "Status"}}'></div>
+              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Date_From", Name: "Date From"}}'></div>
             </div>
             <div class="col-sm-6">
-              <div class="form-group" id="Number_Of_Rows">
-                <label class="control-label" for="Number_Of_Rows">Number Of Rows</label>
-                <p class="form-control-static" data-bind="text: Number_Of_Rows"></p>
-              </div>
-              <div class="form-group" id="Date_To">
-                <label class="control-label" for="Date_To">Date To</label>
-                <p class="form-control-static" data-bind="text: Date_To"></p>
-              </div>
+              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Number_Of_Rows", Name: "Number Of Rows"}}'></div>
+              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Date_To", Name: "Date To"}}'></div>
             </div>
           </div>
         </div>
@@ -39,18 +29,10 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
-              <div class="form-group" data-bind="validationElement: Field_Separator_Character" id="Field_Separator_Character">
-                <label class="control-label" for="Field_Separator_Character">Field Separator Character</label>
-                <p class="form-control-static" data-bind="text: Field_Separator_Character, visible: $root.IsInMode('VIEW')"></p>
-                <input type="text" maxlength="1" class="form-control" data-bind="value: Field_Separator_Character, visible: !$root.IsInMode('VIEW')" />
-              </div>
+              <div data-bind='template: { name: "formFieldString", data: {Property: "Field_Separator_Character", Name: "Field Separator Character"}}'></div>
             </div>
             <div class="col-sm-6">
-              <div class="form-group" data-bind="validationElement: Number_Of_Header_Rows" id="Number_Of_Header_Rows">
-                <label class="control-label" for="Number_Of_Header_Rows">Number Of Header Rows</label>
-                <p class="form-control-static" data-bind="text: Number_Of_Header_Rows, visible: $root.IsInMode('VIEW')"></p>
-                <input type="number" maxlength="6" max="999999" min="0" class="form-control" data-bind="value: Number_Of_Header_Rows, visible: !$root.IsInMode('VIEW')"/>
-              </div>
+              <div data-bind='template: { name: "formFieldString", data: {Property: "Number_Of_Header_Rows", Name: "Number Of Header Rows"}}'></div>
             </div>
           </div>
         </div>
@@ -75,92 +57,34 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-sm-3">
-                <div class="form-group" data-bind="validationElement: Name" id="Name">
-                  <label class="control-label">Name</label>
-                  <p class="form-control-static" data-bind="text: Name, visible: $root.IsInMode('VIEW')"></p>
-                  <input type="text" class="form-control" data-bind="value: Name, visible: !$root.IsInMode('VIEW')" />
-                </div>
+                <div data-bind='template: { name: "formFieldString", data: {Property: "Name", Name: "Name"}}'></div>
               </div>
               <div class="col-sm-3">
-                <div class="form-group" data-bind="validationElement: Timestamp_Refers_To" id="Timestamp_Refers_To">
-                  <label class="control-label">Timestamp Refers To</label>
-                  <p class="form-control-static" data-bind="text: Timestamp_Refers_To, visible: $root.IsInMode('VIEW')"></p>
-
-                  <select class="form-control" data-bind="value: Timestamp_Refers_To, visible: !$root.IsInMode('VIEW')">
-                    <option value="">Select</option>
-                    <option value="Beginning">Beginning of averaging period</option>
-                    <option value="End">End of averaging period</option>
-                  </select>
-                </div>
+                <div data-bind='template: { name: "formFieldList",
+                data: {Property: "Timestamp_Refers_To", Name: "Timestamp Refers To",
+                Options: ["Beginning of averaging period","End of averaging period"], Caption: "Select"}}'></div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: File_Duration" id="File_Duration">
-                  <label class="control-label" for="File_Duration">File Duration</label>
-                  <p class="form-control-static" data-bind="text: File_Duration, visible: $root.IsInMode('VIEW')"></p>
-
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number"  min="0" class="form-control" data-bind="value: File_Duration"/>
-                    <span class="input-group-addon">min</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "File_Duration", Name: "File Duration", Suffix: "min"}}'></div>
               </div>
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: Canopy_Height" id="Canopy_Height">
-                  <label class="control-label" for="Canopy_Height">Canopy Height</label>
-                  <p class="form-control-static" data-bind="text: Canopy_Height, visible: $root.IsInMode('VIEW')"></p>
-
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number"  min="0" class="form-control" data-bind="value: Canopy_Height"/>
-                    <span class="input-group-addon">m</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Canopy_Height", Name: "Canopy Height", Suffix: "m"}}'></div>
               </div>
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: Altitude" id="Altitude">
-                  <label class="control-label" for="Altitude">Altitude</label>
-                  <p class="form-control-static" data-bind="text: Altitude, visible: $root.IsInMode('VIEW')"></p>
-
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number"  min="0" class="form-control" data-bind="value: Altitude"/>
-                    <span class="input-group-addon">m</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Altitude", Name: "Altitude", Suffix: "m"}}'></div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: Acquisition_Frequency" id="Acquisition_Frequency">
-                  <label class="control-label" for="Acquisition_Frequency">Acquisition Frequency</label>
-                  <p class="form-control-static" data-bind="text: Acquisition_Frequency, visible: $root.IsInMode('VIEW')"></p>
-
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number" min="0" class="form-control" data-bind="value: Acquisition_Frequency"/>
-                    <span class="input-group-addon">Hz</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Acquisition_Frequency", Name: "Acquisition Frequency", Suffix: "Hz"}}'></div>
               </div>
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: Displacement_Height" id="Displacement_Height">
-                  <label class="control-label" for="Displacement_Height">Displacement Height</label>
-                  <p class="form-control-static" data-bind="text: Displacement_Height, visible: $root.IsInMode('VIEW')"></p>
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number"  min="0" class="form-control" data-bind="value: Displacement_Height"/>
-                    <span class="input-group-addon">m</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Displacement_Height", Name: "Displacement Height", Suffix: "m"}}'></div>
               </div>
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: Latitude" id="Latitude">
-                  <label class="control-label" for="Latitude">Latitude</label>
-                  <p class="form-control-static" data-bind="text: Latitude, visible: $root.IsInMode('VIEW')"></p>
-
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number"  min="0" class="form-control" data-bind="value: Latitude"/>
-                    <span class="input-group-addon">N</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Latitude", Name: "Latitude", Suffix: "N"}}'></div>
               </div>
             </div>
             <div class="row">
@@ -168,24 +92,10 @@
 
               </div>
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: Roughness_Length" id="Roughness_Length">
-                  <label class="control-label" for="Roughness_Length">Roughness Length</label>
-                  <p class="form-control-static" data-bind="text: Roughness_Length, visible: $root.IsInMode('VIEW')"></p>
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number"  min="0" class="form-control" data-bind="value: Roughness_Length"/>
-                    <span class="input-group-addon">m</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Roughness_Length", Name: "Roughness Length", Suffix: "m"}}'></div>
               </div>
               <div class="col-sm-4">
-                <div class="form-group" data-bind="validationElement: Longitude" id="Longitude">
-                  <label class="control-label" for="Longitude">Longitude</label>
-                  <p class="form-control-static" data-bind="text: Longitude, visible: $root.IsInMode('VIEW')"></p>
-                  <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                    <input type="number"  min="0" class="form-control" data-bind="value: Longitude"/>
-                    <span class="input-group-addon">E</span>
-                  </div>
-                </div>
+                <div data-bind='template: { name: "formFieldNumber", data: {Property: "Longitude", Name: "Longitude", Suffix: "E"}}'></div>
               </div>
             </div>
           </div>
@@ -460,20 +370,7 @@
       </div>
     </div>
   </div>
-  <div class="pull-right">
-    <button id="deleteButton" type="button" class="btn btn-default" data-bind="click: ShowDeleteModalDialog, visible: CanDeleteEntity()">
-      <span class="glyphicon glyphicon-trash"></span> Delete
-    </button>
-    <button id="editButton" type="button" class="btn btn-default" data-bind="click: SetEditMode, visible: CanEditEntity()">
-      <span class="glyphicon glyphicon-pencil"></span> Edit
-    </button>
-    <button id="viewButton" type="button" class="btn btn-danger" data-bind="click: ShowCancelModalDialog, visible: IsInMode('EDIT')">
-      <span class="glyphicon glyphicon-remove"></span> Cancel
-    </button>
-    <button id="saveButton" type="button" class="btn btn-success" data-bind="click: Submit, visible: !IsInMode('VIEW')">
-      <span class="glyphicon glyphicon-ok"></span> Save
-    </button>
-  </div>
+  <%- partial('../includes/FormButtons.ejs') %>
 </form>
 
 <script type="text/javascript">

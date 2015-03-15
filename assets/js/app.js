@@ -19,7 +19,9 @@
       'login': 'js/vm/login',
       'upload': 'js/vm/upload',
       'column': 'js/vm/column',
-      'instrument': 'js/vm/instrument'
+      'instrument': 'js/vm/instrument',
+      'option': 'js/vm/option',
+      'correction': 'js/vm/correction'
     },
     shim: {
         "bootstrap": {
