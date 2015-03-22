@@ -12,13 +12,14 @@
   </div>
 </script>
 <script type="text/html" id="formFieldNumber">
-  <div class="form-group" data-bind="attr:{ id:Property }, validationElement: $root.getProperty(Property)">
+  <div class="form-group" data-bind="attr:{ id:Property }, validationOptions: { insertMessages: false }">
     <label class="control-label" data-bind="text: Name" />
     <p class="form-control-static" data-bind="text: $root.getProperty(Property), visible: $root.IsInMode('VIEW')"></p>
     <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
       <input type="text" class="form-control" data-bind="value: $root.getProperty(Property)" />
       <span class="input-group-addon" data-bind="text: Suffix, visible: Suffix"></span>
     </div>
+    <p class="text-danger" data-bind="validationMessage: $root.getProperty(Property)"></p>
   </div>
 </script>
 <script type="text/html" id="formFieldList">

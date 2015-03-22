@@ -168,6 +168,40 @@
             </div>
           </div>
         </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Configure Wind Sectors <button type="button" data-bind="click: AddSector, visible: !$root.IsInMode('VIEW')" class="btn btn-success pull-right"><i class="glyphicon glyphicon-plus"></i></button>
+            </h3>
+          </div>
+          <div class="panel-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div data-bind="foreach: Planar_Wind_Sectors">
+                  <div class="form-group clearfix" data-bind="validationOptions: { insertMessages: false }">
+                    <p class="form-control-static" data-bind="text: Degrees, visible: $root.IsInMode('VIEW')"></p>
+                    <div class="input-group pull-left col-sm-10" data-bind="visible: !$root.IsInMode('VIEW')">
+                      <input type="text" class="form-control" data-bind="value: Degrees" />
+                      <span class="input-group-addon">°</span>
+                    </div>
+                    <button id="deleteButton" type="button" class="btn btn-danger pull-right"
+                            data-bind="click: $root.EntityViewModel.RemoveSector.bind($root.EntityViewModel, $data), visible: !$root.IsInMode('VIEW')">
+                      <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                  </div>
+                  <p class="text-danger" data-bind="validationMessage: Degrees"></p>
+
+                </div>
+                <button id="equallySpace" type="button" class="btn btn-default"
+                        data-bind="click: $root.EntityViewModel.SpaceSectors.bind($root.EntityViewModel), visible: !$root.IsInMode('VIEW') && $root.EntityViewModel.Planar_Wind_Sectors().length > 1">
+                  Set equally spaced
+                </button>
+              </div>
+              <div class="col-sm-6">
+                <img data-bind="attr: {src: PieUrl}, visible: Planar_Wind_Sectors().length > 0" />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="lag">
         <div class="panel panel-default">

@@ -1,5 +1,5 @@
-﻿define(['knockout', 'moment', 'webApiClient','column', 'instrument', 'validation'],
-function (ko, moment, api, column, instrument) {
+﻿define(['knockout', 'moment', 'validation'],
+function (ko, moment) {
 
 	"use strict";
 
@@ -7,6 +7,7 @@ function (ko, moment, api, column, instrument) {
 
     EntityName: "Processing Option", // name of this entity
     Url: "/ProcessingOption",  // url to call to load / save / delete
+    PieUrl: ko.observable(),
 
     Name: ko.observable().extend({required: true}),
     U: ko.observable().extend({number:true}),
@@ -59,6 +60,7 @@ function (ko, moment, api, column, instrument) {
     Planar_Min_Mean_Horizontal_Wind_Component: ko.observable().extend({number:true}),
     Planar_Calculations_Fail:ko.observable().extend(),
     Planar_North_Offset_First_Sector:ko.observable().extend({number:true}),
+    Planar_Wind_Sectors:ko.observableArray(),
 
     // Set view model from server JSON object
 		SetModel: function(objFromServer) {
@@ -116,6 +118,20 @@ function (ko, moment, api, column, instrument) {
       self.Planar_Min_Mean_Horizontal_Wind_Component(objFromServer.Planar_Min_Mean_Horizontal_Wind_Component);
       self.Planar_Calculations_Fail(objFromServer.Planar_Calculations_Fail);
       self.Planar_North_Offset_First_Sector(objFromServer.Planar_North_Offset_First_Sector);
+
+      self.Planar_Wind_Sectors([]);
+      if (objFromServer.Planar_Wind_Sectors) {
+        ko.utils.arrayForEach(objFromServer.Planar_Wind_Sectors, function(objSector) {
+          var sector = {
+            Id: ko.observable(objSector.Id),
+            Degrees: ko.observable(objSector.Degrees).extend({number:true, min:0, max:360})
+          };
+          sector.Degrees.subscribe(function() {
+            self.UpdatePie();
+          });
+          self.Planar_Wind_Sectors.push(sector);
+        });
+      }
     },
 
 		// Create JSON object to send to save
@@ -172,11 +188,60 @@ function (ko, moment, api, column, instrument) {
         Planar_Max_Mean_Verticle_Wind_Component: self.Planar_Max_Mean_Verticle_Wind_Component(),
         Planar_Min_Mean_Horizontal_Wind_Component: self.Planar_Min_Mean_Horizontal_Wind_Component(),
         Planar_Calculations_Fail:self.Planar_Calculations_Fail(),
-        Planar_North_Offset_First_Sector:self.Planar_North_Offset_First_Sector()
+        Planar_North_Offset_First_Sector:self.Planar_North_Offset_First_Sector(),
+        Planar_Wind_Sectors : []
 			};
+
+      ko.utils.arrayForEach(this.Planar_Wind_Sectors(), function(sector) {
+        result.Planar_Wind_Sectors.push({
+          id: self.Id(),
+          Instrument: self.Degrees()
+        });
+      });
 
       return result;
 		},
+
+    AddSector: function() {
+      var self = this;
+      var sector = {
+        Id: ko.observable(),
+        Degrees: ko.observable().extend({number:true, min:0, max:360})
+      };
+      sector.Degrees.subscribe(function() {
+        self.UpdatePie();
+      });
+      self.Planar_Wind_Sectors.push(sector);
+      self.SpaceSectors();
+    },
+
+    RemoveSector: function(sector) {
+      var self = this;
+      self.Planar_Wind_Sectors.remove(sector);
+      self.SpaceSectors();
+    },
+
+    SpaceSectors: function() {
+      var self = this;
+      var degrees = 360 / self.Planar_Wind_Sectors().length;
+      ko.utils.arrayForEach(self.Planar_Wind_Sectors(), function(sector) {
+        sector.Degrees(degrees);
+      });
+      self.UpdatePie();
+    },
+
+    UpdatePie: function() {
+      var self = this;
+
+      var degrees = [];
+      ko.utils.arrayForEach(self.Planar_Wind_Sectors(), function(sector) {
+        if (sector.Degrees() != null) {
+          degrees.push(sector.Degrees());
+        }
+      });
+
+      self.PieUrl("https://chart.googleapis.com/chart?cht=p&chs=300x300&chd=t:" + degrees.join(","));
+    },
 
 		Panels: []
 
