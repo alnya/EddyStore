@@ -12,7 +12,7 @@ module.exports = {
     User: { model: 'User' },
 
     Folder_Path: {type: 'string'},
-    Status: {type: 'string', enum: ['New', 'InProgress','Processed']},
+    Status: {type: 'string'},
     Number_Of_Rows: {type: 'integer'},
     Date_From: {type: 'datetime'},
     Date_To: {type: 'datetime'},
@@ -20,7 +20,7 @@ module.exports = {
     Number_Of_Header_Rows: {type: 'integer'},
 
     Name: {type: 'string'},
-    Timestamp_Refers_To: {type: 'string', enum: ['Beginning', 'End']},
+    Timestamp_Refers_To: {type: 'string'},
     File_Duration: {type: 'integer'},
     Acquisition_Frequency: {type: 'integer'},
     Canopy_Height: {type: 'float'},
