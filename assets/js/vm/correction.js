@@ -9,9 +9,9 @@ function (ko, moment, api) {
     Url: "/SpectralCorrection",  // url to call to load / save / delete
 
     Name: ko.observable().extend({required: true}),
-    Analytic_Correction_Of_High_Pass_Filtering_Effects: ko.observable().extend(),
-    Correction_Of_Low_Pass_Filtering_Effects: ko.observable().extend(),
-    Correction_Of_Low_Pass_Filtering_Effects_Method: ko.observable().extend(),
+    Analytic_Correction_Of_High_Pass_Filtering_Effects: ko.observable(true).extend(),
+    Correction_Of_Low_Pass_Filtering_Effects: ko.observable(true).extend(),
+    Correction_Of_Low_Pass_Filtering_Effects_Method: ko.observable('Moncrieff et al. (1997) – Fully analytic').extend(),
     Correction_For_Instruments_Separation: ko.observable().extend(),
     Correction_For_Instruments_Separation_Method: ko.observable().extend(),
     Subperiod_Start: ko.observable().extend({date:true}),
@@ -122,6 +122,12 @@ function (ko, moment, api) {
 		},
 
 		Panels: []
+
+  });
+
+  spectralCorrectionViewModel().FieldsEnabled = ko.computed(function() {
+    return spectralCorrectionViewModel().Correction_Of_Low_Pass_Filtering_Effects_Method() ==
+     ('Moncrieff et al. (1997) – Fully analytic');
 
   });
 

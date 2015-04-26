@@ -11,6 +11,8 @@ function (ko, moment) {
 
       Instrument_Type:  'Anemometer',
       Id:  ko.observable(),
+      Number: ko.observable(),
+
       Manufacturer:  ko.observable().extend({ required: true }),
       Model:  ko.observable().extend({ required: true }),
       Software_Version: ko.observable().extend(),

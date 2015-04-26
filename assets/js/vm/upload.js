@@ -81,6 +81,10 @@ function (ko, moment, api, column, instrument) {
         ko.utils.arrayForEach(objFromServer.Instruments, function(objInstrument) {
           var i = new instrument();
           i.SetModel(objInstrument);
+
+          i.Number = ko.utils.arrayFilter(self.Instruments(), function(instrument) {
+            return instrument.Instrument_Type == i.Instrument_Type;}).length + 1;
+
           i.Models = ko.computed(function() {
             if (i.Manufacturer()) {
               return (ko.utils.arrayFilter(self.Models(), function(model) {
@@ -139,7 +143,7 @@ function (ko, moment, api, column, instrument) {
       self.addInstrument('Anemometer');
     },
 
-    AddGasAnalyzer: function() {require
+    AddGasAnalyzer: function() {
       var self = this;
       self.addInstrument('Gas');
     },
@@ -148,6 +152,10 @@ function (ko, moment, api, column, instrument) {
       var self = this;
       var i = new instrument();
       i.Instrument_Type = type;
+
+      i.Number = ko.utils.arrayFilter(self.Instruments(), function(instrument) {
+        return instrument.Instrument_Type == type;}).length + 1;
+
       i.Models = ko.computed(function() {
         if (i.Manufacturer()) {
           return (ko.utils.arrayFilter(self.Models(), function(model) {

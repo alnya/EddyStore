@@ -25,38 +25,38 @@
           <div class="col-sm-6">
             <div data-bind='visible: $root.getProperty("Correction_Of_Low_Pass_Filtering_Effects"), template: { name: "formFieldList",
                       data: {Property: "Correction_Of_Low_Pass_Filtering_Effects_Method", Name: "Method",
-                      Options: ["Moncrieff et al. (1997)"], Caption: "Select"}}'></div>
+                      Options: ["Moncrieff et al. (1997) – Fully analytic","Horst (1997) – Analytic with in situ parameterization","Ibom et al. (2007) – In situ / analytic","Fratini et al. (2012) – In situ/analytic"], Caption: "Select"}}'></div>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-6">
-            <div data-bind='template: { name: "formFieldCheckBox",
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldCheckBox",
               data: {Property: "Correction_For_Instruments_Separation", Name: "Correction For Instruments Separation"}}'></div>
           </div>
           <div class="col-sm-6">
-            <div data-bind='visible: $root.getProperty("Correction_For_Instruments_Separation"), template: { name: "formFieldList",
+            <div data-bind='visible: $root.getProperty("Correction_For_Instruments_Separation") && FieldsEnabled, template: { name: "formFieldList",
                       data: {Property: "Correction_For_Instruments_Separation_Method", Name: "Method",
-                      Options: ["Horst and Lenschow (2009)"], Caption: "Select"}}'></div>
+                      Options: ["Horst and Lenshow (2009), along-wind, crosswind and vertical","Horst and Lenshow (2009), only crosswind and vertical"], Caption: "Select"}}'></div>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-6">
-            <div data-bind='template: { name: "formFieldDate", data: {Property: "Subperiod_Start", Name: "Subperiod Start"}}'></div>
-            <div data-bind='template: { name: "formFieldString", data: {Property: "Minimum_Number_Of_Spectra", Name: "Minimum Number Of Spectra For Valid Averages"}}'></div>
-            <div data-bind='template: { name: "formFieldNumber", data: {Property: "Minimum_CO2_Flux", Name: "Minimum CO2 Flux", Suffix: "umol/m2s"}}'></div>
-            <div data-bind='template: { name: "formFieldNumber", data: {Property: "Minimum_CH4_Flux", Name: "Minimum CH4 Flux", Suffix: "umol/m2s"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldDate", data: {Property: "Subperiod_Start", Name: "Subperiod Start"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldString", data: {Property: "Minimum_Number_Of_Spectra", Name: "Minimum Number Of Spectra For Valid Averages"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldNumber", data: {Property: "Minimum_CO2_Flux", Name: "Minimum CO2 Flux", Suffix: "umol/m2s"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldNumber", data: {Property: "Minimum_CH4_Flux", Name: "Minimum CH4 Flux", Suffix: "umol/m2s"}}'></div>
           </div>
           <div class="col-sm-6">
-            <div data-bind='template: { name: "formFieldDate", data: {Property: "Subperiod_Start", Name: "Subperiod End"}}'></div>
-            <div data-bind='template: { name: "formFieldNumber", data: {Property: "Minimum_Gas_Flux", Name: "Minimum Gas Flux", Suffix: "umol/m2s"}}'></div>
-            <div data-bind='template: { name: "formFieldNumber", data: {Property: "Minimum_Latent_Heat_Flux", Name: "Minimum Latent Heat Flux", Suffix: "W/m2"}}'></div>
-            <div data-bind='template: { name: "formFieldNumber", data: {Property: "Minimum_Sensible_Heat_Flux", Name: "Minimum Sensible Heat Flux", Suffix: "W/m2"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldDate", data: {Property: "Subperiod_Start", Name: "Subperiod End"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldNumber", data: {Property: "Minimum_Gas_Flux", Name: "Minimum Gas Flux", Suffix: "umol/m2s"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldNumber", data: {Property: "Minimum_Latent_Heat_Flux", Name: "Minimum Latent Heat Flux", Suffix: "W/m2"}}'></div>
+            <div data-bind='visible: FieldsEnabled, template: { name: "formFieldNumber", data: {Property: "Minimum_Sensible_Heat_Flux", Name: "Minimum Sensible Heat Flux", Suffix: "W/m2"}}'></div>
           </div>
         </div>
       </div>
   </div>
 
-  <div class="panel panel-default spacer" data-bind="with: EntityViewModel">
+  <div class="panel panel-default spacer" data-bind="with: EntityViewModel,visible: EntityViewModel.FieldsEnabled">
     <div class="panel-heading">
       <h2 class="panel-title">Frequency Range for fitting in-situ transfer functions</h2>
     </div>
@@ -89,7 +89,7 @@
       </div>
       </div>
   </div>
-  <div class="panel panel-default spacer" data-bind="with: EntityViewModel">
+  <div class="panel panel-default spacer" data-bind="with: EntityViewModel, visible: EntityViewModel.FieldsEnabled">
     <div class="panel-heading">
       <h2 class="panel-title">Fratini et al. (2012) method settings</h2>
     </div>

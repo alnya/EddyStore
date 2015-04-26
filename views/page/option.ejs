@@ -17,7 +17,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-sm-3">
-                <h3>Wind speed measurement offsets</h3>
+                <h4>Wind speed measurement offsets</h4>
               </div>
               <div class="col-sm-3">
                 <div data-bind='template: { name: "formFieldNumber", data: {Property: "U", Name: "U", Suffix: "m/s"}}'></div>
@@ -37,7 +37,7 @@
               <div class="col-sm-6">
                 <div data-bind='visible: $root.getProperty("Angle_Of_Attack_Correction_For_Wind_Components"), template: { name: "formFieldList",
                       data: {Property: "Angle_Of_Attach_Method", Name: "Method",
-                      Options: ["Field calibration (Nakai and Shimoyama 2012)"], Caption: "Select"}}'></div>
+                      Options: ["Field calibration (Nakai and Shimoyama 2012)", "Wind tunnel calibration (Nakai et al. 2006)"], Caption: "Select"}}'></div>
               </div>
             </div>
             <div class="row">
@@ -48,10 +48,10 @@
               <div class="col-sm-6">
                 <div data-bind='visible: $root.getProperty("Axis_Rotation_For_Tilt_Correction"), template: { name: "formFieldList",
                       data: {Property: "Rotation_Method", Name: "Rotation Method",
-                      Options: ["Planar fit (Wilczak et al. 2001)"], Caption: "Select"}}'></div>
+                      Options: ["Double rotation","Triple rotation","Planar fit (Wilczak et al. 2001)","Planar fit with not velocity bias (van Dijk et al. 2004)"], Caption: "Select"}}'></div>
                 <div data-bind='template: { name: "formFieldList",
                       data: {Property: "Detrend_Method", Name: "Detrend Method",
-                      Options: ["Block Average"], Caption: "Select"}}'></div>
+                      Options: ["Block average","Linear detrending","Running mean","Exponential running mean"], Caption: "Select"}}'></div>
                 <div data-bind='template: { name: "formFieldNumber", data: {Property: "Turbulent_Fluctuations_Time_Constant", Name: "Time constant", Suffix: "S"}}'></div>
               </div>
             </div>
@@ -63,7 +63,7 @@
               <div class="col-sm-6">
                 <div data-bind='visible: $root.getProperty("Time_Lag_Compensation"), template: { name: "formFieldList",
                       data: {Property: "Time_Lag_Method", Name: "Time Lag Detection Method",
-                      Options: ["Automatic time lag optimization"], Caption: "Select"}}'></div>
+                      Options: ["Constant","Covariance maximization with default","Covariance maximization","Automatic time lag optimization"], Caption: "Select"}}'></div>
               </div>
             </div>
           </div>
@@ -81,7 +81,7 @@
               <div class="col-sm-6">
                 <div data-bind='visible: $root.getProperty("Compensate_Density_Fluctuations"), template: { name: "formFieldList",
                       data: {Property: "Compensate_Density_Fluctuations_Method", Name: "Method",
-                      Options: ["Webb et al. 1980"], Caption: "Select"}}'></div>
+                      Options: ["Use/convert to mixing ration, if possible(Burba et al. 2012)","Webb et al. 1980 (open-path) / Ibrom et al. 2007 (closed-path)"], Caption: "Select"}}'></div>
               </div>
             </div>
             <div class="row">
@@ -106,7 +106,7 @@
               <div class="col-sm-6">
                 <div data-bind='template: { name: "formFieldList",
                       data: {Property: "Tapering_Window", Name: "Tapering Window",
-                      Options: ["Hamming"], Caption: "Select"}}'></div>
+                      Options: ["Spared (no window)","Bartlett","Welch","Hamming","Hann"], Caption: "Select"}}'></div>
               </div>
               <div class="col-sm-6">
                 <div data-bind='template: { name: "formFieldString", data: {Property: "Frequency_Bins", Name: "Frequency bins for cospectra reduction"}}'></div>
@@ -128,7 +128,7 @@
               <div class="col-sm-6">
                 <div data-bind='visible: $root.getProperty("Quality_Check"), template: { name: "formFieldList",
                       data: {Property: "Quality_Check_Flagging_Policy", Name: "Flagging Policy",
-                      Options: ["Mauder and Foken (2004)"], Caption: "Select"}}'></div>
+                      Options: ["Mauder and Foken (2004) (0-1-2 system)","Foken (2003) (1 to 9 system)","Goeckede et al. (2004) (1 to 5 system)"], Caption: "Select"}}'></div>
               </div>
             </div>
             <div class="row">
@@ -139,7 +139,7 @@
               <div class="col-sm-6">
                 <div data-bind='visible: $root.getProperty("Footprint_Estimation"), template: { name: "formFieldList",
                       data: {Property: "Footprint_Method", Name: "Footprint Method",
-                      Options: ["Kljun et al. (2004)"], Caption: "Select"}}'></div>
+                      Options: ["Kljun et al. (2004)","Kormann and Meixner (2001)","Hsieh et al. (2000)"], Caption: "Select"}}'></div>
               </div>
             </div>
           </div>
