@@ -26,6 +26,12 @@ module.exports = {
       return res.view("page/correction", {title:"Spectral Correction", vm: "correction"});
     }
     return res.view("page/list", {title:"Spectral Corrections", vm: "corrections"});
+  },
+  analysis: function (req, res) {
+    if (req.param('id') != null) {
+      return res.view("page/analysis", {title:"Statistical Analysis", vm: "analysis"});
+    }
+    return res.view("page/list", {title:"Statistical Analysis", vm: "analysislist"});
   }
 };
 

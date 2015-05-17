@@ -43,5 +43,9 @@ module.exports.policies = {
 
   SpectralCorrectionController: {
     '*': ['currentUser','sessionAuth']
+  },
+
+  StatisticalAnalysisController: {
+    '*': ['currentUser','sessionAuth']
   }
 };
