@@ -21,7 +21,8 @@
       'column': 'js/vm/column',
       'instrument': 'js/vm/instrument',
       'option': 'js/vm/option',
-      'correction': 'js/vm/correction'
+      'correction': 'js/vm/correction',
+      'analysis': 'js/vm/statisticalanalysis'
     },
     shim: {
         "bootstrap": {

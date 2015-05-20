@@ -29,9 +29,9 @@ module.exports = {
   },
   analysis: function (req, res) {
     if (req.param('id') != null) {
-      return res.view("page/analysis", {title:"Statistical Analysis", vm: "analysis"});
+      return res.view("page/analysis", {title:"Statistical Analysis", vm: "statisticalanalysis"});
     }
-    return res.view("page/list", {title:"Statistical Analysis", vm: "analysislist"});
+    return res.view("page/list", {title:"Statistical Analysis", vm: "analysis"});
   }
 };
 
