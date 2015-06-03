@@ -1,22 +1,31 @@
 <%- partial('../includes/FormFieldTemplate.ejs') %>
-
+<style>
+  .subnav.affix {top:20px;}
+</style>
 <form id="entityForm" role="form">
 
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spike_count", Name: "Spike count", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Amplitude_resolution", Name: "Amplitude resolution", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Drop_outs", Name: "Drop outs", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Absolute_limits", Name: "Absolute limits", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Skewness_Kurtosis", Name: "Skewness Kurtosis", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Discontinuities", Name: "Discontinuities", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Time_lags", Name: "Time lags", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Angle_of_attack", Name: "Angle of attack", Suffix: ""}}'></div>
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Steadiness_of_horizontal_wind", Name: "Steadiness of horizontal wind", Suffix: ""}}'></div>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="subnav">
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spike_count", Name: "Spike count", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Amplitude_resolution", Name: "Amplitude resolution", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Drop_outs", Name: "Drop outs", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Absolute_limits", Name: "Absolute limits", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Skewness_Kurtosis", Name: "Skewness Kurtosis", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Discontinuities", Name: "Discontinuities", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Time_lags", Name: "Time lags", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Angle_of_attack", Name: "Angle of attack", Suffix: ""}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Steadiness_of_horizontal_wind", Name: "Steadiness of horizontal wind", Suffix: ""}}'></div>
+      </div>
+      </div>
+    <div class="col-sm-9">
+      <div data-bind='template: { name: "formFieldString", data: {Property: "Name", Name: "Name"}}'></div>
 
-  <div class="panel panel-default spacer" data-bind="with: EntityViewModel">
+      <div class="panel panel-default spacer" data-bind="with: EntityViewModel">
     <div class="panel-heading">
       <h2 class="panel-title">Spike count/removal</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Spike_count()}">
 
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Max_consecutive_outliers", Name: "Max consecutive outliers", Suffix: ""}}'></div>
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Accepted_spikes", Name: "Accepted spikes", Suffix: "%"}}'></div>
@@ -34,7 +43,7 @@
     <div class="panel-heading">
       <h2 class="panel-title">Amplitude resolution:</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Amplitude_resolution()}">
 
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Range_of_variation", Name: "Range of variation", Suffix: "σ"}}'></div>
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Number_of_bins", Name: "Number of bins", Suffix: ""}}'></div>
@@ -46,7 +55,7 @@
     <div class="panel-heading">
       <h2 class="panel-title">Drop-outs</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Drop_outs()}">
 
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Percentile_defining_extreme_bins", Name: "Percentile defining extreme bins", Suffix: ""}}'></div>
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Accepted_central_dropouts", Name: "Accepted central dropouts", Suffix: "σ"}}'></div>
@@ -58,7 +67,7 @@
     <div class="panel-heading">
       <h2 class="panel-title">Absolute limits</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Absolute_limits()}">
 
       <div class="row">
         <div class="col-sm-6">
@@ -90,10 +99,10 @@
     <div class="panel-heading">
       <h2 class="panel-title">Skewness and kurtosis</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Skewness_Kurtosis()}">
       <div class="row">
         <div class="col-sm-6">
-            <h3>Hard></h3>
+            <h3>Hard</h3>
             <div data-bind='template: { name: "formFieldNumber", data: {Property: "Hard_skewness_lower_limit", Name: "Skewness lower limit", Suffix: ""}}'></div>
             <div data-bind='template: { name: "formFieldNumber", data: {Property: "Hard_skewness_upper_limit", Name: "Skewness upper limit", Suffix: ""}}'></div>
             <div data-bind='template: { name: "formFieldNumber", data: {Property: "Hard_kurtosis_lower_limit", Name: "Kurtosis lower limit", Suffix: ""}}'></div>
@@ -113,7 +122,7 @@
     <div class="panel-heading">
       <h2 class="panel-title">Discontinuities</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Discontinuities()}">
       <div class="row">
         <div class="col-sm-6">
           <h3>Hard</h3>
@@ -144,7 +153,7 @@
     <div class="panel-heading">
       <h2 class="panel-title">Time lags</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Time_lags()}">
 
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Accepted_covariance_difference_hard", Name: "Accepted covariance difference hard", Suffix: "%"}}'></div>
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Accepted_covariance_difference_soft", Name: "Accepted covariance difference soft", Suffix: "%"}}'></div>
@@ -159,7 +168,7 @@
     <div class="panel-heading">
       <h2 class="panel-title">Angle of attack</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Angle_of_attack()}">
 
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Minimum_angle_of_attack", Name: "Minimum angle of attack", Suffix: "°"}}'></div>
   <div data-bind='template: { name: "formFieldNumber", data: {Property: "Maximum_angle_of_attack", Name: "Maximum angle of attack", Suffix: "°"}}'></div>
@@ -171,28 +180,41 @@
     <div class="panel-heading">
       <h2 class="panel-title">Steadiness of horizontal wind</h2>
     </div>
-    <div class="panel-body">
+    <div class="panel-body" data-bind="css: { collapse:!Steadiness_of_horizontal_wind()}">
       <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Accepted_wind_relative_instationarity", Name: "Accepted wind relative instationarity", Suffix: ""}}'></div>
     </div>
   </div>
 
+      <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Random_uncertainty_estimation", Name: "Random uncertainty estimation", Suffix: ""}}'></div>
 
-  <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Random_uncertainty_estimation", Name: "Random uncertainty estimation", Suffix: ""}}'></div>
+      <div data-bind='template: { name: "formFieldList",
+                      data: {Property: "Random_uncertainty_estimation_method", Name: "Method",
+                      Options: ["Finkelstein and Sims (2001)","Mann and Lenshcow (1994)"], Caption: "Select"}}'></div>
 
-  <div data-bind='template: { name: "formFieldNumber", data: {Property: "Random_uncertainty_estimation_method", Name: "Random uncertainty estimation method", Suffix: ""}}'></div>
+      <div data-bind='template: { name: "formFieldList",
+                      data: {Property: "Integral_turbulence_scale", Name: "Integral turbulence scale",
+                      Options: ["Cross-correlation first crossing 1/e","Cross-correlation first crossing zero","Integrate over the whole correlation period"], Caption: "Select"}}'></div>
 
-  <div data-bind='template: { name: "formFieldNumber", data: {Property: "Integral_turbulence_scale", Name: "Integral turbulence scale", Suffix: ""}}'></div>
+      <div data-bind='template: { name: "formFieldNumber", data: {Property: "Maximum_correlation_period", Name: "Maximum correlation period", Suffix: "s"}}'></div>
 
-  <div data-bind='template: { name: "formFieldNumber", data: {Property: "Maximum_correlation_period", Name: "Maximum correlation period", Suffix: "s"}}'></div>
+    </div>
+  </div>
 
-
+  <%- partial('../includes/FormButtons.ejs') %>
 
 </form>
 
 <script type="text/javascript">
-  require(['knockout', 'baseForm', 'analysis'],
-    function(ko, baseForm, vm) {
+  require(['knockout', 'baseForm', 'analysis', 'jquery'],
+    function(ko, baseForm, vm, $) {
       baseForm.Initialise(vm());
+
+      $(".subnav").affix({
+        offset: {
+          top: 200
+        }
+      });
+
     });
 </script>
 
