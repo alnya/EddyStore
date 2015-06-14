@@ -18,7 +18,7 @@ module.exports = {
     Date_To: {type: 'datetime'},
     Field_Separator_Character: {type: 'string'},
     Number_Of_Header_Rows: {type: 'integer'},
-
+    File_Format: {type: 'string'},
     Name: {type: 'string'},
     Timestamp_Refers_To: {type: 'string'},
     File_Duration: {type: 'integer'},

@@ -47,5 +47,9 @@ module.exports.policies = {
 
   StatisticalAnalysisController: {
     '*': ['currentUser','sessionAuth']
+  },
+
+  ReportController: {
+    '*': ['currentUser','sessionAuth']
   }
 };

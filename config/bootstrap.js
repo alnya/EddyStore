@@ -15,6 +15,7 @@ module.exports.bootstrap = function(cb) {
   async.series([
     User.seed,
     InstrumentModel.seed,
-    InstrumentManufacturer.seed
+    InstrumentManufacturer.seed,
+    Variable.seed
   ],cb);
 };

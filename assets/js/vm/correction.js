@@ -126,8 +126,10 @@ function (ko, moment, api) {
   });
 
   spectralCorrectionViewModel().FieldsEnabled = ko.computed(function() {
-    return spectralCorrectionViewModel().Correction_Of_Low_Pass_Filtering_Effects_Method() ==
-     ('Moncrieff et al. (1997) – Fully analytic');
+    return spectralCorrectionViewModel().Correction_Of_Low_Pass_Filtering_Effects_Method() !=
+     'Moncrieff et al. (1997) – Fully analytic' &&
+      spectralCorrectionViewModel().Correction_Of_Low_Pass_Filtering_Effects_Method() !=
+      'Massmann (2000, 2001) – Fully analytic';
 
   });
 

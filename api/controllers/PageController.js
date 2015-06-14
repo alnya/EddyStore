@@ -32,6 +32,12 @@ module.exports = {
       return res.view("page/analysis", {title:"Statistical Analysis", vm: "statisticalanalysis"});
     }
     return res.view("page/list", {title:"Statistical Analysis", vm: "analysis"});
+  },
+  reports: function (req, res) {
+    if (req.param('id') != null) {
+      return res.view("page/report", {title:"Report", vm: "report"});
+    }
+    return res.view("page/list", {title:"Reports", vm: "reports"});
   }
 };
 

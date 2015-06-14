@@ -11,11 +11,11 @@
           <div class="row">
             <div class="col-sm-6">
               <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Status", Name: "Status"}}'></div>
-              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Date_From", Name: "Date From"}}'></div>
+              <div data-bind='template: { name: "formFieldDate", data: {Property: "Date_From", Name: "Date From"}}'></div>
             </div>
             <div class="col-sm-6">
               <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Number_Of_Rows", Name: "Number Of Rows"}}'></div>
-              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Date_To", Name: "Date To"}}'></div>
+              <div data-bind='template: { name: "formFieldDate", data: {Property: "Date_To", Name: "Date To"}}'></div>
             </div>
           </div>
         </div>
@@ -28,8 +28,20 @@
         </div>
         <div class="panel-body">
           <div class="row">
+            <div class="col-sm-12">
+              <div data-bind='template: { name: "formFieldString", data: {Property: "Folder_Path", Name: "Data File Path"}}'></div>
+
+              <div data-bind='template: { name: "formFieldList",
+                data: {Property: "File_Format", Name: "Data Format",
+                Options: ["LI-COR GHG","ASCII Plain Text", "Generic Binary", "TOB1", "SLT (EddySoft)", "SLT (EdiSol)"], Caption: "Select"}}'></div>
+            </div>
+          </div>
+          <div class="row">
             <div class="col-sm-6">
-              <div data-bind='template: { name: "formFieldString", data: {Property: "Field_Separator_Character", Name: "Field Separator Character"}}'></div>
+              <div data-bind='template: { name: "formFieldList",
+                data: {Property: "Field_Separator_Character", Name: "Field Separator Character",
+                Options: ["Comma","Semicolon", "Space", "Tab"], Caption: "Select"}}'></div>
+
             </div>
             <div class="col-sm-6">
               <div data-bind='template: { name: "formFieldString", data: {Property: "Number_Of_Header_Rows", Name: "Number Of Header Rows"}}'></div>
@@ -312,7 +324,9 @@
                     <input type="checkbox" data-bind="checked: Numeric" />
                   </div>
                   <div class="form-group" id="Variable">
-                    <input class="form-control" type="text" data-bind="value: Variable" />
+                      <select class="form-control" data-bind="value: Variable,
+                            options: $root.EntityViewModel.Variables(),
+                            optionsText: 'Name', optionsValue: 'Name', optionsCaption:'Select'"></select>
                   </div>
                   <div class="form-group">
                     <select class="form-control"
@@ -335,17 +349,17 @@
                       <option>cK</option>
                       <option>°C</option>
                       <option>C°C</option>
-                      <option>Mmol/mol (ppt)</option>
+                      <option>mmol/mol (ppt)</option>
                       <option>µmol/mol (ppm)</option>
-                      <option>Nmol/mol (ppb)</option>
-                      <option>Mmol/m3</option>
+                      <option>mmol/mol (ppb)</option>
+                      <option>mmol/m3</option>
                       <option>µmol/m3</option>
                       <option>g/m3</option>
                       <option>mg/m3</option>
                       <option>ug/m3</option>
                       <option>Pa</option>
                       <option>hPa</option>
-                      <option>kOa</option>
+                      <option>kPa</option>
                       <option>l/min</option>
                       <option>m3/s</option>
                       <option>cm3/s</option>

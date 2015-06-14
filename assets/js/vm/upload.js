@@ -15,7 +15,7 @@ function (ko, moment, api, column, instrument) {
     Date_To: ko.observable().extend({date: true}),
     Field_Separator_Character: ko.observable(',').extend(),
     Number_Of_Header_Rows: ko.observable(1).extend({digit: true}),
-
+    File_Format: ko.observable().extend(),
     // station
     Name: ko.observable().extend({required: true}),
     Timestamp_Refers_To: ko.observable().extend(),
@@ -29,6 +29,8 @@ function (ko, moment, api, column, instrument) {
     Longitude: ko.observable().extend({number:true}),
 
     Instruments: ko.observableArray(),
+
+    Variables: ko.observableArray(),
 
     Columns: ko.observableArray(),
 
@@ -55,6 +57,7 @@ function (ko, moment, api, column, instrument) {
       }
       self.Field_Separator_Character(objFromServer.Field_Separator_Character);
       self.Number_Of_Header_Rows(objFromServer.Number_Of_Header_Rows);
+      self.File_Format(objFromServer.File_Format);
 
       self.Name(objFromServer.Name);
       self.Timestamp_Refers_To(objFromServer.Timestamp_Refers_To);
@@ -110,7 +113,7 @@ function (ko, moment, api, column, instrument) {
         Date_To: self.Date_To(),
         Field_Separator_Character: self.Field_Separator_Character(),
         Number_Of_Header_Rows: self.Number_Of_Header_Rows(),
-
+        File_Format: self.File_Format(),
         Name: self.Name(),
         Timestamp_Refers_To: self.Timestamp_Refers_To(),
         File_Duration: self.File_Duration(),
@@ -203,6 +206,9 @@ function (ko, moment, api, column, instrument) {
   });
   api.ajaxGet("/InstrumentModel", null, null, function(data, method) {
     uploadViewModel().Models(data.items);
+  });
+  api.ajaxGet("/Variable", null, null, function(data, method){
+    uploadViewModel().Variables(data.items);
   });
 
 	return uploadViewModel;
