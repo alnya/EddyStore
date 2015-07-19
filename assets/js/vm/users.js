@@ -3,26 +3,26 @@
 
    "use strict";
 
-    var reportListViewModel = new function() {
+    var userListViewModel = new function() {
         this.tableViewModel = new baseTable.GridViewModel({
             columns: [
-              { name: 'Name', value: 'Name', filterable: false, template: "nameCellTemplate"},
-              { name: 'Status', value: 'Status', filterable: false}
+              { name: 'Name', value: 'name', template: "nameCellTemplate"},
+              { name: "Email", value: "Email"  }
             ],
-            sortable: false,
+            sortable: true,
             filterMode: 'search',
             pageSize: 10,
-            emptyRowMessage: "No reports found",
-            url: "/Report/",
+            emptyRowMessage: "No users found",
+            url: "/User/",
             successCallback: function(model) {
                 messageBox.Hide();
             },
             errorCallback: function(errorResponse) {
-                messageBox.ShowError("Error retrieving reports.");
+                messageBox.ShowError("Error retrieving users.");
             }
         });
     };
 
-    ko.applyBindings(reportListViewModel, $("#listView")[0]);
-    return reportListViewModel;
+    ko.applyBindings(userListViewModel, $("#listView")[0]);
+    return userListViewModel;
 });

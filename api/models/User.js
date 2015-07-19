@@ -8,12 +8,12 @@
 module.exports = {
 
   attributes: {
-    name: 'string',
-    email: {
+    Name: 'string',
+    Email: {
       type: 'email',
       unique: true
     },
-    password: {
+    Password: {
       type: 'string',
       required: true
     }
@@ -25,20 +25,38 @@ module.exports = {
     bcrypt.genSalt(10, function(err, salt) {
       if (err) return next(err);
 
-      bcrypt.hash(attrs.password, salt, function(err, hash) {
+      bcrypt.hash(attrs.Password, salt, function(err, hash) {
         if (err) return next(err);
 
-        attrs.password = hash;
+        attrs.Password = hash;
         next();
       });
     });
   },
+  beforeUpdate: function(values, next) {
+    if(values.Password) {
+      var bcrypt = require('bcrypt');
+
+      bcrypt.genSalt(10, function(err, salt) {
+        if (err) return next(err);
+
+        bcrypt.hash(values.Password, salt, function(err, hash) {
+          if (err) return next(err);
+
+          values.Password = hash;
+          next();
+        });
+      });
+    } else {
+      next();
+    }
+  },
 
   seedData:[
     {
-      name: 'Administrator',
-      email: 'rory.wilson@gmail.com',
-      password: 'password'
+      Name: 'Administrator',
+      Email: 'rory.wilson@gmail.com',
+      Password: 'password'
     }
   ]
 };

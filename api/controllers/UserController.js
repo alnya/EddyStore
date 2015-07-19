@@ -14,7 +14,7 @@ module.exports = {
       if (err) res.serverError(err);
 
       if (user) {
-        bcrypt.compare(req.body.Password, user.password, function (err, match) {
+        bcrypt.compare(req.body.Password, user.Password, function (err, match) {
           if (err) res.serverError(err);
 
           if (match) {

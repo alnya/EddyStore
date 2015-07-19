@@ -19,25 +19,31 @@ module.exports = {
     if (req.param('id') != null) {
       return res.view("page/option", {title:"Processing Options", vm: "option"});
     }
-    return res.view("page/list", {title:"Processing Options", vm: "options"});
+    return res.view("page/advancedlist", {title:"Processing Options", vm: "options"});
   },
   corrections: function (req, res) {
     if (req.param('id') != null) {
       return res.view("page/correction", {title:"Spectral Correction", vm: "correction"});
     }
-    return res.view("page/list", {title:"Spectral Corrections", vm: "corrections"});
+    return res.view("page/advancedlist", {title:"Spectral Corrections", vm: "corrections"});
   },
   analysis: function (req, res) {
     if (req.param('id') != null) {
       return res.view("page/analysis", {title:"Statistical Analysis", vm: "statisticalanalysis"});
     }
-    return res.view("page/list", {title:"Statistical Analysis", vm: "analysis"});
+    return res.view("page/advancedlist", {title:"Statistical Analysis", vm: "analysis"});
   },
   reports: function (req, res) {
     if (req.param('id') != null) {
       return res.view("page/report", {title:"Report", vm: "report"});
     }
     return res.view("page/list", {title:"Reports", vm: "reports"});
+  },
+  users: function (req, res) {
+    if (req.param('id') != null) {
+      return res.view("page/user", {title:"User", vm: "user"});
+    }
+    return res.view("page/list", {title:"Users", vm: "users"});
   }
 };
 

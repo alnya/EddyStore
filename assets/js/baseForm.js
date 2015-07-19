@@ -11,7 +11,10 @@
 
             self.EntityViewModel = entityViewModel;
 
-            common.loadSelectionData(self.formFields());
+            if (entityViewModel.Initialise != null)
+            {
+              entityViewModel.Initialise();
+            }
 
             self.GetEntity();
 

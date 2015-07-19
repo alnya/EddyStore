@@ -1,0 +1,115 @@
+<%- partial('../includes/FormFieldTemplate.ejs') %>
+<form id="entityForm" role="form">
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="panel panel-primary spacer">
+        <div class="panel-heading">
+          <h2 class="panel-title">Report Details</h2>
+        </div>
+        <div class="panel-body" data-bind="with: EntityViewModel">
+          <div data-bind='template: { name: "formFieldString", data: {Property: "Name", Name: "Report Name"}}'></div>
+
+          <div data-bind='template: { name: "formFieldList",
+                data: {Property: "Station", Name: "Station",
+                Options: Stations, Caption: "Select"}}'></div>
+
+          <div data-bind='template: { name: "formFieldEntityList",
+                data: {Property: "Data", Name: "Data",
+                Options: DataList, Caption: "Choose a Station", OptionsText: "Name", OptionsValue:"id"}}'></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div role="tabpanel">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#options" role="tab" data-toggle="tab">Options</a></li>
+          <li role="presentation"><a href="#advanced" role="tab" data-toggle="tab">Advanced Options</a></li>
+        </ul>
+        <div class="tab-content" data-bind="with: EntityViewModel">
+          <div role="tabpanel" class="tab-pane active" id="options">
+            <div data-bind='template: { name: "formFieldNumber", data: {Property: "Missing_Samples_Allowance", Name: "Missing Samples Allowance", Suffix: "%"}}'></div>
+            <div data-bind='template: { name: "formFieldNumber", data: {Property: "Flux_Averaging_Interval", Name: "Flux Averaging Interval", Suffix: "min"}}'></div>
+            <div data-bind='template: { name: "formFieldList",
+            data: {Property: "North_Reference", Name: "North Reference",
+            Options: ["Use Magnetic North", "Use Geographic North"], Caption: "Select"}}'></div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="advanced">
+            <div data-bind='template: { name: "formFieldEntityList", data: {Property: "StatisticalAnalysis", Name: "Statistical Analysis", Options: StatisticalAnalysisList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
+            <div data-bind='template: { name: "formFieldEntityList", data: {Property: "SpectralCorrection", Name: "Spectral Correction", Options: SpectralCorrectionList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
+            <div data-bind='template: { name: "formFieldEntityList", data: {Property: "ProcessingOption", Name: "Processing Option", Options: ProcessingOptionList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
+          </div>
+        </div>
+      </div>
+
+      <%- partial('../includes/FormButtons.ejs') %>
+
+    </div>
+  </div>
+  <div class="row" data-bind="with: EntityViewModel">
+    <div class="col-sm-12">
+      <div data-bind='template: { name: "EntityViewModel",
+        data: {Property: "Master_Anemometer", Name: "Master Anemometer",
+                Options: Anemometers, Caption: "Select", Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
+
+      <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Cross_Wind_Correction_Applied_By_Anemometer",
+      Name: "Cross Wind Correction Applied By Anemometer", Suffix: ""}}'></div>
+
+    </div>
+  </div>
+  <div role="tabpanel" data-bind="with: EntityViewModel">
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active"><a href="#variables" role="tab" data-toggle="tab">Variables</a></li>
+      <li role="presentation"><a href="#flags" role="tab" data-toggle="tab">Flags</a></li>
+    </ul>
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="variables">
+        <h3>Items for Flux Computation</h3>
+        <table class="table">
+          <tbody data-bind="foreach:ReportVariables">
+          <tr>
+            <td data-bind="text:Name"></td>
+            <td><select class="form-control" data-bind="value: DataColumn, options: [],
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'None'"></select></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="flags">
+        <p>Optionally, each variable in raw data can be used as a mask to filter out individual records that do not
+        conform to quality criteria.  Select the variable to be used as a flag and define the quantity criterion by
+        entering a threshold value for that variable.</p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Flags</th>
+              <th>Threshold</th>
+              <th>Unit</th>
+              <th>Policy; Discard If</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: ReportFlags">
+            <tr>
+              <td><select class="form-control" data-bind="value:Variable, options: $parent.Variables,
+                optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None'"></select></td>
+              <td><input type="text"  class="form-control" data-bind="value: Theshold" /></td>
+              <td><input type="text"  class="form-control" data-bind="value: Unit" /></td>
+              <td><select class="form-control" data-bind="value: Discard_If">
+                  <option value="below">Below Threshold</option>
+                  <option value="above">Above Threshold</option>
+                  <option value="equal">Equal to Threshold</option>
+                </select></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script type="text/javascript">
+  require(['knockout', 'baseForm', 'report'],
+    function(ko, baseForm, report) {
+      baseForm.Initialise(report());
+    });
+</script>
+<%- partial('../includes/ModalDialogBox.ejs') %>

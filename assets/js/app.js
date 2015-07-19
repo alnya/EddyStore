@@ -14,15 +14,17 @@
       'baseTable': 'js/baseTable',
       'validation': 'js/validation',
       'page': 'js/vm/page',
-      // View Models
       'messageBox': 'js/vm/messageBox',
+      // View Models
       'login': 'js/vm/login',
       'upload': 'js/vm/upload',
       'column': 'js/vm/column',
       'instrument': 'js/vm/instrument',
       'option': 'js/vm/option',
       'correction': 'js/vm/correction',
-      'analysis': 'js/vm/statisticalanalysis'
+      'analysis': 'js/vm/statisticalanalysis',
+      'report': 'js/vm/report',
+      'user': 'js/vm/user'
     },
     shim: {
         "bootstrap": {

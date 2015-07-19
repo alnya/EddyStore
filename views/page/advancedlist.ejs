@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-sm-3 col-md-2 sidebar">
+    <%- partial('../includes/advancednav.ejs') %>
+  </div>
+  <div class="col-sm-9 col-md-10 main">
+    <div id="listView">
+
+      <a id="createNewButton" href="<%= vm %>/add" class="btn btn-success">
+        <i class="glyphicon glyphicon-plus"></i> Create New
+      </a>
+      <script type="text/html" id="nameCellTemplate">
+        <a class="select-item" data-bind="text: Name, attr: { href:'<%= vm %>/'+id }"></a>
+      </script>
+      <%- partial('../includes/baseTableTemplate.ejs') %>
+
+      <script type="text/javascript" src="\js\vm\<%= vm %>.js"></script>
+    </div>
+  </div>
+</div>

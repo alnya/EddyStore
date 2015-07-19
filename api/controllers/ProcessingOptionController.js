@@ -6,6 +6,19 @@
  */
 
 module.exports = {
-	
+  summary: function (req, res) {
+
+    ProcessingOption.find({ User: req.session.user }).exec(function(err, items) {
+      if (err) return res(err);
+      var response = [];
+      items.forEach(function(item) {
+        response.push({
+          id: item.id,
+          Name:item.Name
+        });
+      });
+      res.ok({items: response});
+    });
+  }
 };
 

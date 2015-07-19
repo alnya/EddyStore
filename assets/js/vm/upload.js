@@ -191,24 +191,27 @@ function (ko, moment, api, column, instrument) {
       if (confirm("This will remove this column.  Are you sure?")) {
         self.Columns.remove(c);
       }
+    },
+
+    Initialise: function() {
+      var self = this;
+      api.ajaxGet("/InstrumentManufacturer", null, null, function(data, method) {
+        self.GasManufacturers(ko.utils.arrayFilter(data.items, function(item) {
+          return item.Instrument_Type == "Gas";
+        }));
+        self.AnemometerManufacturers(ko.utils.arrayFilter(data.items, function(item) {
+          return item.Instrument_Type == "Anemometer";
+        }));
+
+      });
+      api.ajaxGet("/InstrumentModel", null, null, function(data, method) {
+        self.Models(data.items);
+      });
+      api.ajaxGet("/Variable", null, null, function(data, method){
+        self.Variables(data.items);
+      });
     }
 
-  });
-
-  api.ajaxGet("/InstrumentManufacturer", null, null, function(data, method) {
-    uploadViewModel().GasManufacturers(ko.utils.arrayFilter(data.items, function(item) {
-      return item.Instrument_Type == "Gas";
-    }));
-    uploadViewModel().AnemometerManufacturers(ko.utils.arrayFilter(data.items, function(item) {
-      return item.Instrument_Type == "Anemometer";
-    }));
-
-  });
-  api.ajaxGet("/InstrumentModel", null, null, function(data, method) {
-    uploadViewModel().Models(data.items);
-  });
-  api.ajaxGet("/Variable", null, null, function(data, method){
-    uploadViewModel().Variables(data.items);
   });
 
 	return uploadViewModel;

@@ -1,4 +1,9 @@
-<%- partial('../includes/FormFieldTemplate.ejs') %>
+<div class="row">
+  <div class="col-sm-3 col-md-2 sidebar">
+    <%- partial('../includes/advancednav.ejs') %>
+  </div>
+  <div class="col-sm-9 col-md-10 main">
+    <%- partial('../includes/FormFieldTemplate.ejs') %>
 <form id="entityForm" role="form">
   <div data-bind='template: { name: "formFieldString", data: {Property: "Name", Name: "Name"}}'></div>
 
@@ -118,3 +123,4 @@
 </script>
 
 <%- partial('../includes/ModalDialogBox.ejs') %>
+</div></div>
