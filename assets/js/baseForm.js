@@ -3,7 +3,7 @@
 
     "use strict";
 
-    return new function () {
+    var baseForm = new function () {
 
         var self = this;
 
@@ -297,4 +297,34 @@
             }
         }
     };
+
+      ko.bindingHandlers.datePicker = {
+
+        init: function (element, valueAccessor) {
+
+          common.setupDatePicker($(element).parent());
+
+          ko.utils.registerEventHandler(element, "change", function () {
+
+            var observable = valueAccessor();
+
+            observable($(element).val());
+
+          });
+
+        },
+
+        update: function (element, valueAccessor) {
+
+          var value = ko.utils.unwrapObservable(valueAccessor());
+
+          $(element).val(value);
+
+          common.setupDatePicker($(element).parent(), value);
+
+        }
+
+      };
+
+      return baseForm;
 });

@@ -1,4 +1,4 @@
-﻿define(['jquery', 'knockout', 'webApiClient'], function ($, ko, webApiClient) {
+﻿define(['jquery', 'knockout', 'webApiClient', 'moment', 'daterangepicker'], function ($, ko, webApiClient, moment) {
 
     return {
         parseQueryString: function(queryString) {
@@ -77,6 +77,18 @@
                     }
                 });
             }
+        },
+
+      setupDatePicker: function (element, value) {
+        $(element).daterangepicker({ singleDatePicker: true },
+          function (start, end) { $(element).find('input').val(start.format('D MMM YYYY')).change(); });
+        if (value) {
+          var date = moment(value);
+          if (date.isValid()) {
+            $(element).data('daterangepicker').setStartDate(date);
+            $(element).data('daterangepicker').setEndDate(date);
+          }
         }
+      }
     }
 });

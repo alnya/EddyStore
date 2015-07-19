@@ -1,5 +1,5 @@
 module.exports = {
-  get: function(thisData) {
+  getMetadata: function(thisData) {
 
       var output = ';GHG_METADATA' +
         '\n[Project]' +
