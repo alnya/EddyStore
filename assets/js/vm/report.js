@@ -34,36 +34,66 @@ function (ko, moment, api) {
     SpectralCorrectionList: ko.observableArray(),
     ProcessingOptionList: ko.observableArray(),
 
-    SetModel: function(objFromServer) {
-			var self = this;
-			if (!objFromServer) return;
-
-      self.Name(objFromServer.Name);
-      self.Data(objFromServer.Data);
-      self.Status(objFromServer.Status);
-      self.Missing_Samples_Allowance(objFromServer.Missing_Samples_Allowance);
-      self.Flux_Averaging_Interval(objFromServer.Flux_Averaging_Interval);
-      self.North_Reference(objFromServer.North_Reference);
-      self.Master_Anemometer(objFromServer.Master_Anemometer);
-      self.Cross_Wind_Correction_Applied_By_Anemometer(objFromServer.Cross_Wind_Correction_Applied_By_Anemometer);
-      self.ReportFlags(objFromServer.ReportFlags);
-      self.ReportVariables(objFromServer.ReportVariables);
-    },
-
     NewReportVariable: function() {
       return {
+        id: ko.observable(''),
         Name: ko.observable(),
+        Variable: ko.observable(),
         DataColumn:ko.observable()
       }
     },
 
     NewReportFlag: function() {
       return {
+        id: ko.observable(''),
         Variable: ko.observable(''),
         Theshold:ko.observable(-9999),
         Unit:ko.observable(),
         Discard_If:ko.observable('Below Threshold')
       }
+    },
+
+    SetModel: function(objFromServer) {
+			var self = this;
+			if (!objFromServer) return;
+
+      self.Name(objFromServer.Name);
+      if (objFromServer.Data != null) {
+        self.Data(objFromServer.Data.id);
+        self.Station(objFromServer.Data.Name);
+        self.DataObject(objFromServer.Data);
+      }
+      self.Status(objFromServer.Status);
+      self.Missing_Samples_Allowance(objFromServer.Missing_Samples_Allowance);
+      self.Flux_Averaging_Interval(objFromServer.Flux_Averaging_Interval);
+      self.North_Reference(objFromServer.North_Reference);
+      self.Master_Anemometer(objFromServer.Master_Anemometer.id);
+      self.Cross_Wind_Correction_Applied_By_Anemometer(objFromServer.Cross_Wind_Correction_Applied_By_Anemometer);
+
+      self.StatisticalAnalysis(objFromServer.StatisticalAnalysis ? objFromServer.StatisticalAnalysis.id : null);
+      self.SpectralCorrection(objFromServer.StatisticalAnalysis ? objFromServer.StatisticalAnalysis.id : null);
+      self.ProcessingOption(objFromServer.ProcessingOption ? objFromServer.ProcessingOption.id : null);
+
+      self.ReportFlags([]);
+      ko.utils.arrayForEach(objFromServer.Flags, function(objFlag) {
+        var flag = self.NewReportFlag();
+        flag.id(objFlag.id);
+        flag.Variable(objFlag.Variable);
+        flag.Theshold(objFlag.Theshold);
+        flag.Unit(objFlag.Unit);
+        flag.Discard_If(objFlag.Discard_If);
+        self.ReportFlags.push(flag);
+      });
+
+      self.ReportVariables([]);
+      ko.utils.arrayForEach(objFromServer.Variables, function(objVariable) {
+        var variable = self.NewReportVariable();
+        variable.id(objVariable.id);
+        variable.Variable(objVariable.Variable.id);
+        variable.Name(objVariable.Variable.Name);
+        variable.DataColumn(objVariable.DataColumn.id);
+        self.ReportVariables.push(variable);
+      });
     },
 
     Initialise: function() {
@@ -79,6 +109,7 @@ function (ko, moment, api) {
         // add report variables
           ko.utils.arrayForEach(data.items, function(item) {
             var reportVariable = self.NewReportVariable();
+            reportVariable.Variable = item.id;
             reportVariable.Name = item.Name;
             self.ReportVariables.push(reportVariable);
           });
@@ -141,15 +172,19 @@ function (ko, moment, api) {
 			var self = this;
 
 			var model= {
-          Name : self.Name(),
-          Status : self.Status(),
-          Missing_Samples_Allowance : self.Missing_Samples_Allowance(),
-          Flux_Averaging_Interval : self.Flux_Averaging_Interval(),
-          North_Reference : self.North_Reference(),
-          Master_Anemometer : self.Master_Anemometer(),
-          Cross_Wind_Correction_Applied_By_Anemometer : self.Cross_Wind_Correction_Applied_By_Anemometer(),
-          Flags: self.ReportFlags(),
-          Variables: self.ReportVariables()
+        Name : self.Name(),
+        Status : self.Status(),
+        Data : self.Data(),
+        Missing_Samples_Allowance : self.Missing_Samples_Allowance(),
+        Flux_Averaging_Interval : self.Flux_Averaging_Interval(),
+        North_Reference : self.North_Reference(),
+        Master_Anemometer : self.Master_Anemometer(),
+        Cross_Wind_Correction_Applied_By_Anemometer : self.Cross_Wind_Correction_Applied_By_Anemometer(),
+        Flags: self.ReportFlags(),
+        Variables: self.ReportVariables(),
+        StatisticalAnalysis: self.StatisticalAnalysis(),
+        SpectralCorrection: self.SpectralCorrection(),
+        ProcessingOption: self.ProcessingOption()
 			};
 
       return model;
