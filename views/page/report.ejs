@@ -68,7 +68,7 @@
           <tbody data-bind="foreach:ReportVariables">
           <tr>
             <td data-bind="text:Name"></td>
-            <td><select class="form-control" data-bind="value: DataColumn, options: [],
+            <td><select class="form-control" data-bind="value: DataColumn, options: $parent.DataColumns,
                 optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'None'"></select></td>
           </tr>
           </tbody>
@@ -91,7 +91,7 @@
             <tr>
               <td><select class="form-control" data-bind="value:Variable, options: $parent.Variables,
                 optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None'"></select></td>
-              <td><input type="text"  class="form-control" data-bind="value: Theshold" /></td>
+              <td><input type="text"  class="form-control" data-bind="value: Threshold" /></td>
               <td><input type="text"  class="form-control" data-bind="value: Unit" /></td>
               <td><select class="form-control" data-bind="value: Discard_If">
                   <option value="below">Below Threshold</option>

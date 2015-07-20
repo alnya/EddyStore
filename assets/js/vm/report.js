@@ -27,6 +27,7 @@ function (ko, moment, api) {
 
     Stations: ko.observableArray([]),
     Anemometers: ko.observableArray([]),
+    DataColumns: ko.observableArray([]),
     Variables: ko.observableArray([]),
     ReportFlags: ko.observableArray([]),
     ReportVariables: ko.observableArray([]),
@@ -36,7 +37,7 @@ function (ko, moment, api) {
 
     NewReportVariable: function() {
       return {
-        id: ko.observable(''),
+        id: ko.observable(),
         Name: ko.observable(),
         Variable: ko.observable(),
         DataColumn:ko.observable()
@@ -45,9 +46,9 @@ function (ko, moment, api) {
 
     NewReportFlag: function() {
       return {
-        id: ko.observable(''),
+        id: ko.observable(),
         Variable: ko.observable(''),
-        Theshold:ko.observable(-9999),
+        Threshold:ko.observable(-9999),
         Unit:ko.observable(),
         Discard_If:ko.observable('Below Threshold')
       }
@@ -59,15 +60,14 @@ function (ko, moment, api) {
 
       self.Name(objFromServer.Name);
       if (objFromServer.Data != null) {
-        self.Data(objFromServer.Data.id);
         self.Station(objFromServer.Data.Name);
-        self.DataObject(objFromServer.Data);
+        self.Data(objFromServer.Data.id);
       }
       self.Status(objFromServer.Status);
       self.Missing_Samples_Allowance(objFromServer.Missing_Samples_Allowance);
       self.Flux_Averaging_Interval(objFromServer.Flux_Averaging_Interval);
       self.North_Reference(objFromServer.North_Reference);
-      self.Master_Anemometer(objFromServer.Master_Anemometer.id);
+      self.Master_Anemometer(objFromServer.Master_Anemometer ? objFromServer.Master_Anemometer.id : null);
       self.Cross_Wind_Correction_Applied_By_Anemometer(objFromServer.Cross_Wind_Correction_Applied_By_Anemometer);
 
       self.StatisticalAnalysis(objFromServer.StatisticalAnalysis ? objFromServer.StatisticalAnalysis.id : null);
@@ -79,7 +79,7 @@ function (ko, moment, api) {
         var flag = self.NewReportFlag();
         flag.id(objFlag.id);
         flag.Variable(objFlag.Variable);
-        flag.Theshold(objFlag.Theshold);
+        flag.Threshold(objFlag.Theshold);
         flag.Unit(objFlag.Unit);
         flag.Discard_If(objFlag.Discard_If);
         self.ReportFlags.push(flag);
@@ -90,8 +90,11 @@ function (ko, moment, api) {
         var variable = self.NewReportVariable();
         variable.id(objVariable.id);
         variable.Variable(objVariable.Variable.id);
-        variable.Name(objVariable.Variable.Name);
-        variable.DataColumn(objVariable.DataColumn.id);
+        var thisVar = ko.utils.arrayFirst(self.Variables(), function(v) {
+          return v.id == objVariable.Variable;
+        });
+        variable.Name(thisVar.Name);
+        variable.DataColumn(objVariable.DataColumn ? objVariable.DataColumn.id : null);
         self.ReportVariables.push(variable);
       });
     },
@@ -138,19 +141,22 @@ function (ko, moment, api) {
         self.DataList([]);
         ko.utils.arrayForEach(data.items, function(item) {
           self.DataList.push({
-            id:item.id, Name:'banana'
-            //Name:item.Date_From + " - " + item.Date_To
+            id:item.id,
+            Name:item.Date_From + " - " + item.Date_To
           });
         });
       });
     },
 
-    GetData: function() {
+    GetData: function(data) {
       var self = this;
+
+      if (!data)
+        return;
 
       self.Anemometers([]);
 
-      api.ajaxGet("/Data/" + self.Data(), null, null, function (data, method) {
+      api.ajaxGet("/Data/" + data, null, null, function (data, method) {
         self.DataObject(data);
 
         // get anemometers
@@ -165,6 +171,14 @@ function (ko, moment, api) {
         });
 
         // get columns with variables defined
+        self.DataColumns([]);
+        ko.utils.arrayForEach(data.Columns, function(col) {
+          if (col.Variable)
+            self.DataColumns.push({
+              id: col.id,
+              Name: col.Instrument + " (Column " + col.Column_Number + ")"
+            });
+        });
       });
     },
 
