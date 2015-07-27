@@ -106,5 +106,10 @@ module.exports = {
       }
 
       return (output);
+  },
+  getReport: function(thisData) {
+    var output = '';
+
+    return output;
   }
 }

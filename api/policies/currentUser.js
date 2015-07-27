@@ -8,6 +8,9 @@ module.exports = function(req, res, next) {
     if (req.body != null) {
       req.body.User = req.session.user;
     }
+    if(req.query) {
+      req.query.User = req.session.user;
+    }
     return next();
   }
 
