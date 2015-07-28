@@ -123,120 +123,140 @@
               <!-- ko if: Instrument_Type == 'Anemometer' -->
               <select class="form-control" data-bind="value: Manufacturer,
                 options: $root.EntityViewModel.AnemometerManufacturers,
-                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select'"></select>
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select', visible: !$root.IsInMode('VIEW')"></select>
               <!-- /ko -->
               <!-- ko if: Instrument_Type == 'Gas' -->
               <select class="form-control" data-bind="value: Manufacturer,
                 options: $root.EntityViewModel.GasManufacturers,
-                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select'"></select>
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select', visible: !$root.IsInMode('VIEW')"></select>
               <!-- /ko -->
+              <p class="form-control-static" data-bind="text: Manufacturer, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group" data-bind="validationElement: Model" id="Model">
               <label class="control-label">Model</label>
               <select class="form-control" data-bind="value: Model,
                 options: Models,
-                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select a Manufacturer'"></select>
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select a Manufacturer', visible: !$root.IsInMode('VIEW')"></select>
+              <p class="form-control-static" data-bind="text: Model, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <!-- ko if: Instrument_Type == 'Gas' -->
             <div class="form-group" id="Software_Version">
               <label class="control-label" for="Software_Version">Software Version</label>
-              <input type="text" maxlength="1" class="form-control" data-bind="value: Software_Version" />
+              <input type="text" maxlength="1" class="form-control" data-bind="value: Software_Version, visible: !$root.IsInMode('VIEW')" />
             </div>
             <!-- /ko -->
             <div class="form-group" id="Instrument_Id">
               <label class="control-label" for="Instrument_Id">Instrument Id</label>
-              <input type="text"  class="form-control" data-bind="value: Instrument_Id" />
+              <input type="text"  class="form-control" data-bind="value: Instrument_Id, visible: !$root.IsInMode('VIEW')" />
+              <p class="form-control-static" data-bind="text: Instrument_Id, visible: $root.IsInMode('VIEW')"></p>
             </div>
-            <div class="form-group" data-bind="validationElement: Height" id="Height">
+            <div class="form-group">
               <label class="control-label" for="Height">Height</label>
-              <div class="input-group">
-                <input type="number"  min="0" class="form-control" data-bind="value: Height"/>
+              <div class="input-group" data-bind="validationElement: Height" id="Height">
+                <input type="number"  min="0" class="form-control" data-bind="value: Height, visible: !$root.IsInMode('VIEW')"/>
                 <span class="input-group-addon">m</span>
               </div>
+              <p class="form-control-static" data-bind="text: Height, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <!-- ko if: Instrument_Type == 'Anemometer' -->
             <div class="form-group"  id="Wind_Data_Format">
               <label class="control-label" for="Wind_Data_Format">Wind Data Format</label>
-              <select class="form-control" data-bind="value: Wind_Data_Format">
+              <select class="form-control" data-bind="value: Wind_Data_Format, visible: !$root.IsInMode('VIEW')">
                 <option value="">Select</option>
                 <option value="U, V & W">U,V & W</option>
                 <option value="polar & W">Polar & W</option>
                 <option value="axis velocities">axis velocities</option>
               </select>
+              <p class="form-control-static" data-bind="text: Wind_Data_Format, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group"  id="North_Alignment">
               <label class="control-label" for="North_Alignment">North Alignment</label>
-              <select class="form-control" data-bind="value: North_Alignment">
+              <select class="form-control" data-bind="value: North_Alignment, visible: !$root.IsInMode('VIEW')">
                 <option value="">Select</option>
                 <option value="axis">Axis</option>
                 <option value="spar">Spar</option>
               </select>
+              <p class="form-control-static" data-bind="text: North_Alignment, visible: $root.IsInMode('VIEW')"></p>
             </div>
-            <div class="form-group"  id="North_Offset">
+            <div class="form-group"  id="North_Offset" data-bind="visible: !$root.IsInMode('VIEW')">
               <label class="control-label" for="North_Offset">North Offset</label>
               <input type="text"  class="form-control" data-bind="value: North_Offset" />
+
+              <p class="form-control-static" data-bind="text: North_Offset, visible: $root.IsInMode('VIEW')"></p>
             </div>
-            <div class="form-group"  id="Time_Response">
+            <div class="form-group"  id="Time_Response" data-bind="visible: !$root.IsInMode('VIEW')">
               <label class="control-label" for="Time_Response">Time Response</label>
               <input type="text"  class="form-control" data-bind="value: Time_Response" />
+
+              <p class="form-control-static" data-bind="text: Time_Response, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <!-- /ko -->
             <!-- ko if: Instrument_Type == 'Gas' -->
             <div class="form-group"  id="Tube_Length">
               <label class="control-label" for="Tube_Length">Tube Length</label>
-              <div class="input-group">
+              <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                 <input type="number"  min="0" class="form-control" data-bind="value: Tube_Length"/>
                 <span class="input-group-addon">cm</span>
               </div>
+              <p class="form-control-static" data-bind="text: Tube_Length, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group" id="Tube_Inner_Diameter">
               <label class="control-label" for="Tube_Inner_Diameter">Tube Inner Diameter</label>
-              <div class="input-group">
+              <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                 <input type="number"  min="0" class="form-control" data-bind="value: Tube_Inner_Diameter"/>
                 <span class="input-group-addon">cm</span>
               </div>
+              <p class="form-control-static" data-bind="text: Tube_Inner_Diameter, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group"  id="Nominal_Tube_Flow_Rate">
               <label class="control-label" for="Nominal_Tube_Flow_Rate">Nominal Tube Flow Rate</label>
-              <div class="input-group">
+              <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                 <input type="text"  class="form-control" data-bind="value: Nominal_Tube_Flow_Rate" />
                 <span class="input-group-addon">l/m</span>
               </div>
+              <p class="form-control-static" data-bind="text: Nominal_Tube_Flow_Rate, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group"  id="Extinction_Coefficient_In_Water_KW">
               <label class="control-label" for="Tube_Inner_Diameter">Extinction Coefficient In Water</label>
-              <div class="input-group">
+              <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                 <input type="number"  min="0" class="form-control" data-bind="value: Extinction_Coefficient_In_Water_KW"/>
                 <span class="input-group-addon">Kw</span>
               </div>
+              <p class="form-control-static" data-bind="text: Extinction_Coefficient_In_Water_KW, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group"  id="Extinction_Coefficient_In_Water_KO">
               <label class="control-label" for="Tube_Inner_Diameter">Extinction Coefficient In Water</label>
-              <div class="input-group">
+              <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                 <input type="number"  min="0" class="form-control" data-bind="value: Extinction_Coefficient_In_Water_KO"/>
                 <span class="input-group-addon">Ko</span>
               </div>
+              <p class="form-control-static" data-bind="text: Extinction_Coefficient_In_Water_KO, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <!-- /ko -->
             <div class="form-group" id="Northward_Separation">
               <label class="control-label" for="Northward_Separation">Northward Separation</label>
-              <input type="text"  class="form-control" data-bind="value: Northward_Separation" />
+              <input type="text"  class="form-control" data-bind="value: Northward_Separation, visible: !$root.IsInMode('VIEW')" />
+              <p class="form-control-static" data-bind="text: Northward_Separation, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group" id="Eastward_Separation">
               <label class="control-label" for="Eastward_Separation">Eastward Separation</label>
-              <input type="text"  class="form-control" data-bind="value: Eastward_Separation" />
+              <input type="text"  class="form-control" data-bind="value: Eastward_Separation, visible: !$root.IsInMode('VIEW')" />
+              <p class="form-control-static" data-bind="text: Eastward_Separation, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group" id="Vertical_Separation">
               <label class="control-label" for="Vertical_Separation">Vertical Separation</label>
-              <input type="text"  class="form-control" data-bind="value: Vertical_Separation" />
+              <input type="text"  class="form-control" data-bind="value: Vertical_Separation, visible: !$root.IsInMode('VIEW')" />
+              <p class="form-control-static" data-bind="text: Vertical_Separation, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group" id="Longitudinal_Path_Length">
               <label class="control-label" for="Longitudinal_Path_Length">Longitudinal Path Length</label>
-              <input type="text"  class="form-control" data-bind="value: Longitudinal_Path_Length" />
+              <input type="text"  class="form-control" data-bind="value: Longitudinal_Path_Length, visible: !$root.IsInMode('VIEW')" />
+              <p class="form-control-static" data-bind="text: Longitudinal_Path_Length, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div class="form-group" id="Transversal_Path_Length">
               <label class="control-label" for="Transversal_Path_Length">Transversal Path Length</label>
-              <input type="text"  class="form-control" data-bind="value: Transversal_Path_Length" />
+              <input type="text"  class="form-control" data-bind="value: Transversal_Path_Length, visible: !$root.IsInMode('VIEW')" />
+              <p class="form-control-static" data-bind="text: Transversal_Path_Length, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <div>
               <button id="deleteButton" type="button" class="btn btn-danger pull-right"
@@ -318,27 +338,32 @@
                     <label data-bind="text: Column_Number" />
                   </div>
                   <div class="form-group" id="Ignore">
-                    <input type="checkbox" data-bind="checked: Ignore" />
+                    <input type="checkbox" data-bind="checked: Ignore, visible: !$root.IsInMode('VIEW')" />
+                    <p class="form-control-static" data-bind="text: Ignore, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Numeric">
-                    <input type="checkbox" data-bind="checked: Numeric" />
+                    <input type="checkbox" data-bind="checked: Numeric, visible: !$root.IsInMode('VIEW')" />
+                    <p class="form-control-static" data-bind="text: Numeric, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Variable">
                       <select class="form-control" data-bind="value: Variable,
-                            options: $root.EntityViewModel.Variables(),
+                            options: $root.EntityViewModel.Variables(), visible: !$root.IsInMode('VIEW'),
                             optionsText: 'Name', optionsValue: 'Name', optionsCaption:'Select'"></select>
+                    <p class="form-control-static" data-bind="text: Variable, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group">
                     <select class="form-control"
                             data-bind="value: Instrument,
-                            options: $root.EntityViewModel.Instruments(),
+                            options: $root.EntityViewModel.Instruments(), visible: !$root.IsInMode('VIEW'),
                             optionsText: 'Model', optionsValue: 'Model', optionsCaption:'Select'"></select>
+                    <p class="form-control-static" data-bind="text: Instrument, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Measurement_Type">
-                    <input class="form-control" type="text" data-bind="value: Measurement_Type" />
+                    <input class="form-control" type="text" data-bind="value: Measurement_Type, visible: !$root.IsInMode('VIEW')" />
+                    <p class="form-control-static" data-bind="text: Measurement_Type, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Input_Unit">
-                    <select class="form-control" data-bind="value: Input_Unit">
+                    <select class="form-control" data-bind="value: Input_Unit, visible: !$root.IsInMode('VIEW')">
                       <option></option>
                       <option>mV</option>
                       <option>V</option>
@@ -369,36 +394,44 @@
                       <option>Other</option>
                       <option>Dimensionless</option>
                     </select>
+                    <p class="form-control-static" data-bind="text: Input_Unit, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Linear_Scaling">
-                    <input class="form-control" type="text" data-bind="value: Linear_Scaling" />
+                    <input class="form-control" type="text" data-bind="value: Linear_Scaling, visible: !$root.IsInMode('VIEW')" />
+                    <p class="form-control-static" data-bind="text: Linear_Scaling, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Output_Unit">
-                    <input class="form-control" type="text" data-bind="value: Output_Unit" />
+                    <input class="form-control" type="text" data-bind="value: Output_Unit, visible: !$root.IsInMode('VIEW')" />
+                    <p class="form-control-static" data-bind="text: Output_Unit, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Gain_Value">
-                    <input class="form-control" type="text" data-bind="value: Gain_Value" />
+                    <input class="form-control" type="text" data-bind="value: Gain_Value, visible: !$root.IsInMode('VIEW')" />
+                    <p class="form-control-static" data-bind="text: Gain_Value, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Offset_Value">
-                    <input class="form-control" type="text" data-bind="value: Offset_Value" />
+                    <input class="form-control" type="text" data-bind="value: Offset_Value, visible: !$root.IsInMode('VIEW')" />
+                    <p class="form-control-static" data-bind="text: Offset_Value, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Nominal_Time_Lag">
-                    <div class="input-group">
+                    <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                       <input type="number" min="0" class="form-control" data-bind="value: Nominal_Time_Lag"/>
                       <span class="input-group-addon">s</span>
                     </div>
+                    <p class="form-control-static" data-bind="text: Nominal_Time_Lag, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Maximum_Time_Lag">
-                    <div class="input-group">
+                    <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                       <input type="number" min="0" class="form-control" data-bind="value: Maximum_Time_Lag"/>
                       <span class="input-group-addon">s</span>
                     </div>
+                    <p class="form-control-static" data-bind="text: Maximum_Time_Lag, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Minimum_Time_Lag">
-                    <div class="input-group">
+                    <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
                       <input type="number" min="0" class="form-control" data-bind="value: Minimum_Time_Lag"/>
                       <span class="input-group-addon">s</span>
                     </div>
+                    <p class="form-control-static" data-bind="text: Minimum_Time_Lag, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div data-bind="if: ($index() === ($parent.Columns().length - 1))">
                     <button id="deleteButton" type="button" class="btn btn-danger pull-right"

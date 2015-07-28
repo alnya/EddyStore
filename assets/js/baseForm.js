@@ -19,6 +19,12 @@
             self.GetEntity();
 
             ko.applyBindings(self, $("#entityForm")[0]);
+
+            var qa = common.parseQueryString(location.search.substring(1));
+
+            if (qa["success"]) {
+              messageBox.ShowSuccess(self.GetAddSuccessMessage());
+            }
         };
 
         self.formFields = function () {
@@ -199,12 +205,18 @@
         };
 
         self.IsDirty = function () {
-
-            var origModel = self.OriginalModel;
-            var entityModel = self.EntityViewModel.GetEntityModel();
-            var changesMade = JSON.stringify(origModel) !== JSON.stringify(entityModel);
-            return changesMade;
+          var origModel = self.OriginalModel;
+          var currentModel = self.EntityViewModel.GetEntityModel();
+          var changesMade = JSON.stringify(origModel, self.stringifyReplacer) !== JSON.stringify(currentModel, self.stringifyReplacer);
+          return changesMade;
         };
+
+      self.stringifyReplacer = function (key, value) {
+        if (value === undefined) {
+          return null;
+        }
+        return value;
+      };
 
         window.onbeforeunload = function (e) {
             if (self.IsDirty()) {
@@ -228,9 +240,9 @@
 
                     webApiClient.ajaxPut(self.EntityViewModel.Url, entityId, ko.toJSON(entityModel), function (model) {
                             if (model) {
-                                messageBox.ShowSuccess(self.GetEditSuccessMessage());
                                 self.EntityViewModel.SetModel(model);
                                 self.SetReadOnlyMode();
+                                window.location.href = window.location.href + "?success=true";
                             }
                         },
                         function (errorResponse) {
@@ -240,10 +252,9 @@
 
                     webApiClient.ajaxPost(self.EntityViewModel.Url, ko.toJSON(entityModel), null, function (model) {
                             if (model) {
-                                messageBox.ShowSuccess(self.GetAddSuccessMessage());
                                 self.EntityViewModel.SetModel(model);
                                 self.SetReadOnlyMode();
-                                self.EntityViewModel.EntityId = model.Id;
+                                window.location.href = window.location.href.replace("add", model.id + "?success=true");
                             }
                         },
                         function (errorResponse) {

@@ -3,8 +3,7 @@ function (ko, moment) {
 
 	"use strict";
 
-	var instrumentViewModel = function() {
-    return  ({
+	var instrumentViewModel = ko.validatedObservable({
 
       EntityName: "Instrument", // name of this entity
       Url: "/StationInstrument/",  // url to call to load / save / delete
@@ -91,7 +90,6 @@ function (ko, moment) {
         };
       }
     });
-  };
 
 	return instrumentViewModel;
 });
