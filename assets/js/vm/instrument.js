@@ -3,38 +3,39 @@ function (ko, moment) {
 
 	"use strict";
 
-	var instrumentViewModel = ko.validatedObservable({
+	var instrumentViewModel = function() {
+    return ({
 
       EntityName: "Instrument", // name of this entity
       Url: "/StationInstrument/",  // url to call to load / save / delete
 
-      Instrument_Type:  'Anemometer',
-      Id:  ko.observable(),
+      Instrument_Type: 'Anemometer',
+      Id: ko.observable(),
       Number: ko.observable(),
 
-      Manufacturer:  ko.observable().extend({ required: true }),
-      Model:  ko.observable().extend({ required: true }),
+      Manufacturer: ko.observable().extend({required: true}),
+      Model: ko.observable().extend({required: true}),
       Software_Version: ko.observable().extend(),
-      Instrument_Id:  ko.observable().extend(),
-      Height:  ko.observable().extend({ required: true, number: true }),
-      Wind_Data_Format:  ko.observable().extend(),
-      North_Alignment:  ko.observable().extend(),
-      North_Offset:  ko.observable().extend(),
+      Instrument_Id: ko.observable().extend(),
+      Height: ko.observable().extend({required: true, number: true}),
+      Wind_Data_Format: ko.observable().extend(),
+      North_Alignment: ko.observable().extend(),
+      North_Offset: ko.observable().extend(),
       Northward_Separation: ko.observable().extend(),
-      Eastward_Separation:  ko.observable().extend(),
+      Eastward_Separation: ko.observable().extend(),
       Vertical_Separation: ko.observable().extend(),
-      Longitudinal_Path_Length:  ko.observable().extend(),
-      Transversal_Path_Length:  ko.observable().extend(),
-      Tube_Length:  ko.observable().extend(),
+      Longitudinal_Path_Length: ko.observable().extend(),
+      Transversal_Path_Length: ko.observable().extend(),
+      Tube_Length: ko.observable().extend(),
       Tube_Inner_Diameter: ko.observable().extend(),
       Nominal_Tube_Flow_Rate: ko.observable().extend(),
       Time_Response: ko.observable().extend(),
-      Extinction_Coefficient_In_Water_KW:  ko.observable().extend(),
-      Extinction_Coefficient_In_Water_KO:  ko.observable().extend(),
+      Extinction_Coefficient_In_Water_KW: ko.observable().extend(),
+      Extinction_Coefficient_In_Water_KO: ko.observable().extend(),
       Models: [],
 
       // Set view model from server JSON object
-      SetModel: function(objFromServer) {
+      SetModel: function (objFromServer) {
         var self = this;
         if (!objFromServer) return;
 
@@ -90,6 +91,7 @@ function (ko, moment) {
         };
       }
     });
+  };
 
 	return instrumentViewModel;
 });
