@@ -32,7 +32,7 @@
 <script type="text/html" id="formFieldEntityList">
   <div class="form-group" data-bind="attr:{ id:Property }, validationElement: $root.getProperty(Property)">
     <label class="control-label" data-bind="text: Name" />
-    <p class="form-control-static" data-bind="text: $root.getProperty(Property), visible: $root.IsInMode('VIEW')"></p>
+    <p class="form-control-static" data-bind="text: $root.getProperty(Property, Options), visible: $root.IsInMode('VIEW')"></p>
     <select class="form-control" data-bind="options: Options, optionsCaption: Caption, value: $root.getProperty(Property),visible: !$root.IsInMode('VIEW'),optionsText: OptionsText, optionsValue: OptionsValue, "></select>
   </div>
 </script>

@@ -9,6 +9,7 @@ function (ko, moment, api) {
     Url: "/statisticalanalysis",  // url to call to load / save / delete
 
     Name: ko.observable().extend({required: true}),
+    All_Tests:ko.observable(false).extend(),
     Spike_count: ko.observable(false).extend(),
     Amplitude_resolution: ko.observable(false).extend(),
     Drop_outs: ko.observable(false).extend(),
@@ -304,6 +305,18 @@ function (ko, moment, api) {
 
 		Panels: []
 
+  });
+
+  statisticalAnalysisViewModel().All_Tests.subscribe(function(newValue) {
+      statisticalAnalysisViewModel().Spike_count(newValue);
+      statisticalAnalysisViewModel().Amplitude_resolution(newValue);
+      statisticalAnalysisViewModel().Drop_outs(newValue);
+      statisticalAnalysisViewModel().Absolute_limits(newValue);
+      statisticalAnalysisViewModel().Skewness_Kurtosis(newValue);
+      statisticalAnalysisViewModel().Discontinuities(newValue);
+      statisticalAnalysisViewModel().Time_lags(newValue);
+      statisticalAnalysisViewModel().Angle_of_attack(newValue);
+      statisticalAnalysisViewModel().Steadiness_of_horizontal_wind(newValue);
   });
 
 	return statisticalAnalysisViewModel;

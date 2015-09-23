@@ -1,6 +1,6 @@
 <%- partial('../includes/FormFieldTemplate.ejs') %>
 
-<form id="entityForm" role="form">
+<form id="entityForm" role="form" style="display: none;" data-bind="visible: true">
   <div class="row">
     <div class="col-sm-6">
       <div class="panel panel-primary spacer" data-bind="with: EntityViewModel">
@@ -123,12 +123,12 @@
               <!-- ko if: Instrument_Type == 'Anemometer' -->
               <select class="form-control" data-bind="value: Manufacturer,
                 options: $root.EntityViewModel.AnemometerManufacturers,
-                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select', visible: !$root.IsInMode('VIEW')"></select>
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select a Manufacturer', visible: !$root.IsInMode('VIEW')"></select>
               <!-- /ko -->
               <!-- ko if: Instrument_Type == 'Gas' -->
               <select class="form-control" data-bind="value: Manufacturer,
                 options: $root.EntityViewModel.GasManufacturers,
-                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select', visible: !$root.IsInMode('VIEW')"></select>
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select a Manufacturer', visible: !$root.IsInMode('VIEW')"></select>
               <!-- /ko -->
               <p class="form-control-static" data-bind="text: Manufacturer, visible: $root.IsInMode('VIEW')"></p>
             </div>
@@ -136,7 +136,7 @@
               <label class="control-label">Model</label>
               <select class="form-control" data-bind="value: Model,
                 options: Models,
-                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select a Manufacturer', visible: !$root.IsInMode('VIEW')"></select>
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'Select a Model', visible: !$root.IsInMode('VIEW')"></select>
               <p class="form-control-static" data-bind="text: Model, visible: $root.IsInMode('VIEW')"></p>
             </div>
             <!-- ko if: Instrument_Type == 'Gas' -->

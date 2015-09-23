@@ -70,15 +70,6 @@ function (ko, moment, api, column, instrument) {
       self.Latitude(objFromServer.Latitude);
       self.Longitude(objFromServer.Longitude);
 
-      self.Columns([]);
-      if (objFromServer.Columns) {
-        ko.utils.arrayForEach(objFromServer.Columns, function(objColumn) {
-          var c = new column();
-          c.SetModel(objColumn);
-          self.Columns.push(c);
-        });
-      }
-
       self.Instruments([]);
       if (objFromServer.Instruments) {
         ko.utils.arrayForEach(objFromServer.Instruments, function(objInstrument) {
@@ -98,6 +89,15 @@ function (ko, moment, api, column, instrument) {
             }
           });
           self.Instruments.push(i);
+        });
+      }
+
+      self.Columns([]);
+      if (objFromServer.Columns) {
+        ko.utils.arrayForEach(objFromServer.Columns, function(objColumn) {
+          var c = new column();
+          c.SetModel(objColumn);
+          self.Columns.push(c);
         });
       }
     },

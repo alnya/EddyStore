@@ -13,6 +13,7 @@ function (ko, moment, api) {
     Station: ko.observable(),
     DataList: ko.observableArray([]),
     Data: ko.observable().extend({required: true}),
+    SetData: null,
     DataObject: ko.observable(),
     StatisticalAnalysis: ko.observable(),
     SpectralCorrection: ko.observable(),
@@ -61,7 +62,7 @@ function (ko, moment, api) {
       self.Name(objFromServer.Name);
       if (objFromServer.Data != null) {
         self.Station(objFromServer.Data.Name);
-        self.Data(objFromServer.Data.id);
+        self.SetData = (objFromServer.Data.id);
       }
       self.Status(objFromServer.Status);
       self.Missing_Samples_Allowance(objFromServer.Missing_Samples_Allowance);
@@ -79,7 +80,7 @@ function (ko, moment, api) {
         var flag = self.NewReportFlag();
         flag.id(objFlag.id);
         flag.Variable(objFlag.Variable);
-        flag.Threshold(objFlag.Theshold);
+        flag.Threshold(objFlag.Threshold);
         flag.Unit(objFlag.Unit);
         flag.Discard_If(objFlag.Discard_If);
         self.ReportFlags.push(flag);
@@ -107,6 +108,9 @@ function (ko, moment, api) {
       }
       self.ReportFlags(flags);
 
+      self.Station.subscribe(self.GetStationData, self);
+      self.Data.subscribe(self.GetData, self);
+
       api.ajaxGet("/Variable", null, null, function(data, method){
         self.Variables(data.items);
         // add report variables
@@ -129,13 +133,13 @@ function (ko, moment, api) {
       api.ajaxGet("/SpectralCorrection/summary", null, null, function(data, method){
         self.SpectralCorrectionList(data.items);
       });
-
-      self.Station.subscribe(self.GetStationData, self);
-      self.Data.subscribe(self.GetData, self);
     },
 
     GetStationData: function(station) {
       var self = this;
+
+      if (!station)
+        return;
 
       api.ajaxGet("/Data/available?station=" + station, null, null, function(data, method){
         self.DataList([]);
@@ -145,6 +149,10 @@ function (ko, moment, api) {
             Name:item.Date_From + " - " + item.Date_To
           });
         });
+        if (self.SetData) {
+          self.Data(self.SetData);
+          self.SetData = null;
+        }
       });
     },
 
@@ -176,7 +184,7 @@ function (ko, moment, api) {
           if (col.Variable)
             self.DataColumns.push({
               id: col.id,
-              Name: col.Instrument + " (Column " + col.Column_Number + ")"
+              Name: col.Variable
             });
         });
       });

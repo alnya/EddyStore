@@ -171,7 +171,7 @@
                 var value = self.EntityViewModel[prop];
                 if (options != null && ko.isObservable(options) && value() != null) {
                     var selectedItem = ko.utils.arrayFilter(options(), function (option) {
-                        return option.Id == value();
+                        return option.id == value();
                     });
                     if (selectedItem != null && selectedItem.length == 1) { return selectedItem[0].Name; }
                 };

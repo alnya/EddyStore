@@ -7,11 +7,13 @@
 <style>
   .subnav.affix {top:20px;}
 </style>
-<form id="entityForm" role="form">
+    <form id="entityForm" role="form" style="display: none;" data-bind="visible: true">
 
   <div class="row">
     <div class="col-sm-3">
       <div class="subnav">
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "All_Tests", Name: "All Tests", Suffix: ""}}'></div>
+<hr/>
         <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spike_count", Name: "Spike count", Suffix: ""}}'></div>
         <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Amplitude_resolution", Name: "Amplitude resolution", Suffix: ""}}'></div>
         <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Drop_outs", Name: "Drop outs", Suffix: ""}}'></div>
@@ -190,6 +192,7 @@
     </div>
   </div>
 
+      <h3>Estimation of flux random uncertainty due to sampling error</h3>
       <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Random_uncertainty_estimation", Name: "Random uncertainty estimation", Suffix: ""}}'></div>
 
       <div data-bind='template: { name: "formFieldList",
