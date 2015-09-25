@@ -61,7 +61,10 @@ module.exports = {
     if (!req.param('id')) {
       return res.badRequest('ID Missing');
     }
-    Data.findOne(req.param('id')).exec(function (err, thisData) {
+    Data.findOne(req.param('id'))
+      .populate('Instruments')
+      .populate('Columns')
+      .exec(function (err, thisData) {
       if (err) return err;
       if (!thisData) return "Not Found";
       return res.send(EddyPro.getMetadata(thisData));
