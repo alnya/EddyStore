@@ -68,8 +68,10 @@
           <tbody data-bind="foreach:ReportVariables">
           <tr>
             <td data-bind="text:Name"></td>
-            <td><select class="form-control" data-bind="value: DataColumn, options: $parent.DataColumns,
-                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'None'"></select></td>
+            <td><select class="form-control" data-bind="visible: !$root.IsInMode('VIEW'), value: DataColumn, options: $parent.DataColumns,
+                optionsText: 'Name', optionsValue: 'Label', optionsCaption: 'None'"></select>
+                <p class="form-control-static" data-bind="text: DataColumn, visible: $root.IsInMode('VIEW')"></p>
+            </td>
           </tr>
           </tbody>
         </table>
@@ -90,14 +92,22 @@
           <tbody data-bind="foreach: ReportFlags">
             <tr>
               <td><select class="form-control" data-bind="value:Variable, options: $parent.Variables,
-                optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None'"></select></td>
-              <td><input type="text"  class="form-control" data-bind="value: Threshold" /></td>
-              <td><input type="text"  class="form-control" data-bind="value: Unit" /></td>
-              <td><select class="form-control" data-bind="value: Discard_If">
+                optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None', visible: !$root.IsInMode('VIEW')"></select>
+                <p class="form-control-static" data-bind="text: Variable, visible: $root.IsInMode('VIEW')"></p>
+              </td>
+              <td><input type="text"  class="form-control" data-bind="value: Threshold, visible: !$root.IsInMode('VIEW')" />
+                <p class="form-control-static" data-bind="text: Threshold, visible: $root.IsInMode('VIEW')"></p>
+              </td>
+              <td><input type="text"  class="form-control" data-bind="value: Unit, visible: !$root.IsInMode('VIEW')" />
+                <p class="form-control-static" data-bind="text: Unit, visible: $root.IsInMode('VIEW')"></p>
+              </td>
+              <td><select class="form-control" data-bind="value: Discard_If, visible: !$root.IsInMode('VIEW')">
                   <option value="below">Below Threshold</option>
                   <option value="above">Above Threshold</option>
                   <option value="equal">Equal to Threshold</option>
-                </select></td>
+                </select>
+                <p class="form-control-static" data-bind="text: Discard_If, visible: $root.IsInMode('VIEW')"></p>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -106,10 +116,19 @@
   </div>
 </form>
 
+<script type='text/html' id='reportButtonTemplate'>
+  <span id="reportButton" class="btn btn-info" data-bind="visible: !IsInMode('ADD'), click:EntityViewModel.RequestReport">
+    <span class="glyphicon glyphicon-download"></span> Request Report
+  </span>
+</script>
+
 <script type="text/javascript">
   require(['knockout', 'baseForm', 'report'],
     function(ko, baseForm, report) {
       baseForm.Initialise(report());
+
+      var templateEngine = new ko.nativeTemplateEngine();
+      ko.renderTemplate("reportButtonTemplate", baseForm, { templateEngine: templateEngine }, $('#customFormButtons')[0]);
     });
 </script>
 <%- partial('../includes/ModalDialogBox.ejs') %>

@@ -9,6 +9,7 @@ function (ko, moment, api) {
     Url: "/Report",
     Name: ko.observable().extend({required: true}),
     Status: ko.observable('New'),
+    id: ko.observable(),
 
     Station: ko.observable(),
     DataList: ko.observableArray([]),
@@ -59,6 +60,7 @@ function (ko, moment, api) {
 			var self = this;
 			if (!objFromServer) return;
 
+      self.id(objFromServer.id);
       self.Name(objFromServer.Name);
       if (objFromServer.Data != null) {
         self.Station(objFromServer.Data.Name);
@@ -188,6 +190,13 @@ function (ko, moment, api) {
             });
         });
       });
+    },
+
+    RequestReport: function() {
+      var self = this;
+      if (confirm("This will run Eddy Pro and generate the output data. Are you sure?")) {
+        api.ajaxGet("/Report/Request/" + self.EntityViewModel.id(), null, null, null);
+      }
     },
 
 		GetEntityModel: function () {
