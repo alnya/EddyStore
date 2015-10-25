@@ -35,8 +35,8 @@ function (ko, moment) {
     Footprint_Estimation: ko.observable(true).extend(),
     Footprint_Method:ko.observable().extend('Kljun et al. (2004)'),
 
-    Time_Lag_Start: ko.observable().extend({date: true}),
-    Time_Lag_End: ko.observable().extend({date: true}),
+    Time_Lag_Start: ko.observable().extend({required: true, date: true}),
+    Time_Lag_End: ko.observable().extend({required: true, date: true}),
     Time_Lag_Plausibility_Range_Around_Median_Value: ko.observable().extend({number:true}),
     Time_Lag_RH_Classes: ko.observable().extend({number:true}),
     Time_Lag_Minimum_Heat_Flux: ko.observable().extend({number:true}),
@@ -53,8 +53,8 @@ function (ko, moment) {
     Time_Lag_Searching_Gas_Min: ko.observable().extend({number:true}),
     Time_Lag_Searching_Gas_Max: ko.observable().extend({number:true}),
 
-    Planar_Start: ko.observable().extend({date: true}),
-    Planar_End: ko.observable().extend({date: true}),
+    Planar_Start: ko.observable().extend({required: true, date: true}),
+    Planar_End: ko.observable().extend({required: true, date: true}),
     Planar_Elements_Per_Sector: ko.observable().extend({number:true}),
     Planar_Max_Mean_Verticle_Wind_Component: ko.observable().extend({number:true}),
     Planar_Min_Mean_Horizontal_Wind_Component: ko.observable().extend({number:true}),

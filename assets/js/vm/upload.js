@@ -107,6 +107,7 @@ function (ko, moment, api, column, instrument) {
 			var self = this;
 
 			var result= {
+        Folder_Path: self.Folder_Path(),
         Status: self.Status(),
         Number_Of_Rows: self.Number_Of_Rows(),
         Date_From: self.Date_From(),

@@ -74,7 +74,7 @@ function (ko, moment, api) {
       self.Cross_Wind_Correction_Applied_By_Anemometer(objFromServer.Cross_Wind_Correction_Applied_By_Anemometer);
 
       self.StatisticalAnalysis(objFromServer.StatisticalAnalysis ? objFromServer.StatisticalAnalysis.id : null);
-      self.SpectralCorrection(objFromServer.StatisticalAnalysis ? objFromServer.StatisticalAnalysis.id : null);
+      self.SpectralCorrection(objFromServer.SpectralCorrection ? objFromServer.SpectralCorrection.id : null);
       self.ProcessingOption(objFromServer.ProcessingOption ? objFromServer.ProcessingOption.id : null);
 
       self.ReportFlags([]);
@@ -92,12 +92,12 @@ function (ko, moment, api) {
       ko.utils.arrayForEach(objFromServer.Variables, function(objVariable) {
         var variable = self.NewReportVariable();
         variable.id(objVariable.id);
-        variable.Variable(objVariable.Variable.id);
+        variable.Variable(objVariable.Variable);
         var thisVar = ko.utils.arrayFirst(self.Variables(), function(v) {
           return v.id == objVariable.Variable;
         });
         variable.Name(thisVar.Name);
-        variable.DataColumn(objVariable.DataColumn ? objVariable.DataColumn.id : null);
+        variable.DataColumn(objVariable.DataColumn);
         self.ReportVariables.push(variable);
       });
     },
