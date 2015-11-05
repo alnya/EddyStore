@@ -13,3 +13,5 @@ sudo apt-get install mysql-server
 sudo npm -g install sails
 sudo npm install sails-mysql
 sudo npm update
+
+git clone https://github.com/alnya/EddyStore
