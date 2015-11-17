@@ -66,7 +66,7 @@ module.exports = {
       .populate('Columns')
       .exec(function (err, thisData) {
       if (err) return err;
-      if (!thisData) return "Not Found";
+      if (!thisData) return res.notFound();
       return res.send(EddyPro.getMetadata(thisData));
     });
   }
