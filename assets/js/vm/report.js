@@ -10,6 +10,7 @@ function (ko, moment, api) {
     Name: ko.observable().extend({required: true}),
     Status: ko.observable('New'),
     id: ko.observable(),
+    CanDeleteEntity: true,
 
     Station: ko.observable(),
     DataList: ko.observableArray([]),

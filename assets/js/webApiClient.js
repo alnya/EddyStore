@@ -2,7 +2,7 @@
 
     "use strict";
 
-    var baseUrl = 'https://localhost:1337';
+    var baseUrl = 'http://localhost:1337';
 
     return {
         baseUrl: baseUrl,

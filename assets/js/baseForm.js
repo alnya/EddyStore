@@ -7,6 +7,8 @@
 
         var self = this;
 
+        self.entityId = common.getId();
+
         self.Initialise = function (entityViewModel) {
 
             self.EntityViewModel = entityViewModel;
@@ -15,16 +17,8 @@
             {
               entityViewModel.Initialise();
             }
-
             self.GetEntity();
-
             ko.applyBindings(self, $("#entityForm")[0]);
-
-            var qa = common.parseQueryString(location.search.substring(1));
-
-            if (qa["success"]) {
-              messageBox.ShowSuccess(self.GetAddSuccessMessage());
-            }
         };
 
         self.formFields = function () {
@@ -142,6 +136,16 @@
             return false;
         };
 
+        if (modalDialog != null) {
+          modalDialog.DoAction.subscribe(function (action) {
+            if (action.indexOf("CANCEL") === 0) {
+              self.GetEntity();
+            } else if (action.indexOf("DELETE") === 0) {
+              self.DeleteEntity();
+            }
+          });
+        }
+
         self.ShowCancelModalDialog = function () {
 
           if (self.IsDirty()) {
@@ -157,14 +161,9 @@
           modalDialog.ShowModalDialogOkCancel("Delete", "Are you sure you want to delete this record?", "DELETE");
         };
 
-        self.DisplayForm = function () {
-
-            if (!self.IsInMode('DELETED') && self.IsLoaded()) {
-                return true;
-            }
-
-            return false;
-        };
+        self.DisplayForm = ko.computed(function() {
+            return (self.Mode() != 'DELETED' && self.IsLoaded());
+        });
 
         self.getProperty = function (prop, options) {
             if (self.EntityViewModel.hasOwnProperty(prop) && !ko.isComputed(self.EntityViewModel[prop])) {
@@ -233,28 +232,25 @@
                 self.EntityViewModel.errors.showAllMessages();
             } else {
 
-                var entityId = common.getId();
+                var entityId = self.entityId;
                 var entityModel = self.EntityViewModel.GetEntityModel();
 
                 if (entityId != 'add') {
-
                     webApiClient.ajaxPut(self.EntityViewModel.Url, entityId, ko.toJSON(entityModel), function (model) {
                             if (model) {
-                                self.EntityViewModel.SetModel(model);
-                                self.SetReadOnlyMode();
-                                window.location.href = window.location.href + "?success=true";
+                                messageBox.ShowSuccess(self.GetAddSuccessMessage());
+                                self.GetEntity();
                             }
                         },
                         function (errorResponse) {
                             messageBox.ShowError(self.GetUpdateErrorMessage(errorResponse));
                         });
                 } else {
-
                     webApiClient.ajaxPost(self.EntityViewModel.Url, ko.toJSON(entityModel), null, function (model) {
                             if (model) {
-                                self.EntityViewModel.SetModel(model);
-                                self.SetReadOnlyMode();
-                                window.location.href = window.location.href.replace("add", model.id + "?success=true");
+                                self.entityId = model.id;
+                                messageBox.ShowSuccess(self.GetAddSuccessMessage());
+                                self.GetEntity();
                             }
                         },
                         function (errorResponse) {
@@ -266,31 +262,30 @@
 
         self.GetEntity = function() {
 
-            var entityId = common.getId();
+          var entityId = self.entityId;
 
-            if (entityId != 'add') {
+          if (entityId != 'add') {
 
-                webApiClient.ajaxGet(self.EntityViewModel.Url + "/" + entityId, null, null, function (model) {
-                        if (model) {
+              webApiClient.ajaxGet(self.EntityViewModel.Url + "/" + entityId, null, null, function (model) {
+                      if (model) {
 
-                            self.EntityViewModel.SetModel(model);
-                            self.SetReadOnlyMode();
-                            messageBox.Hide();
-                            self.IsLoaded(true);
-                        }
-                    },
-                    function(errorResponse) {
-                        messageBox.ShowError("Error retrieving " + self.EntityViewModel.EntityName + ".");
-                    });
-            } else {
-                self.SetAddMode();
-                self.IsLoaded(true);
-            }
+                          self.EntityViewModel.SetModel(model);
+                          self.SetReadOnlyMode();
+                          self.IsLoaded(true);
+                      }
+                  },
+                  function(errorResponse) {
+                      messageBox.ShowError("Error retrieving " + self.EntityViewModel.EntityName + ".");
+                  });
+          } else {
+              self.SetAddMode();
+              self.IsLoaded(true);
+          }
         }
 
         self.DeleteEntity = function () {
 
-            var entityId = common.getId();
+            var entityId = self.entityId;
 
             if (entityId != null) {
 

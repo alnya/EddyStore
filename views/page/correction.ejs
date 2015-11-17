@@ -4,7 +4,7 @@
   </div>
   <div class="col-sm-9 col-md-10 main">
     <%- partial('../includes/FormFieldTemplate.ejs') %>
-    <form id="entityForm" role="form" style="display: none;" data-bind="visible: true">
+    <form id="entityForm" role="form" style="display: none;" data-bind="visible: DisplayForm">
   <div data-bind='template: { name: "formFieldString", data: {Property: "Name", Name: "Name"}}'></div>
 
   <div class="panel panel-default spacer" data-bind="with: EntityViewModel">

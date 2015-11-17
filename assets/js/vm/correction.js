@@ -7,6 +7,7 @@ function (ko, moment, api) {
 
     EntityName: "Spectral Correction", // name of this entity
     Url: "/SpectralCorrection",  // url to call to load / save / delete
+    CanDeleteEntity: true,
 
     Name: ko.observable().extend({required: true}),
     Analytic_Correction_Of_High_Pass_Filtering_Effects: ko.observable(true).extend(),

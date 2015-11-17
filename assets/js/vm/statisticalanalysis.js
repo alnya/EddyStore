@@ -7,6 +7,7 @@ function (ko, moment, api) {
 
     EntityName: "Statistical Analysis", // name of this entity
     Url: "/statisticalanalysis",  // url to call to load / save / delete
+    CanDeleteEntity: true,
 
     Name: ko.observable().extend({required: true}),
     All_Tests:ko.observable(false).extend(),

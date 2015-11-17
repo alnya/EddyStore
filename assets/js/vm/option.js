@@ -8,6 +8,7 @@ function (ko, moment) {
     EntityName: "Processing Option", // name of this entity
     Url: "/ProcessingOption",  // url to call to load / save / delete
     PieUrl: ko.observable(),
+    CanDeleteEntity: true,
 
     Name: ko.observable().extend({required: true}),
     U: ko.observable().extend({number:true}),
