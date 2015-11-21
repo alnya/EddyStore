@@ -1,20 +1,32 @@
 module.exports = {
   getMetadata: function(thisData) {
 
+    var formatValue = function(value, decimal) {
+      if (value == null && !decimal) return '';
+      if (value == null && decimal) return '0.00';
+      return value;
+    };
+
+    var formatWDFValue = function(value) {
+      if (value == null) return '';
+      if (value == 'U, V & W') return 'uvw';
+      return value;
+    }
+
       var output = ';GHG_METADATA' +
         '\n[Project]' +
         '\ntitle=' +
         '\nid=' +
-        '\ncreation_date=' + thisData.createdAt +
-        '\nlast_change_date=' + thisData.updatedAt +
-        '\nstart_date=' + thisData.Date_From +
-        '\nend_date=' + thisData.Date_To +
+        '\ncreation_date=' + formatValue(thisData.createdAt) +
+        '\nlast_change_date=' + formatValue(thisData.updatedAt) +
+        '\nstart_date=' + formatValue(thisData.Date_From) +
+        '\nend_date=' + formatValue(thisData.Date_To) +
         '\nfile_name=' + thisData.id + '.metadata' +
         '\nsw_version=5.1.1' +
         '\nini_version=3.1' +
         '\n' +
         '\n[Files]' +
-        '\ndata_path=' + thisData.Folder_Path +
+        '\ndata_path=' + formatValue(thisData.Folder_Path) +
         '\nsaved_native=0' +
         '\ntimestamp=0' +
         '\niso_format=0' +
@@ -25,60 +37,60 @@ module.exports = {
         '\n[Site]' +
         '\nsite_name=' +
         '\nsite_id=' +
-        '\naltitude=' + thisData.Altitude +
-        '\nlatitude=' + thisData.Latitude +
-        '\nlongitude=' + thisData.Longitude +
-        '\ncanopy_height=' + thisData.Canopy_Height +
-        '\ndisplacement_height=' + thisData.Displacement_Height +
-        '\nroughness_length=' + thisData.Roughness_Length +
+        '\naltitude=' + formatValue(thisData.Altitude) +
+        '\nlatitude=' + formatValue(thisData.Latitude) +
+        '\nlongitude=' + formatValue(thisData.Longitude) +
+        '\ncanopy_height=' + formatValue(thisData.Canopy_Height) +
+        '\ndisplacement_height=' + formatValue(thisData.Displacement_Height) +
+        '\nroughness_length=' + formatValue(thisData.Roughness_Length) +
         '\n' +
         '\n[Station]' +
-        '\nstation_name=' + thisData.Name +
+        '\nstation_name=' + formatValue(thisData.Name) +
         '\nstation_id=' +
         '\n' +
         '\n[Timing]' +
-        '\nacquisition_frequency=' + thisData.Acquisition_Frequency +
-        '\nfile_duration=' + thisData.File_Duration +
+        '\nacquisition_frequency=' + formatValue(thisData.Acquisition_Frequency) +
+        '\nfile_duration=' + formatValue(thisData.File_Duration) +
         '\npc_time_settings=local' +
         '\n' +
         '\n[Instruments]';
 
     if (thisData.Instruments != null) {
-      for (var i = 0; i < thisData.Instruments.length; i++) {
-        var instrument = thisData.Instruments[i];
+      for (var i = 1; i <= thisData.Instruments.length; i++) {
+        var instrument = thisData.Instruments[i-1];
 
         if (instrument.Instrument_Type = 'Anemometer') {
           output = output +
-          '\ninstr_' + i + '_manufacturer=' + instrument.Manufacturer +
-          '\ninstr_' + i + '_model=' + instrument.Model +
-          '\ninstr_' + i + '_id=' + instrument.Instrument_Id +
-          '\ninstr_' + i + '_height=' + instrument.Height +
-          '\ninstr_' + i + '_wformat=' + instrument.Wind_Data_Format +
+          '\ninstr_' + i + '_manufacturer=' + formatValue(instrument.Manufacturer) +
+          '\ninstr_' + i + '_model=' + formatValue(instrument.Model) +
+          '\ninstr_' + i + '_id=' + formatValue(instrument.Instrument_Id) +
+          '\ninstr_' + i + '_height=' + formatValue(instrument.Height) +
+          '\ninstr_' + i + '_wformat=' + formatWDFValue(instrument.Wind_Data_Format) +
           '\ninstr_' + i + '_wref=' +
-          '\ninstr_' + i + '_north_offset=' + instrument.North_Offset +
-          '\ninstr_' + i + '_northward_separation=' + instrument.Northward_Separation +
-          '\ninstr_' + i + '_eastward_separation=' + instrument.Eastward_Separation +
-          '\ninstr_' + i + '_vertical_separation=' + instrument.Vertical_Separation +
-          '\ninstr_' + i + '_vpath_length=' + instrument.Longitudinal_Path_Length +
-          '\ninstr_' + i + '_hpath_length=' + instrument.Transversal_Path_Length +
-          '\ninstr_' + i + '_tau=' + instrument.Time_Response;
+          '\ninstr_' + i + '_north_offset=' + formatValue(instrument.North_Offset, true) +
+          '\ninstr_' + i + '_northward_separation=' + formatValue(instrument.Northward_Separation, true) +
+          '\ninstr_' + i + '_eastward_separation=' + formatValue(instrument.Eastward_Separation, true) +
+          '\ninstr_' + i + '_vertical_separation=' + formatValue(instrument.Vertical_Separation, true) +
+          '\ninstr_' + i + '_vpath_length=' + formatValue(instrument.Longitudinal_Path_Length, true) +
+          '\ninstr_' + i + '_hpath_length=' + formatValue(instrument.Transversal_Path_Length, true) +
+          '\ninstr_' + i + '_tau=' + formatValue(instrument.Time_Response, true);
         } else {
           output = output +
-          '\ninstr_' + i + '_manufacturer=' + instrument.Manufacturer +
-          '\ninstr_' + i + '_model=' + instrument.Model +
-          '\ninstr_' + i + '_sw_version=' + instrument.Software_Version +
-          '\ninstr_' + i + '_id=' + instrument.Instrument_Id +
-          '\ninstr_' + i + '_tube_length=' + instrument.Tube_Length +
-          '\ninstr_' + i + '_tube_diameter=' + instrument.Tube_Inner_Diameter +
-          '\ninstr_' + i + '_tube_flowrate=' + instrument.Nominal_Tube_Flow_Rate +
-          '\ninstr_' + i + '_northward_separation=' + instument.Northward_Separation +
-          '\ninstr_' + i + '_eastward_separation=' + instrument.Eastward_Separation +
-          '\ninstr_' + i + '_vertical_separation=' + instrument.Vertical_Separation +
-          '\ninstr_' + i + '_vpath_length=' + instrument.Longitudinal_Path_Length +
-          '\ninstr_' + i + '_hpath_length=' + instrument.Transversal_Path_Length +
-          '\ninstr_' + i + '_tau=' + instrument.Time_Response +
-          '\ninstr_' + i + '_kw=' + instrument.Extinction_Coefficient_In_Water_KW +
-          '\ninstr_' + i + '_ko=' + instrument.Extinction_Coefficient_In_Water_KO;
+          '\ninstr_' + i + '_manufacturer=' + formatValue(instrument.Manufacturer) +
+          '\ninstr_' + i + '_model=' + formatValue(instrument.Model) +
+          '\ninstr_' + i + '_sw_version=' + formatValue(instrument.Software_Version) +
+          '\ninstr_' + i + '_id=' + formatValue(instrument.Instrument_Id) +
+          '\ninstr_' + i + '_tube_length=' + formatValue(instrument.Tube_Length) +
+          '\ninstr_' + i + '_tube_diameter=' + formatValue(instrument.Tube_Inner_Diameter) +
+          '\ninstr_' + i + '_tube_flowrate=' + formatValue(instrument.Nominal_Tube_Flow_Rate) +
+          '\ninstr_' + i + '_northward_separation=' + formatValue(instument.Northward_Separation) +
+          '\ninstr_' + i + '_eastward_separation=' + formatValue(instrument.Eastward_Separation) +
+          '\ninstr_' + i + '_vertical_separation=' +formatValue( instrument.Vertical_Separation) +
+          '\ninstr_' + i + '_vpath_length=' + formatValue(instrument.Longitudinal_Path_Length) +
+          '\ninstr_' + i + '_hpath_length=' + formatValue(instrument.Transversal_Path_Length) +
+          '\ninstr_' + i + '_tau=' + formatValue(instrument.Time_Response) +
+          '\ninstr_' + i + '_kw=' + formatValue(instrument.Extinction_Coefficient_In_Water_KW) +
+          '\ninstr_' + i + '_ko=' + formatValue(instrument.Extinction_Coefficient_In_Water_KO);
         }
       }
     }
@@ -89,23 +101,23 @@ module.exports = {
       '\ndata_label=Not set';
 
     if (thisData.Columns != null) {
-      for (var i = 0; i < thisData.Columns.length; i++) {
-        var column = thisData.Columns[i];
+      for (var i = 1; i <= thisData.Columns.length; i++) {
+        var column = thisData.Columns[i-1];
 
         output = output +
         '\ncol_' + i + '_variable=' + (column.Numeric ? column.Variable : 'not_numeric') +
-        '\ncol_' + i + '_instrument=' + column.Instrument +
-        '\ncol_' + i + '_measure_type=' + column.Measurement_Type +
-        '\ncol_' + i + '_unit_in=' + column.Input_Unit +
+        '\ncol_' + i + '_instrument=' + formatValue(column.Instrument) +
+        '\ncol_' + i + '_measure_type=' + formatValue(column.Measurement_Type) +
+        '\ncol_' + i + '_unit_in=' + formatValue(column.Input_Unit) +
         '\ncol_' + i + '_min_value=' +
         '\ncol_' + i + '_max_value=' +
         '\ncol_' + i + '_conversion=' +
-        '\ncol_' + i + '_unit_out=' + column.Output_Unit +
+        '\ncol_' + i + '_unit_out=' + formatValue(column.Output_Unit) +
         '\ncol_' + i + '_a_value=' +
         '\ncol_' + i + '_b_value=' +
-        '\ncol_' + i + '_nom_timelag=' + column.Nominal_Time_Lag +
-        '\ncol_' + i + '_min_timelag=' + column.Minimum_Time_Lag +
-        '\ncol_' + i + '_max_timelag=' + column.Maximum_Time_Lag;
+        '\ncol_' + i + '_nom_timelag=' + formatValue(column.Nominal_Time_Lag, true) +
+        '\ncol_' + i + '_min_timelag=' + formatValue(column.Minimum_Time_Lag, true) +
+        '\ncol_' + i + '_max_timelag=' + formatValue(column.Maximum_Time_Lag, true);
       }
     }
 
