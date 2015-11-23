@@ -468,7 +468,8 @@ module.exports = {
       '\npf_subset=' +
       '\n';
 
-    output = output + '\n[RawProcess_TimelagOptimization_Settings]' +
+    if (processing != null) {
+      output = output + '\n[RawProcess_TimelagOptimization_Settings]' +
       '\nto_start_date=' + processing.Time_Lag_Start +
       '\nto_end_date=' + processing.Time_Lag_End +
       '\nto_mode=' + processing.Time_Lag_Method +
@@ -489,6 +490,7 @@ module.exports = {
       '\nto_gas4_max_lag=' + processing.Time_Lag_Searching_Gas_Max +
       '\nto_subset=' +
       '\n';
+    }
 
     output = output + '\n[RawProcess_RandomUncertainty_Settings]' +
       '\nru_meth=' + statistical.Random_uncertainty_estimation +
