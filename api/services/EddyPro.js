@@ -380,7 +380,8 @@ module.exports = {
       '\npower_of_two=' +
       '\n';
 
-    output = output + '\n[RawProcess_Tests]' +
+    if (statistical != null) {
+      output = output + '\n[RawProcess_Tests]' +
       '\ntest_sr=' + statistical.Spike_count +
       '\ntest_ar=' + statistical.Amplitude_resolution +
       '\ntest_do=' + statistical.Drop_outs +
@@ -392,7 +393,7 @@ module.exports = {
       '\ntest_ns=' + statistical.Steadiness_of_horizontal_wind +
       '\n';
 
-    output = output + '\n[RawProcess_ParameterSettings]' +
+      output = output + '\n[RawProcess_ParameterSettings]' +
       '\nsr_num_spk=' + statistical.Accepted_spikes +
       '\nsr_lim_u=' +
       '\nsr_lim_w=' + statistical.Plausibility_ranges_W +
@@ -412,19 +413,19 @@ module.exports = {
       '\nal_tson_min=' + statistical.Absolute_limits_min_TS +
       '\nal_tson_max=' + statistical.Absolute_limits_max_TS +
       '\nal_co2_min=' + statistical.Absolute_limits_min_C02 +
-      '\nal_co2_max=' +statistical.Absolute_limits_max_C02 +
-      '\nal_h2o_min=' +statistical.Absolute_limits_min_H20 +
-      '\nal_h2o_max=' +statistical.Absolute_limits_max_H20 +
-      '\nal_ch4_min=' +statistical.Absolute_limits_min_CH4 +
-      '\nal_ch4_max=' +statistical.Absolute_limits_max_CH4 +
-      '\nal_n2o_min=' +statistical.Absolute_limits_min_4th +
-      '\nal_n2o_max=' +statistical.Absolute_limits_max_4th +
+      '\nal_co2_max=' + statistical.Absolute_limits_max_C02 +
+      '\nal_h2o_min=' + statistical.Absolute_limits_min_H20 +
+      '\nal_h2o_max=' + statistical.Absolute_limits_max_H20 +
+      '\nal_ch4_min=' + statistical.Absolute_limits_min_CH4 +
+      '\nal_ch4_max=' + statistical.Absolute_limits_max_CH4 +
+      '\nal_n2o_min=' + statistical.Absolute_limits_min_4th +
+      '\nal_n2o_max=' + statistical.Absolute_limits_max_4th +
       '\nsk_hf_skmin=' + statistical.Hard_skewness_lower_limit +
       '\nsk_hf_skmax=' + statistical.Hard_skewness_upper_limit +
       '\nsk_sf_skmin=' + statistical.Soft_skewness_lower_limit +
-    '\nsk_sf_skmax=' + statistical.Soft_Skewness_upper_limit +
-    '\nsk_hf_kumin=' + statistical.Hard_kurtosis_lower_limit +
-    '\nsk_hf_kumax=' + statistical.Hard_kurtosis_upper_limit +
+      '\nsk_sf_skmax=' + statistical.Soft_Skewness_upper_limit +
+      '\nsk_hf_kumin=' + statistical.Hard_kurtosis_lower_limit +
+      '\nsk_hf_kumax=' + statistical.Hard_kurtosis_upper_limit +
       '\nsk_sf_kumin=' + statistical.Soft_Kurtosis_lower_limit +
       '\nsk_sf_kumax=' + statistical.Soft_Kurtosis_upper_limit +
       '\nds_hf_uv=' + statistical.Hard_discontinuities_U +
@@ -454,6 +455,7 @@ module.exports = {
       '\naa_lim=' + statistical.Accepted_amount_outliers +
       '\nns_hf_lim=' +
       '\n';
+    }
 
     output = output + '\n[RawProcess_TiltCorrection_Settings]' +
       '\npf_start_date=' +
@@ -492,11 +494,13 @@ module.exports = {
       '\n';
     }
 
-    output = output + '\n[RawProcess_RandomUncertainty_Settings]' +
+    if (statistical != null) {
+      output = output + '\n[RawProcess_RandomUncertainty_Settings]' +
       '\nru_meth=' + statistical.Random_uncertainty_estimation +
       '\nru_its_meth=' + statistical.Random_uncertainty_estimation_method +
       '\nru_tlag_max=' + statistical.Maximum_correlation_period +
       '\n';
+    }
 
     output = output + '\n[RawProcess_BiometMeasurements]' +
       '\nbiom_use_native_header=' +
