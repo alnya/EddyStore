@@ -11,7 +11,7 @@ module.exports = {
       if (value == null) return '';
       if (value == 'U, V & W') return 'uvw';
       return value;
-    }
+    };
 
       var output = ';GHG_METADATA' +
         '\n[Project]' +
@@ -123,11 +123,18 @@ module.exports = {
 
     return (output);
   },
+
   getReport: function(thisReport, folder_path, output_path) {
 
     var spectral = thisReport.SpectralCorrection;
     var processing = thisReport.ProcessingOption;
     var statistical = thisReport.StatisticalAnalysis;
+
+    var formatValue = function(value, decimal) {
+      if (value == null && !decimal) return '';
+      if (value == null && decimal) return '0.00';
+      return value;
+    };
 
     var output = ';EDDYPRO_PROCESSING' +
         '\n[Project]' +
@@ -201,32 +208,32 @@ module.exports = {
         if (spectral != null) {
 
           output = output + '\n[FluxCorrection_SpectralAnalysis_General]' +
-          '\nsa_start_date=' + spectral.Subperiod_Start +
-          '\nsa_end_date=' + spectral.Subperiod_End +
+          '\nsa_start_date=' + formatValue(spectral.Subperiod_Start) +
+          '\nsa_end_date=' + formatValue(spectral.Subperiod_End) +
           '\nsa_mode=1' +
           '\nsa_file=' +
-          '\nsa_min_smpl=' + spectral.Minimum_Number_Of_Spectra +
-          '\nsa_fmin_co2=' + spectral.Lowest_Frequency_CO2 +
-          '\nsa_fmin_h2o=' + spectral.Lowest_Frequency_H20 +
-          '\nsa_fmin_ch4=' + spectral.Lowest_Frequency_CH4 +
-          '\nsa_fmin_gas4=' + spectral.Lowest_Frequency_Gas +
-          '\nsa_fmax_co2=' + spectral.Highest_Frequency_CO2 +
-          '\nsa_fmax_h2o=' + spectral.Highest_Frequency_H20 +
-          '\nsa_fmax_ch4=' + spectral.Highest_Frequency_CH4 +
-          '\nsa_fmax_gas4=' + spectral.Highest_Frequency_Gas +
+          '\nsa_min_smpl=' + formatValue(spectral.Minimum_Number_Of_Spectra) +
+          '\nsa_fmin_co2=' + formatValue(spectral.Lowest_Frequency_CO2) +
+          '\nsa_fmin_h2o=' + formatValue(spectral.Lowest_Frequency_H20) +
+          '\nsa_fmin_ch4=' + formatValue(spectral.Lowest_Frequency_CH4) +
+          '\nsa_fmin_gas4=' + formatValue(spectral.Lowest_Frequency_Gas) +
+          '\nsa_fmax_co2=' + formatValue(spectral.Highest_Frequency_CO2) +
+          '\nsa_fmax_h2o=' + formatValue(spectral.Highest_Frequency_H20) +
+          '\nsa_fmax_ch4=' + formatValue(spectral.Highest_Frequency_CH4) +
+          '\nsa_fmax_gas4=' + formatValue(spectral.Highest_Frequency_Gas) +
           '\nsa_hfn_co2_fmin=5' +
           '\nsa_hfn_h2o_fmin=5' +
           '\nsa_hfn_ch4_fmin=5' +
           '\nsa_hfn_gas4_fmin=5' +
-          '\nsa_min_co2=' + spectral.Minimum_CO2_Flux +
-          '\nsa_min_ch4=' + spectral.Minimum_CH4_Flux +
-          '\nsa_min_gas4=' + spectral.Minimum_Gas_Flux +
+          '\nsa_min_co2=' + formatValue(spectral.Minimum_CO2_Flux) +
+          '\nsa_min_ch4=' + formatValue(spectral.Minimum_CH4_Flux) +
+          '\nsa_min_gas4=' + formatValue(spectral.Minimum_Gas_Flux) +
           '\nsa_min_le=20' +
           '\nsa_min_h=20' +
           '\nadd_sonic_lptf=1' +
-          '\nf10_co2_trshld=' + spectral.Threshold_Flux_CO2 +
-          '\nf10_ch4_trshld=' + spectral.Threshold_Flux_CH4 +
-          '\nf10_gas4_trshld=' + spectral.Threshold_Flux_Gas +
+          '\nf10_co2_trshld=' + formatValue(spectral.Threshold_Flux_CO2) +
+          '\nf10_ch4_trshld=' + formatValue(spectral.Threshold_Flux_CH4) +
+          '\nf10_gas4_trshld=' + formatValue(spectral.Threshold_Flux_Gas) +
           '\nf10_le_trshld=10' +
           '\nf10_h_trshld=10' +
           '\nhorst_lens=2' +
@@ -251,247 +258,255 @@ module.exports = {
         '\nmag_dec=' +
         '\ndec_date=';
 
-      // flags
-      if (thisReport.Flags != null) {
-        for (var i = 0; i < thisReport.Flags.length; i++) {
-          var flag = thisReport.Flags[i];
+    var getVariableColumn = function(v) {
+      if (flag.DataColumn == null) return 0;
+      DataColumn.findOne(flag.DataColumn)
+        .exec(function (err, thisCol) {
+          return thisCol.Column_Number;
+        });
+    };
 
-          output = output + '' +
-          '\nflag' + i + '_column=' + flag.Variable +
-          '\nflag' + i + '_threshold=' + flag.Threshold +
-          '\nflag' + i + '_upper=' +
-          '\n';
-        }
+    // flags
+    if (thisReport.Flags != null) {
+      for (var i = 1; i <= thisReport.Flags.length; i++) {
+        var flag = thisReport.Flags[i-1];
+
+        output = output + '' +
+        '\nflag' + i + '_column=' + getVariableColumn(flag.DataColumn) +
+        '\nflag' + i + '_threshold=' + flag.Threshold +
+        '\nflag' + i + '_upper=1' +
+        '\n';
       }
+    }
 
-        output = output + '\n[RawProcess_Settings]' +
-        '\nnfiles=' +
-        '\nmax_lack=' +
-        '\nu_offset=' +
-        '\nv_offset=' +
-        '\nw_offset=' +
-        '\ncross_wind=' +
-        '\nflow_distortion=' +
-        '\nrot_meth=' +
-        '\ndetrend_meth=' +
-        '\ntimeconst=' +
-        '\ntlag_meth=' +
-        '\ntap_win=' +
-        '\nnbins=' +
-        '\navrg_len=' +
-        '\nout_bin_sp=' +
-        '\nout_bin_og=' +
-        '\nout_full_sp_u=' +
-        '\nout_full_sp_v=' +
-        '\nout_full_sp_w=' +
-        '\nout_full_sp_ts=' +
-        '\nout_full_sp_co2=' +
-        '\nout_full_sp_h2o=' +
-        '\nout_full_sp_ch4=' +
-        '\nout_full_sp_n2o=' +
-        '\nout_st_1=' +
-        '\nout_st_2=' +
-        '\nout_st_3=' +
-        '\nout_st_4=' +
-        '\nout_st_5=' +
-        '\nout_st_6=' +
-        '\nout_st_7=' +
-        '\nout_raw_1=' +
-        '\nout_raw_2=' +
-        '\nout_raw_3=' +
-        '\nout_raw_4=' +
-        '\nout_raw_5=' +
-        '\nout_raw_6=' +
-        '\nout_raw_7=' +
-        '\nout_raw_u=' +
-        '\nout_raw_v=' +
-        '\nout_raw_w=' +
-        '\nout_raw_ts=' +
-        '\nout_raw_co2=' +
-        '\nout_raw_h2o=' +
-        '\nout_raw_ch4=' +
-        '\nout_raw_gas4=' +
-        '\nout_raw_t_air=' +
-        '\nout_raw_p_air=' +
-        '\nout_full_cosp_w_u=' +
-        '\nout_full_cosp_w_v=' +
-        '\nout_full_cosp_w_ts=' +
-        '\nout_full_cosp_w_co2=' +
-        '\nout_full_cosp_w_h2o=' +
-        '\nout_full_cosp_w_ch4=' +
-        '\nout_full_cosp_w_n2o=' +
-        '\nto_mixratio=' +
-        '\nfilter_sr=' +
-        '\nfilter_al=' +
-        '\nbu_corr=' +
-        '\nbu_multi=' +
-        '\nl_day_bot_gain=' +
-        '\nl_day_bot_offset=' +
-        '\nl_day_top_gain=' +
-        '\nl_day_top_offset=' +
-        '\nl_day_spar_gain=' +
-        '\nl_day_spar_offset=' +
-        '\nl_night_bot_gain=' +
-        '\nl_night_bot_offset=' +
-        '\nl_night_top_gain=' +
-        '\nl_night_top_offset=' +
-        '\nl_night_spar_gain=' +
-        '\nl_night_spar_offset=' +
-        '\nm_day_bot1=' +
-        '\nm_day_bot2=' +
-        '\nm_day_bot3=' +
-        '\nm_day_bot4=' +
-        '\nm_day_top1=' +
-        '\nm_day_top2=' +
-        '\nm_day_top3=' +
-        '\nm_day_top4=' +
-        '\nm_day_spar1=' +
-        '\nm_day_spar2=' +
-        '\nm_day_spar3=' +
-        '\nm_day_spar4=' +
-        '\nm_night_bot1=' +
-        '\nm_night_bot2=' +
-        '\nm_night_bot3=' +
-        '\nm_night_bot4=' +
-        '\nm_night_top1=' +
-        '\nm_night_top2=' +
-        '\nm_night_top3=' +
-        '\nm_night_top4=' +
-        '\nm_night_spar1=' +
-        '\nm_night_spar2=' +
-        '\nm_night_spar3=' +
-        '\nm_night_spar4=' +
-        '\nout_qc_details=' +
-        '\npower_of_two=' +
-        '\n';
+    output = output + '\n[RawProcess_Settings]' +
+      '\nnfiles=' +
+      '\nmax_lack=' +
+      '\nu_offset=' +
+      '\nv_offset=' +
+      '\nw_offset=' +
+      '\ncross_wind=' +
+      '\nflow_distortion=' +
+      '\nrot_meth=' +
+      '\ndetrend_meth=' +
+      '\ntimeconst=' +
+      '\ntlag_meth=' +
+      '\ntap_win=' +
+      '\nnbins=' +
+      '\navrg_len=' +
+      '\nout_bin_sp=' +
+      '\nout_bin_og=' +
+      '\nout_full_sp_u=' +
+      '\nout_full_sp_v=' +
+      '\nout_full_sp_w=' +
+      '\nout_full_sp_ts=' +
+      '\nout_full_sp_co2=' +
+      '\nout_full_sp_h2o=' +
+      '\nout_full_sp_ch4=' +
+      '\nout_full_sp_n2o=' +
+      '\nout_st_1=' +
+      '\nout_st_2=' +
+      '\nout_st_3=' +
+      '\nout_st_4=' +
+      '\nout_st_5=' +
+      '\nout_st_6=' +
+      '\nout_st_7=' +
+      '\nout_raw_1=' +
+      '\nout_raw_2=' +
+      '\nout_raw_3=' +
+      '\nout_raw_4=' +
+      '\nout_raw_5=' +
+      '\nout_raw_6=' +
+      '\nout_raw_7=' +
+      '\nout_raw_u=' +
+      '\nout_raw_v=' +
+      '\nout_raw_w=' +
+      '\nout_raw_ts=' +
+      '\nout_raw_co2=' +
+      '\nout_raw_h2o=' +
+      '\nout_raw_ch4=' +
+      '\nout_raw_gas4=' +
+      '\nout_raw_t_air=' +
+      '\nout_raw_p_air=' +
+      '\nout_full_cosp_w_u=' +
+      '\nout_full_cosp_w_v=' +
+      '\nout_full_cosp_w_ts=' +
+      '\nout_full_cosp_w_co2=' +
+      '\nout_full_cosp_w_h2o=' +
+      '\nout_full_cosp_w_ch4=' +
+      '\nout_full_cosp_w_n2o=' +
+      '\nto_mixratio=' +
+      '\nfilter_sr=' +
+      '\nfilter_al=' +
+      '\nbu_corr=' +
+      '\nbu_multi=' +
+      '\nl_day_bot_gain=' +
+      '\nl_day_bot_offset=' +
+      '\nl_day_top_gain=' +
+      '\nl_day_top_offset=' +
+      '\nl_day_spar_gain=' +
+      '\nl_day_spar_offset=' +
+      '\nl_night_bot_gain=' +
+      '\nl_night_bot_offset=' +
+      '\nl_night_top_gain=' +
+      '\nl_night_top_offset=' +
+      '\nl_night_spar_gain=' +
+      '\nl_night_spar_offset=' +
+      '\nm_day_bot1=' +
+      '\nm_day_bot2=' +
+      '\nm_day_bot3=' +
+      '\nm_day_bot4=' +
+      '\nm_day_top1=' +
+      '\nm_day_top2=' +
+      '\nm_day_top3=' +
+      '\nm_day_top4=' +
+      '\nm_day_spar1=' +
+      '\nm_day_spar2=' +
+      '\nm_day_spar3=' +
+      '\nm_day_spar4=' +
+      '\nm_night_bot1=' +
+      '\nm_night_bot2=' +
+      '\nm_night_bot3=' +
+      '\nm_night_bot4=' +
+      '\nm_night_top1=' +
+      '\nm_night_top2=' +
+      '\nm_night_top3=' +
+      '\nm_night_top4=' +
+      '\nm_night_spar1=' +
+      '\nm_night_spar2=' +
+      '\nm_night_spar3=' +
+      '\nm_night_spar4=' +
+      '\nout_qc_details=' +
+      '\npower_of_two=' +
+      '\n';
 
-        output = output + '\n[RawProcess_Tests]' +
-        '\ntest_sr=' +
-        '\ntest_ar=' +
-        '\ntest_do=' +
-        '\ntest_al=' +
-        '\ntest_sk=' +
-        '\ntest_ds=' +
-        '\ntest_tl=' +
-        '\ntest_aa=' +
-        '\ntest_ns=' +
-        '\n';
+    output = output + '\n[RawProcess_Tests]' +
+      '\ntest_sr=' + statistical.Spike_count +
+      '\ntest_ar=' + statistical.Amplitude_resolution +
+      '\ntest_do=' + statistical.Drop_outs +
+      '\ntest_al=' + statistical.Absolute_limits +
+      '\ntest_sk=' + statistical.Skewness_Kurtosis +
+      '\ntest_ds=' + statistical.Discontinuities +
+      '\ntest_tl=' + statistical.Time_lags +
+      '\ntest_aa=' + statistical.Angle_of_attack +
+      '\ntest_ns=' + statistical.Steadiness_of_horizontal_wind +
+      '\n';
 
     output = output + '\n[RawProcess_ParameterSettings]' +
-        '\nsr_num_spk=' +
-        '\nsr_lim_u=' +
-        '\nsr_lim_w=' +
-        '\nsr_lim_co2=' +
-        '\nsr_lim_h2o=' +
-        '\nsr_lim_ch4=' +
-        '\nsr_lim_n2o=' +
-        '\nsr_lim_hf=' +
-        '\nar_lim=' +
-        '\nar_bins=' +
-        '\nar_hf_lim=' +
-        '\ndo_extlim_dw=' +
-        '\ndo_hf1_lim=' +
-        '\ndo_hf2_lim=' +
-        '\nal_u_max=' +
-        '\nal_w_max=' +
-        '\nal_tson_min=' +
-        '\nal_tson_max=' +
-        '\nal_co2_min=' +
-        '\nal_co2_max=' +
-        '\nal_h2o_min=' +
-        '\nal_h2o_max=' +
-        '\nal_ch4_min=' +
-        '\nal_ch4_max=' +
-        '\nal_n2o_min=' +
-        '\nal_n2o_max=' +
-        '\nsk_hf_skmin=' +
-        '\nsk_hf_skmax=' +
-        '\nsk_sf_skmin=' +
-        '\nsk_sf_skmax=' +
-        '\nsk_hf_kumin=' +
-        '\nsk_hf_kumax=' +
-        '\nsk_sf_kumin=' +
-        '\nsk_sf_kumax=' +
-        '\nds_hf_uv=' +
-        '\nds_hf_w=' +
-        '\nds_hf_t=' +
-        '\nds_hf_co2=' +
-        '\nds_hf_h2o=' +
-        '\nds_hf_ch4=' +
-        '\nds_hf_n2o=' +
-        '\nds_hf_var=' +
-        '\nds_sf_uv=' +
-        '\nds_sf_w=' +
-        '\nds_sf_t=' +
-        '\nds_sf_co2=' +
-        '\nds_sf_h2o=' +
-        '\nds_sf_ch4=' +
-        '\nds_sf_n2o=' +
-        '\nds_sf_var=' +
-        '\ntl_hf_lim=' +
-        '\ntl_sf_lim=' +
-        '\ntl_def_co2=' +
-        '\ntl_def_h2o=' +
-        '\ntl_def_ch4=' +
-        '\ntl_def_n2o=' +
-        '\naa_min=' +
-        '\naa_max=' +
-        '\naa_lim=' +
-        '\nns_hf_lim=' +
-        '\n';
+      '\nsr_num_spk=' + statistical.Accepted_spikes +
+      '\nsr_lim_u=' +
+      '\nsr_lim_w=' + statistical.Plausibility_ranges_W +
+      '\nsr_lim_co2=' + statistical.Plausibility_ranges_CO2 +
+      '\nsr_lim_h2o=' + statistical.Plausibility_ranges_H20 +
+      '\nsr_lim_ch4=' + statistical.Plausibility_ranges_CH4 +
+      '\nsr_lim_n2o=' + statistical.Plausibility_ranges_4th +
+      '\nsr_lim_hf=' + statistical.Plausibility_ranges_Other +
+      '\nar_lim=' + statistical.Range_of_variation +
+      '\nar_bins=' + statistical.Number_of_bins +
+      '\nar_hf_lim=' + statistical.Accepted_empty_bins +
+      '\ndo_extlim_dw=' + statistical.Percentile_defining_extreme_bins +
+      '\ndo_hf1_lim=' + statistical.Accepted_central_dropouts +
+      '\ndo_hf2_lim=' + statistical.Accepted_extreme_dropouts +
+      '\nal_u_max=' + statistical.Absolute_limits_max_U +
+      '\nal_w_max=' + statistical.Absolute_limits_max_W +
+      '\nal_tson_min=' + statistical.Absolute_limits_min_TS +
+      '\nal_tson_max=' + statistical.Absolute_limits_max_TS +
+      '\nal_co2_min=' + statistical.Absolute_limits_min_C02 +
+      '\nal_co2_max=' +statistical.Absolute_limits_max_C02 +
+      '\nal_h2o_min=' +statistical.Absolute_limits_min_H20 +
+      '\nal_h2o_max=' +statistical.Absolute_limits_max_H20 +
+      '\nal_ch4_min=' +statistical.Absolute_limits_min_CH4 +
+      '\nal_ch4_max=' +statistical.Absolute_limits_max_CH4 +
+      '\nal_n2o_min=' +statistical.Absolute_limits_min_4th +
+      '\nal_n2o_max=' +statistical.Absolute_limits_max_4th +
+      '\nsk_hf_skmin=' + statistical.Hard_skewness_lower_limit +
+      '\nsk_hf_skmax=' + statistical.Hard_skewness_upper_limit +
+      '\nsk_sf_skmin=' + statistical.Soft_skewness_lower_limit +
+    '\nsk_sf_skmax=' + statistical.Soft_Skewness_upper_limit +
+    '\nsk_hf_kumin=' + statistical.Hard_kurtosis_lower_limit +
+    '\nsk_hf_kumax=' + statistical.Hard_kurtosis_upper_limit +
+      '\nsk_sf_kumin=' + statistical.Soft_Kurtosis_lower_limit +
+      '\nsk_sf_kumax=' + statistical.Soft_Kurtosis_upper_limit +
+      '\nds_hf_uv=' + statistical.Hard_discontinuities_U +
+      '\nds_hf_w=' + statistical.Hard_discontinuities_W +
+      '\nds_hf_t=' + statistical.Hard_discontinuities_TS +
+      '\nds_hf_co2=' + statistical.Hard_discontinuities_C02 +
+      '\nds_hf_h2o=' + statistical.Hard_discontinuities_H20 +
+      '\nds_hf_ch4=' + statistical.Hard_discontinuities_CH4 +
+      '\nds_hf_n2o=' + statistical.Hard_discontinuities_4th +
+      '\nds_hf_var=' + statistical.Hard_discontinuities_Variances +
+      '\nds_sf_uv=' + statistical.Soft_discontinuities_U +
+      '\nds_sf_w=' + statistical.Soft_discontinuities_W +
+      '\nds_sf_t=' + statistical.Soft_discontinuities_TS +
+      '\nds_sf_co2=' + statistical.Soft_discontinuities_C02 +
+      '\nds_sf_h2o=' + statistical.Soft_discontinuities_H20 +
+      '\nds_sf_ch4=' + statistical.Soft_discontinuities_CH4 +
+      '\nds_sf_n2o=' + statistical.Soft_discontinuities_4th +
+      '\nds_sf_var=' + statistical.Soft_discontinuities_Variances +
+      '\ntl_hf_lim=' + statistical.Accepted_covariance_difference_hard +
+      '\ntl_sf_lim=' + statistical.Accepted_covariance_difference_soft +
+      '\ntl_def_co2=' + statistical.Nominal_CO2_time_lag +
+      '\ntl_def_h2o=' + statistical.Nominal_H20_time_lag +
+      '\ntl_def_ch4=' + statistical.Nominal_CH4_time_lag +
+      '\ntl_def_n2o=' + statistical.Nominal_4th_time_lag +
+      '\naa_min=' + statistical.Minimum_angle_of_attack +
+      '\naa_max=' + statistical.Maximum_angle_of_attack +
+      '\naa_lim=' + statistical.Accepted_amount_outliers +
+      '\nns_hf_lim=' +
+      '\n';
 
     output = output + '\n[RawProcess_TiltCorrection_Settings]' +
-        '\npf_start_date=' +
-        '\npf_end_date=' +
-        '\npf_mode=' +
-        '\npf_north_offset=' +
-        '\npf_min_num_per_sec=' +
-        '\npf_w_max=' +
-        '\npf_u_min=' +
-        '\npf_file=' +
-        '\npf_fix=' +
-        '\npf_subset=' +
-        '\n';
+      '\npf_start_date=' +
+      '\npf_end_date=' +
+      '\npf_mode=' +
+      '\npf_north_offset=' +
+      '\npf_min_num_per_sec=' +
+      '\npf_w_max=' +
+      '\npf_u_min=' +
+      '\npf_file=' +
+      '\npf_fix=' +
+      '\npf_subset=' +
+      '\n';
 
     output = output + '\n[RawProcess_TimelagOptimization_Settings]' +
-        '\nto_start_date=' +
-        '\nto_end_date=' +
-        '\nto_mode=' +
-        '\nto_file=' +
-        '\nto_h2o_nclass=' +
-        '\nto_co2_min_flux=' +
-        '\nto_ch4_min_flux=' +
-        '\nto_gas4_min_flux=' +
-        '\nto_le_min_flux=' +
-        '\nto_pg_range=' +
-        '\nto_co2_min_lag=' +
-        '\nto_co2_max_lag=' +
-        '\nto_h2o_min_lag=' +
-        '\nto_h2o_max_lag=' +
-        '\nto_ch4_min_lag=' +
-        '\nto_ch4_max_lag=' +
-        '\nto_gas4_min_lag=' +
-        '\nto_gas4_max_lag=' +
-        '\nto_subset=' +
-        '\n';
+      '\nto_start_date=' + processing.Time_Lag_Start +
+      '\nto_end_date=' + processing.Time_Lag_End +
+      '\nto_mode=' + processing.Time_Lag_Method +
+      '\nto_file=' +
+      '\nto_h2o_nclass=' + processing.Time_Lag_RH_Classes +
+      '\nto_co2_min_flux=' + processing.Time_Lag_Minimum_C02_Flux +
+      '\nto_ch4_min_flux=' + processing.Time_Lag_Minimum_CH4_Flux +
+      '\nto_gas4_min_flux=' + processing.Time_Lag_Minimum_Gas_Flux +
+      '\nto_le_min_flux=' +
+      '\nto_pg_range=' + processing.Time_Lag_Plausibility_Range_Around_Median_Value +
+      '\nto_co2_min_lag=' + processing.Time_Lag_Searching_C02_Min +
+      '\nto_co2_max_lag=' + processing.Time_Lag_Searching_C02_Max +
+      '\nto_h2o_min_lag=' + processing.Time_Lag_Searching_H20_Min +
+      '\nto_h2o_max_lag=' + processing.Time_Lag_Searching_H20_Max +
+      '\nto_ch4_min_lag=' + processing.Time_Lag_Searching_CH4_Min +
+      '\nto_ch4_max_lag=' + processing.Time_Lag_Searching_CH4_Max +
+      '\nto_gas4_min_lag=' + processing.Time_Lag_Searching_Gas_Min +
+      '\nto_gas4_max_lag=' + processing.Time_Lag_Searching_Gas_Max +
+      '\nto_subset=' +
+      '\n';
 
     output = output + '\n[RawProcess_RandomUncertainty_Settings]' +
-        '\nru_meth=' +
-        '\nru_its_meth=' +
-        '\nru_tlag_max=' +
-        '\n';
+      '\nru_meth=' + statistical.Random_uncertainty_estimation +
+      '\nru_its_meth=' + statistical.Random_uncertainty_estimation_method +
+      '\nru_tlag_max=' + statistical.Maximum_correlation_period +
+      '\n';
 
-    //output = output + '\n[RawProcess_BiometMeasurements]' +
-    //    '\nbiom_use_native_header=' +
-    //    '\nbiom_hlines=' +
-    //    '\nbiom_separator=' +
-    //    '\nbiom_tstamp_ref=' +
-    //    '\nbiom_ta=' +
-    //    '\nbiom_pa=' +
-    //    '\nbiom_rh=' +
-    //    '\nbiom_rg=' +
-    //    '\nbiom_lwin=' +
-    //    '\nbiom_ppfd=';
+    output = output + '\n[RawProcess_BiometMeasurements]' +
+      '\nbiom_use_native_header=' +
+      '\nbiom_hlines=' +
+      '\nbiom_separator=' +
+      '\nbiom_tstamp_ref=' +
+      '\nbiom_ta=' +
+      '\nbiom_pa=' +
+      '\nbiom_rh=' +
+      '\nbiom_rg=' +
+      '\nbiom_lwin=' +
+      '\nbiom_ppfd=';
 
     return output;
   }
