@@ -101,6 +101,174 @@
                       Options: ["Simple linear regressions", "Multiple regressions"], Caption: "Select"}}'></div>
               </div>
             </div>
+
+            <div data-bind="visible:$root.getProperty('Add_Instrument_Sensible_Heat_Components')">
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#day" aria-controls="day" role="tab" data-toggle="tab">Daytime</a></li>
+                <li role="presentation"><a href="#night" aria-controls="profile" role="tab" data-toggle="tab">Night time</a></li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="day">
+                  <div id="linearregressionday" data-bind="visible: Surface_Temperature_Estimations() == 'Simple linear regressions'">
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Bottom:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Bottom_Gain", Name:"T", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Bottom_Offset", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Top:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Top_Gain", Name:"T", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Top_Offset", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Spar:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Spar_Gain", Name:"T", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Spar_Offset", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="multipleregressionday" data-bind="visible: Surface_Temperature_Estimations() == 'Multiple regressions'">
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Bottom:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Bottom_1", Name:"T - Ta", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Bottom_2", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Bottom_3", Name:"* LWin +", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Bottom_4", Name:"* U + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Top:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Top_1", Name:"T - Ta", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Top_2", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Top_3", Name:"* LWin +", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Top_4", Name:"* U + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Spar:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Spar_1", Name:"T - Ta", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Spar_2", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Spar_3", Name:"* LWin +", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Day_Spar_4", Name:"* U + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="night">
+
+                  <div id="linearregressionnight" data-bind="visible: Surface_Temperature_Estimations() == 'Simple linear regressions'">
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Bottom:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Bottom_Gain", Name:"T", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Bottom_Offset", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Top:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Top_Gain", Name:"T", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Top_Offset", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Spar:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Spar_Gain", Name:"T", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Spar_Offset", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="multipleregressionnight" data-bind="visible: Surface_Temperature_Estimations() == 'Multiple regressions'">
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Bottom:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Bottom_1", Name:"T - Ta", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Bottom_2", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Bottom_3", Name:"* LWin +", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Bottom_4", Name:"* U + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Top:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Top_1", Name:"T - Ta", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Top_2", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Top_3", Name:"* LWin +", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Top_4", Name:"* U + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-1"><h4>Spar:</h4></div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Spar_1", Name:"T - Ta", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Spar_2", Name:"* Ta + ", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Spar_3", Name:"* LWin +", Suffix:""}}'></div>
+                      </div>
+                      <div class="col-sm-2">
+                        <div data-bind='template: { name: "formFieldNumber", data: {Property: "Night_Spar_4", Name:"* U + ", Suffix:""}}'></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
           </div>
         </div>
         <div class="panel panel-default">
@@ -165,7 +333,7 @@
 
               </div>
               <div class="col-sm-6">
-                <div data-bind='template: { name: "formFieldDate", data: {Property: "Planar_End", Name: "Subperiod Start"}}'></div>
+                <div data-bind='template: { name: "formFieldDate", data: {Property: "Planar_End", Name: "Subperiod End"}}'></div>
                 <div data-bind='template: { name: "formFieldNumber", data: {Property: "Planar_Min_Mean_Horizontal_Wind_Component", Name: "Min Mean Horizontal Wind Component", Suffix: "m/s"}}'></div>
                 <div data-bind='template: { name: "formFieldList",
                       data: {Property: "Planar_Calculations_Fail", Name: "If planar fit calculations fail for a sector",
@@ -221,7 +389,7 @@
                 <div data-bind='template: { name: "formFieldNumber", data: {Property: "Time_Lag_Plausibility_Range_Around_Median_Value", Name: "Plausability Range around median", Suffix: "mad"}}'></div>
               </div>
               <div class="col-sm-6">
-                <div data-bind='template: { name: "formFieldDate", data: {Property: "Time_Lag_End", Name: "Subperiod Start"}}'></div>
+                <div data-bind='template: { name: "formFieldDate", data: {Property: "Time_Lag_End", Name: "Subperiod End"}}'></div>
               </div>
             </div>
           </div>

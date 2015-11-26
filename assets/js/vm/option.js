@@ -54,6 +54,46 @@ function (ko, moment) {
     Time_Lag_Searching_Gas_Min: ko.observable().extend({number:true}),
     Time_Lag_Searching_Gas_Max: ko.observable().extend({number:true}),
 
+    Day_Bottom_Gain:  ko.observable(0.944).extend({number:true}),
+    Day_Bottom_Offset:  ko.observable(2.57).extend({number:true}),
+    Day_Top_Gain:  ko.observable(1.005).extend({number:true}),
+    Day_Top_Offset:  ko.observable(0.24).extend({number:true}),
+    Day_Spar_Gain:  ko.observable(1.010).extend({number:true}),
+    Day_Spar_Offset:  ko.observable(0.36).extend({number:true}),
+
+    Night_Bottom_Gain:  ko.observable(0.883).extend({number:true}),
+    Night_Bottom_Offset:  ko.observable(2.17).extend({number:true}),
+    Night_Top_Gain:  ko.observable(1.008).extend({number:true}),
+    Night_Top_Offset:  ko.observable(-0.41).extend({number:true}),
+    Night_Spar_Gain:  ko.observable(1.010).extend({number:true}),
+    Night_Spar_Offset:  ko.observable(-0.17).extend({number:true}),
+
+    Day_Bottom_1:  ko.observable(2.8).extend({number:true}),
+    Day_Bottom_2:  ko.observable(-0.0681).extend({number:true}),
+    Day_Bottom_3:  ko.observable(0.0021).extend({number:true}),
+    Day_Bottom_4:  ko.observable(-0.334).extend({number:true}),
+    Day_Top_1:  ko.observable(-0.1).extend({number:true}),
+    Day_Top_2:  ko.observable(-0.0044).extend({number:true}),
+    Day_Top_3:  ko.observable(0.0011).extend({number:true}),
+    Day_Top_4:  ko.observable(-0.022).extend({number:true}),
+    Day_Spar_1:  ko.observable(0.3).extend({number:true}),
+    Day_Spar_2:  ko.observable(-0.0007).extend({number:true}),
+    Day_Spar_3:  ko.observable(0.0006).extend({number:true}),
+    Day_Spar_4:  ko.observable(-0.044).extend({number:true}),
+
+    Night_Bottom_1:  ko.observable(0.5).extend({number:true}),
+    Night_Bottom_2:  ko.observable(-0.1160).extend({number:true}),
+    Night_Bottom_3:  ko.observable(0.0087).extend({number:true}),
+    Night_Bottom_4:  ko.observable(-0.206).extend({number:true}),
+    Night_Top_1:  ko.observable(-1.7).extend({number:true}),
+    Night_Top_2:  ko.observable(-0.0160).extend({number:true}),
+    Night_Top_3:  ko.observable(0.0051).extend({number:true}),
+    Night_Top_4:  ko.observable(-0.029).extend({number:true}),
+    Night_Spar_1:  ko.observable(-2.1).extend({number:true}),
+    Night_Spar_2:  ko.observable(-0.0200).extend({number:true}),
+    Night_Spar_3:  ko.observable(0.0070).extend({number:true}),
+    Night_Spar_4:  ko.observable(-0.026).extend({number:true}),
+
     Planar_Start: ko.observable().extend({required: true, date: true}),
     Planar_End: ko.observable().extend({required: true, date: true}),
     Planar_Elements_Per_Sector: ko.observable().extend({number:true}),
@@ -111,6 +151,46 @@ function (ko, moment) {
       self.Time_Lag_Searching_CH4_Max(objFromServer.Time_Lag_Searching_CH4_Max);
       self.Time_Lag_Searching_Gas_Min(objFromServer.Time_Lag_Searching_Gas_Min);
       self.Time_Lag_Searching_Gas_Max(objFromServer.Time_Lag_Searching_Gas_Max);
+
+      self.Day_Bottom_Gain(objFromServer.Day_Bottom_Gain);
+      self.Day_Bottom_Offset(objFromServer.Day_Bottom_Offset);
+      self.Day_Top_Gain(objFromServer.Day_Top_Gain);
+      self.Day_Top_Offset(objFromServer.Day_Top_Offset);
+      self.Day_Spar_Gain(objFromServer.Day_Spar_Gain);
+      self.Day_Spar_Offset(objFromServer.Day_Spar_Offset);
+
+      self.Night_Bottom_Gain(objFromServer.Night_Bottom_Gain);
+      self.Night_Bottom_Offset(objFromServer.Night_Bottom_Offset);
+      self.Night_Top_Gain(objFromServer.Night_Top_Gain);
+      self.Night_Top_Offset(objFromServer.Night_Top_Offset);
+      self.Night_Spar_Gain(objFromServer.Night_Spar_Gain);
+      self.Night_Spar_Offset(objFromServer.Night_Spar_Offset);
+
+      self.Day_Bottom_1(objFromServer.Day_Bottom_1);
+      self.Day_Bottom_2(objFromServer.Day_Bottom_2);
+      self.Day_Bottom_3(objFromServer.Day_Bottom_3);
+      self.Day_Bottom_4(objFromServer.Day_Bottom_4);
+      self.Day_Top_1(objFromServer.Day_Top_1);
+      self.Day_Top_2(objFromServer.Day_Top_2);
+      self.Day_Top_3(objFromServer.Day_Top_3);
+      self.Day_Top_4(objFromServer.Day_Top_4);
+      self.Day_Spar_1(objFromServer.Day_Spar_1);
+      self.Day_Spar_2(objFromServer.Day_Spar_2);
+      self.Day_Spar_3(objFromServer.Day_Spar_3);
+      self.Day_Spar_4(objFromServer.Day_Spar_4);
+
+      self.Night_Bottom_1(objFromServer.Night_Bottom_1);
+      self.Night_Bottom_2(objFromServer.Night_Bottom_2);
+      self.Night_Bottom_3(objFromServer.Night_Bottom_3);
+      self.Night_Bottom_4(objFromServer.Night_Bottom_4);
+      self.Night_Top_1(objFromServer.Night_Top_1);
+      self.Night_Top_2(objFromServer.Night_Top_2);
+      self.Night_Top_3(objFromServer.Night_Top_3);
+      self.Night_Top_4(objFromServer.Night_Top_4);
+      self.Night_Spar_1(objFromServer.Night_Spar_1);
+      self.Night_Spar_2(objFromServer.Night_Spar_2);
+      self.Night_Spar_3(objFromServer.Night_Spar_3);
+      self.Night_Spar_4(objFromServer.Night_Spar_4);
 
       self.Planar_Start(moment(objFromServer.Planar_Start).format("D MMM YYYY"));
       self.Planar_End(moment(objFromServer.Planar_End).format("D MMM YYYY"));
@@ -182,6 +262,46 @@ function (ko, moment) {
         Time_Lag_Searching_CH4_Max: self.Time_Lag_Searching_CH4_Max(),
         Time_Lag_Searching_Gas_Min: self.Time_Lag_Searching_Gas_Min(),
         Time_Lag_Searching_Gas_Max: self.Time_Lag_Searching_Gas_Max(),
+
+        Day_Bottom_Gain: self.Day_Bottom_Gain(),
+        Day_Bottom_Offset: self.Day_Bottom_Offset(),
+        Day_Top_Gain: self.Day_Top_Gain(),
+        Day_Top_Offset: self.Day_Top_Offset(),
+        Day_Spar_Gain: self.Day_Spar_Gain(),
+        Day_Spar_Offset: self.Day_Spar_Offset(),
+
+        Night_Bottom_Gain: self.Night_Bottom_Gain(),
+        Night_Bottom_Offset: self.Night_Bottom_Offset(),
+        Night_Top_Gain: self.Night_Top_Gain(),
+        Night_Top_Offset: self.Night_Top_Offset(),
+        Night_Spar_Gain: self.Night_Spar_Gain(),
+        Night_Spar_Offset: self.Night_Spar_Offset(),
+
+        Day_Bottom_1: self.Day_Bottom_1(),
+        Day_Bottom_2: self.Day_Bottom_2(),
+        Day_Bottom_3: self.Day_Bottom_3(),
+        Day_Bottom_4: self.Day_Bottom_4(),
+        Day_Top_1: self.Day_Top_1(),
+        Day_Top_2: self.Day_Top_2(),
+        Day_Top_3: self.Day_Top_3(),
+        Day_Top_4: self.Day_Top_4(),
+        Day_Spar_1: self.Day_Spar_1(),
+        Day_Spar_2: self.Day_Spar_2(),
+        Day_Spar_3: self.Day_Spar_3(),
+        Day_Spar_4: self.Day_Spar_4(),
+
+        Night_Bottom_1: self.Night_Bottom_1(),
+        Night_Bottom_2: self.Night_Bottom_2(),
+        Night_Bottom_3: self.Night_Bottom_3(),
+        Night_Bottom_4: self.Night_Bottom_4(),
+        Night_Top_1: self.Night_Top_1(),
+        Night_Top_2: self.Night_Top_2(),
+        Night_Top_3: self.Night_Top_3(),
+        Night_Top_4: self.Night_Top_4(),
+        Night_Spar_1: self.Night_Spar_1(),
+        Night_Spar_2: self.Night_Spar_2(),
+        Night_Spar_3: self.Night_Spar_3(),
+        Night_Spar_4: self.Night_Spar_4(),
 
         Planar_Start: self.Planar_Start(),
         Planar_End: self.Planar_End(),
