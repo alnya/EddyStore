@@ -16,6 +16,7 @@ module.exports = {
     StatisticalAnalysis: {model: 'StatisticalAnalysis'},
     SpectralCorrection: {model: 'SpectralCorrection'},
     ProcessingOption: {model: 'ProcessingOption'},
+    Output: {model: 'Output'},
 
     Missing_Samples_Allowance: {type: 'float'},
     Flux_Averaging_Interval: {type: 'float'},

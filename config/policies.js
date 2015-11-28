@@ -51,5 +51,9 @@ module.exports.policies = {
 
   ReportController: {
     '*': ['currentUser','sessionAuth']
+  },
+
+  OutputController: {
+    '*': ['currentUser','sessionAuth']
   }
 };

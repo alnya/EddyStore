@@ -39,6 +39,12 @@ module.exports = {
     }
     return res.view("page/list", {title:"Reports", vm: "reports"});
   },
+  outputs: function (req, res) {
+    if (req.param('id') != null) {
+      return res.view("page/output", {title:"Output File Options", vm: "output"});
+    }
+    return res.view("page/advancedlist", {title:"Output File Options", vm: "outputs"});
+  },
   users: function (req, res) {
     if (req.param('id') != null) {
       return res.view("page/user", {title:"User", vm: "user"});

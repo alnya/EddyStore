@@ -1,0 +1,18 @@
+<%- partial('../includes/FormFieldTemplate.ejs') %>
+<form id="entityForm" role="form" style="display: none;" data-bind="visible: DisplayForm">
+
+
+
+
+  <%- partial('../includes/FormButtons.ejs') %>
+
+</form>
+
+<script type="text/javascript">
+  require(['knockout', 'baseForm', 'output'],
+    function(ko, baseForm, vm) {
+      baseForm.Initialise(vm());
+    });
+</script>
+
+<%- partial('../includes/ModalDialogBox.ejs') %>

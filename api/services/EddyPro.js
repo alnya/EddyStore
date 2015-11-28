@@ -109,8 +109,8 @@ module.exports = {
         '\ncol_' + i + '_instrument=' + formatValue(column.Instrument) +
         '\ncol_' + i + '_measure_type=' + formatValue(column.Measurement_Type) +
         '\ncol_' + i + '_unit_in=' + formatValue(column.Input_Unit) +
-        '\ncol_' + i + '_min_value=' +
-        '\ncol_' + i + '_max_value=' +
+        '\ncol_' + i + '_min_value=0.000000' +
+        '\ncol_' + i + '_max_value=0.000000' +
         '\ncol_' + i + '_conversion=' +
         '\ncol_' + i + '_unit_out=' + formatValue(column.Output_Unit) +
         '\ncol_' + i + '_a_value=' +
@@ -136,6 +136,21 @@ module.exports = {
       return value;
     };
 
+    var getVariableColumn = function(val) {
+
+      for (var i = 0; i < thisReport.Variables.length; i++) {
+        var variable = thisReport.Variables[i];
+        if (variable.Variable == val) {
+          DataColumn.findOne(variable.DataColumn)
+            .exec(function (err, thisCol) {
+              return thisCol.Column_Number;
+            });
+        }
+      }
+
+      return 0;
+    };
+
     var output = ';EDDYPRO_PROCESSING' +
         '\n[Project]' +
         '\ncreation_date=' + thisReport.createdAt +
@@ -157,23 +172,23 @@ module.exports = {
         '\nbinary_eol=-1' +
         '\nbinary_nbytes=-1' +
         '\nbinary_little_end=-1' +
-        '\nmaster_sonic=usa1_standard_1' +
-        '\ncol_co2=6' +
-        '\ncol_h2o=7' +
-        '\ncol_ch4=0' +
-        '\ncol_n2o=0' +
-        '\ncol_int_t_1=0' +
-        '\ncol_int_t_2=0' +
-        '\ncol_int_p=0' +
-        '\ncol_air_t=0' +
-        '\ncol_air_p=0' +
-        '\ncol_cell_t=0' +
-        '\ncol_diag_75=0' +
-        '\ncol_diag_72=0' +
-        '\ncol_diag_77=0' +
+        '\nmaster_sonic=' + thisReport.Master_Anemometer +
+        '\ncol_co2=' + getVariableColumn(9) +
+        '\ncol_h2o=' + getVariableColumn(10) +
+        '\ncol_ch4=' + getVariableColumn(11) +
+        '\ncol_n2o=' + getVariableColumn(12) +
+        '\ncol_int_t_1=' + getVariableColumn(21) +
+        '\ncol_int_t_2=' + getVariableColumn(22) +
+        '\ncol_int_p=' + getVariableColumn(23) +
+        '\ncol_air_t=' + getVariableColumn(24) +
+        '\ncol_air_p=' + getVariableColumn(25) +
+        '\ncol_cell_t=' + getVariableColumn(7) +
+        '\ncol_diag_75=' + getVariableColumn(26) +
+        '\ncol_diag_72=' + getVariableColumn(27) +
+        '\ncol_diag_77=' + getVariableColumn(28) +
         '\ngas_mw=0.0000' +
         '\ngas_diff=0.00000' +
-        '\ncol_ts=0' +
+        '\ncol_ts=' + getVariableColumn(6) +
         '\nout_ghg_eu=0' +
         '\nout_amflux=0' +
         '\nout_rich=1' +
