@@ -20,6 +20,7 @@ function (ko, moment, api) {
     StatisticalAnalysis: ko.observable(),
     SpectralCorrection: ko.observable(),
     ProcessingOption: ko.observable(),
+    Output: ko.observable(),
 
     Missing_Samples_Allowance: ko.observable(10).extend({number: true}),
     Flux_Averaging_Interval:  ko.observable(30).extend({number: true}),
@@ -37,6 +38,7 @@ function (ko, moment, api) {
     StatisticalAnalysisList: ko.observableArray(),
     SpectralCorrectionList: ko.observableArray(),
     ProcessingOptionList: ko.observableArray(),
+    OutputList: ko.observableArray(),
 
     NewReportVariable: function() {
       return {
@@ -135,6 +137,9 @@ function (ko, moment, api) {
       });
       api.ajaxGet("/SpectralCorrection/summary", null, null, function(data, method){
         self.SpectralCorrectionList(data.items);
+      });
+      api.ajaxGet("/Output", null, null, function(data, method) {
+        self.OutputList(data.items);
       });
     },
 

@@ -47,6 +47,7 @@ module.exports = {
       .populate('StatisticalAnalysis')
       .populate('SpectralCorrection')
       .populate('ProcessingOption')
+      .populate('Output')
       .populate('Flags')
       .populate('Variables')
       .exec(function (err, thisReport) {
