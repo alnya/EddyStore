@@ -5,14 +5,14 @@ function (ko, moment, api) {
 
 	var outputVm = ko.validatedObservable({
 
-    EntityName: "User",
-    Url: "/User",
+    EntityName: "Output",
+    Url: "/Output",
     Name: ko.observable().extend({required: true}),
 
     Full_Output: ko.observable(),
     Output_Format: ko.observable(),
     Continuous_Dataset: ko.observable(),
-    Error_Label: {type:'float'},
+    Error_Label: ko.observable(-9999).extend({number: true}),
 
     AmeriFlux: ko.observable(),
     GHG_Europe: ko.observable(),

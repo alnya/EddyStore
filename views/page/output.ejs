@@ -1,8 +1,199 @@
-<%- partial('../includes/FormFieldTemplate.ejs') %>
-<form id="entityForm" role="form" style="display: none;" data-bind="visible: DisplayForm">
+<div class="row">
+  <div class="col-sm-3 col-md-2 sidebar">
+    <%- partial('../includes/advancednav.ejs') %>
+  </div>
+  <div class="col-sm-9 col-md-10 main">
+    <%- partial('../includes/FormFieldTemplate.ejs') %>
+  <form id="entityForm" role="form" style="display: none;" data-bind="visible: DisplayForm">
+    <div data-bind='template: { name: "formFieldString", data: {Property: "Name", Name: "Name"}}'></div>
 
+  <div class="panel panel-default spacer">
+    <div class="panel-body" data-bind="with: EntityViewModel">
+      <div class="row">
+        <div class="col-xs-2">
+          <button class="btn btn-default" type="submit" data-bind="click: SetMinimal">Set Minimal</button>
+        </div>
+        <div class="col-xs-10">
+          Maximize computational speed
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          <button class="btn btn-default" type="submit" data-bind="click: SetTypical">Set Typical</button>
+        </div>
+        <div class="col-xs-10">
+          Typical output selection
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-2">
+          <button class="btn btn-default" type="submit" data-bind="click: SetThorough">Set Thorough</button>
+        </div>
+        <div class="col-xs-10">
+          Complete results and diagnostic information
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="panel panel-default spacer">
+    <div class="panel-heading">
+      <h2 class="panel-title">Results Files</h2>
+    </div>
+    <div class="panel-body" data-bind="with: EntityViewModel">
+      <div class="row">
+        <div class="col-sm-8">
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Full_Output", Name: "Full Output (fluxes, quality flags, turbulence, statistics...)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "AmeriFlux", Name: "Ameriflux results"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "GHG_Europe", Name: "GHG-Europe results"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Biomet_Measurements", Name: "Biomet measurements"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Steady_State", Name: "Details of steady state and developed turbulence tests"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Metadata", Name: "Metadata"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Continuous_Dataset", Name: "Build continuous dataset"}}'></div>
+        </div>
+        <div class="col-sm-4">
+          <div data-bind='template: { name: "formFieldList", data: {Property: "Output_Format", Name: "Output Format",
+              Options: ["Output only available results","Use standard output format"], Caption: "Select"}}'></div>
+          <div data-bind='template: { name: "formFieldNumber", data: {Property: "Error_Label", Name: "Error Label", Suffix: ""}}'></div>
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <div class="panel panel-default spacer">
+    <div class="panel-heading">
+      <h2 class="panel-title">Spectral outputs</h2>
+    </div>
+    <div class="panel-body" data-bind="with: EntityViewModel">
+      <div class="row">
+        <div class="col-sm-4">
+          <h3>Reduced spectra and ogives</h3>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_All", Name: "All binned spectra and cospectra"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_All_Ogives", Name: "All binned ogives"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_Averaged_Spectra", Name: "Ensemble average spectra"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_Averaged_Cospectra", Name: "Ensemble averaged cospectra and models"}}'></div>
+
+        </div>
+        <div class="col-sm-4">
+          <h3>Full length spectra</h3>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_U", Name: "U (longitudinal wind component)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_V", Name: "V (transversal wind component)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_W", Name: "W (vertical wind component)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_TS", Name: "TS (sonic or fast ambient temperature)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_CO2", Name: "C02 (concentration or density)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_H20", Name: "H20 (concentration or density)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_CH4", Name: "CH4 (concentration or density)"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_4th_Gas", Name: "4th Gas (concentration or density)"}}'></div>
+
+        </div>
+        <div class="col-sm-4">
+          <h3>Full length cospectra</h3>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_WU", Name: "W/U"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_WV", Name: "W/V"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_WTS", Name: "W/TS"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_WC02", Name: "W/C02"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_WH20", Name: "W/H20"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_WCH4", Name: "W/CH4"}}'></div>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Spectral_Output_W4th_Gas", Name: "W/4th Gas"}}'></div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default spacer">
+    <div class="panel-heading">
+      <h2 class="panel-title">Processed raw data</h2>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        <table class="table" data-bind="with: EntityViewModel">
+      <tr>
+        <th></th>
+        <th>Statistics</th>
+        <th>Time series</th>
+      </tr>
+      <tr>
+        <th>Level 1 (unprocessed)</th>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Stats_1", Name: ""}}'></div>
+        </td>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_1", Name: ""}}'></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Level 2 (after despiking)</th>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Stats_2", Name: ""}}'></div>
+        </td>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_2", Name: ""}}'></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Level 3 (after cross-wind correction)</th>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Stats_3", Name: ""}}'></div>
+        </td>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_3", Name: ""}}'></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Level 4 (after angle-of-attack correction)</th>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Stats_4", Name: ""}}'></div>
+        </td>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_4", Name: ""}}'></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Level 5 (after tilt correction)</th>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Stats_5", Name: ""}}'></div>
+        </td>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_5", Name: ""}}'></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Level 6 (after time lag compensation)</th>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Stats_6", Name: ""}}'></div>
+        </td>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_6", Name: ""}}'></div>
+        </td>
+      </tr>
+      <tr>
+        <th>Level 7 (after detrending)</th>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Stats_7", Name: ""}}'></div>
+        </td>
+        <td>
+          <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_7", Name: ""}}'></div>
+        </td>
+      </tr>
+    </table>
+      </div>
+      <div class="col-sm-4">
+        <h3>Variables</h3>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_U", Name: "U"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_V", Name: "V"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_W", Name: "W"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_TS", Name: "TS"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_CO2", Name: "C02"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_H20", Name: "H20"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_CH4", Name: "CH4"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_4th", Name: "4th gas"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_T", Name: "T air"}}'></div>
+        <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Process_Time_P", Name: "P air"}}'></div>
+
+      </div>
+    </div>
+  </div>
 
   <%- partial('../includes/FormButtons.ejs') %>
 
@@ -16,3 +207,4 @@
 </script>
 
 <%- partial('../includes/ModalDialogBox.ejs') %>
+</div></div>
