@@ -127,14 +127,25 @@ module.exports = {
   getReport: function(thisReport, folder_path, output_path) {
 
     var spectral = thisReport.SpectralCorrection;
+    if (spectral == null) spectral = SpectralCorrection.create();
+
     var processing = thisReport.ProcessingOption;
+    if (processing == null) processing = ProcessingOption.create();
+
     var statistical = thisReport.StatisticalAnalysis;
+    if (statistical == null) statistical = StatisticalAnalysis.create();
+
     var output = thisReport.Output;
+    if (output == null) output = new Output._model();
 
     var formatValue = function(value, decimal) {
       if (value == null && !decimal) return '';
       if (value == null && decimal) return '0.00';
       return value;
+    };
+
+    var formatBoolValue = function(value) {
+     return value ? 1 : 0;
     };
 
     var getVariableColumn = function(val) {
@@ -144,7 +155,8 @@ module.exports = {
         if (variable.Variable == val) {
           DataColumn.findOne(variable.DataColumn)
             .exec(function (err, thisCol) {
-              return thisCol.Column_Number;
+              if (thisCol != null)
+                return thisCol.Column_Number;
             });
         }
       }
@@ -207,7 +219,7 @@ module.exports = {
         '\nfoot_meth=0' +
         '\ntob1_format=0' +
         '\nout_path=' + output_path +
-        '\nfix_out_format=' + output.Output_Format == "Use standard output format" ? 1 : 0 +
+        '\nfix_out_format=' + (output.Output_Format == "Use standard output format" ? 1 : 0) +
         '\nerr_label=' + output.Error_Label +
         '\nqc_meth=1' +
         '\nuse_biom=0' +
@@ -289,9 +301,8 @@ module.exports = {
 
         output = output + '' +
         '\nflag' + i + '_column=' + getVariableColumn(flag.DataColumn) +
-        '\nflag' + i + '_threshold=' + flag.Threshold +
-        '\nflag' + i + '_upper=1' +
-        '\n';
+        '\nflag' + i + '_threshold=' + formatValue(flag.Threshold) +
+        '\nflag' + i + '_upper=1';
       }
     }
 
@@ -311,47 +322,47 @@ module.exports = {
       '\ntap_win=' +
       '\nnbins=' +
       '\navrg_len=' +
-      '\nout_bin_sp=' + output.Spectral_Output_All +
-      '\nout_bin_og=' + output.Spectral_Output_All_Ogives +
-      '\nout_full_sp_u=' + output.Spectral_Output_U +
-      '\nout_full_sp_v=' + output.Spectral_Output_V +
-      '\nout_full_sp_w=' + output.Spectral_Output_W +
-      '\nout_full_sp_ts=' + output.Spectral_Output_TS +
-      '\nout_full_sp_co2=' + output.Spectral_Output_CO2 +
-      '\nout_full_sp_h2o=' + output.Spectral_Output_H20 +
-      '\nout_full_sp_ch4=' + output.Spectral_Output_CH4 +
-      '\nout_full_sp_n2o=' + output.Spectral_Output_4th_Gas +
-      '\nout_st_1=' + output.Process_Stats_1 +
-      '\nout_st_2=' + output.Process_Stats_2 +
-      '\nout_st_3=' + output.Process_Stats_3 +
-      '\nout_st_4=' + output.Process_Stats_4 +
-      '\nout_st_5=' + output.Process_Stats_5 +
-      '\nout_st_6=' + output.Process_Stats_6 +
-      '\nout_st_7=' + output.Process_Stats_7 +
-      '\nout_raw_1=' + output.Process_Time_1 +
-      '\nout_raw_2=' + output.Process_Time_2 +
-      '\nout_raw_3=' + output.Process_Time_3 +
-      '\nout_raw_4=' + output.Process_Time_4 +
-      '\nout_raw_5=' + output.Process_Time_5 +
-      '\nout_raw_6=' + output.Process_Time_6 +
-      '\nout_raw_7=' + output.Process_Time_7 +
-      '\nout_raw_u=' + output.Process_Time_U +
-      '\nout_raw_v=' + output.Process_Time_V +
-      '\nout_raw_w=' + output.Process_Time_W +
-      '\nout_raw_ts=' + output.Process_Time_TS +
-      '\nout_raw_co2=' + output.Process_Time_CO2 +
-      '\nout_raw_h2o=' + output.Process_Time_H20 +
-      '\nout_raw_ch4=' + output.Process_Time_CH4 +
-      '\nout_raw_gas4=' + output.Process_Time_4th +
-      '\nout_raw_t_air=' + output.Process_Time_T +
-      '\nout_raw_p_air=' + output.Process_Time_P +
-      '\nout_full_cosp_w_u=' + output.Spectral_Output_WU +
-      '\nout_full_cosp_w_v=' + output.Spectral_Output_WV +
-      '\nout_full_cosp_w_ts=' + output.Spectral_Output_WTS +
-      '\nout_full_cosp_w_co2=' + output.Spectral_Output_WC02 +
-      '\nout_full_cosp_w_h2o=' + output.Spectral_Output_WH20 +
-      '\nout_full_cosp_w_ch4=' + output.Spectral_Output_WCH4 +
-      '\nout_full_cosp_w_n2o=' + output.Spectral_Output_W4th_Gas +
+      '\nout_bin_sp=' + formatBoolValue(output.Spectral_Output_All) +
+      '\nout_bin_og=' + formatBoolValue(output.Spectral_Output_All_Ogives) +
+      '\nout_full_sp_u=' + formatBoolValue(output.Spectral_Output_U) +
+      '\nout_full_sp_v=' + formatBoolValue(output.Spectral_Output_V) +
+      '\nout_full_sp_w=' + formatBoolValue(output.Spectral_Output_W) +
+      '\nout_full_sp_ts=' + formatBoolValue(output.Spectral_Output_TS) +
+      '\nout_full_sp_co2=' + formatBoolValue(output.Spectral_Output_CO2) +
+      '\nout_full_sp_h2o=' + formatBoolValue(output.Spectral_Output_H20) +
+      '\nout_full_sp_ch4=' + formatBoolValue(output.Spectral_Output_CH4) +
+      '\nout_full_sp_n2o=' + formatBoolValue(output.Spectral_Output_4th_Gas) +
+      '\nout_st_1=' + formatBoolValue(output.Process_Stats_1) +
+      '\nout_st_2=' + formatBoolValue(output.Process_Stats_2) +
+      '\nout_st_3=' + formatBoolValue(output.Process_Stats_3) +
+      '\nout_st_4=' + formatBoolValue(output.Process_Stats_4) +
+      '\nout_st_5=' + formatBoolValue(output.Process_Stats_5) +
+      '\nout_st_6=' + formatBoolValue(output.Process_Stats_6) +
+      '\nout_st_7=' + formatBoolValue(output.Process_Stats_7) +
+      '\nout_raw_1=' +formatBoolValue( output.Process_Time_1) +
+      '\nout_raw_2=' + formatBoolValue(output.Process_Time_2) +
+      '\nout_raw_3=' + formatBoolValue(output.Process_Time_3) +
+      '\nout_raw_4=' + formatBoolValue(output.Process_Time_4) +
+      '\nout_raw_5=' + formatBoolValue(output.Process_Time_5) +
+      '\nout_raw_6=' + formatBoolValue(output.Process_Time_6) +
+      '\nout_raw_7=' + formatBoolValue(output.Process_Time_7) +
+      '\nout_raw_u=' + formatBoolValue(output.Process_Time_U) +
+      '\nout_raw_v=' + formatBoolValue(output.Process_Time_V) +
+      '\nout_raw_w=' + formatBoolValue(output.Process_Time_W) +
+      '\nout_raw_ts=' + formatBoolValue(output.Process_Time_TS) +
+      '\nout_raw_co2=' + formatBoolValue(output.Process_Time_CO2) +
+      '\nout_raw_h2o=' + formatBoolValue(output.Process_Time_H20) +
+      '\nout_raw_ch4=' + formatBoolValue(output.Process_Time_CH4) +
+      '\nout_raw_gas4=' + formatBoolValue(output.Process_Time_4th) +
+      '\nout_raw_t_air=' + formatBoolValue(output.Process_Time_T) +
+      '\nout_raw_p_air=' + formatBoolValue(output.Process_Time_P) +
+      '\nout_full_cosp_w_u=' + formatBoolValue(output.Spectral_Output_WU) +
+      '\nout_full_cosp_w_v=' + formatBoolValue(output.Spectral_Output_WV) +
+      '\nout_full_cosp_w_ts=' + formatBoolValue(output.Spectral_Output_WTS) +
+      '\nout_full_cosp_w_co2=' + formatBoolValue(output.Spectral_Output_WC02) +
+      '\nout_full_cosp_w_h2o=' + formatBoolValue(output.Spectral_Output_WH20) +
+      '\nout_full_cosp_w_ch4=' + formatBoolValue(output.Spectral_Output_WCH4) +
+      '\nout_full_cosp_w_n2o=' + formatBoolValue(output.Spectral_Output_W4th_Gas) +
       '\nto_mixratio=' +
       '\nfilter_sr=' +
       '\nfilter_al=' +
@@ -400,15 +411,15 @@ module.exports = {
 
     if (statistical != null) {
       output = output + '\n[RawProcess_Tests]' +
-      '\ntest_sr=' + statistical.Spike_count +
-      '\ntest_ar=' + statistical.Amplitude_resolution +
-      '\ntest_do=' + statistical.Drop_outs +
-      '\ntest_al=' + statistical.Absolute_limits +
-      '\ntest_sk=' + statistical.Skewness_Kurtosis +
-      '\ntest_ds=' + statistical.Discontinuities +
-      '\ntest_tl=' + statistical.Time_lags +
-      '\ntest_aa=' + statistical.Angle_of_attack +
-      '\ntest_ns=' + statistical.Steadiness_of_horizontal_wind +
+      '\ntest_sr=' + formatBoolValue(statistical.Spike_count) +
+      '\ntest_ar=' + formatBoolValue(statistical.Amplitude_resolution) +
+      '\ntest_do=' + formatBoolValue(statistical.Drop_outs) +
+      '\ntest_al=' + formatBoolValue(statistical.Absolute_limits) +
+      '\ntest_sk=' + formatBoolValue(statistical.Skewness_Kurtosis) +
+      '\ntest_ds=' + formatBoolValue(statistical.Discontinuities) +
+      '\ntest_tl=' + formatBoolValue(statistical.Time_lags) +
+      '\ntest_aa=' + formatBoolValue(statistical.Angle_of_attack) +
+      '\ntest_ns=' + formatBoolValue(statistical.Steadiness_of_horizontal_wind) +
       '\n';
 
       output = output + '\n[RawProcess_ParameterSettings]' +
@@ -514,7 +525,7 @@ module.exports = {
 
     if (statistical != null) {
       output = output + '\n[RawProcess_RandomUncertainty_Settings]' +
-      '\nru_meth=' + statistical.Random_uncertainty_estimation +
+      '\nru_meth=' + formatBoolValue(statistical.Random_uncertainty_estimation) +
       '\nru_its_meth=' + statistical.Random_uncertainty_estimation_method +
       '\nru_tlag_max=' + statistical.Maximum_correlation_period +
       '\n';

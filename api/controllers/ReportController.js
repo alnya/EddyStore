@@ -13,7 +13,6 @@ module.exports = {
     if (!req.param('id')) {
       return res.badRequest('ID Missing');
     }
-    console.log("hello world: " + req.param('id'));
 
     Report.findOne(req.param('id'))
       .populate('StatisticalAnalysis')
