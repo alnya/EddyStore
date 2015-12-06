@@ -126,7 +126,7 @@ module.exports = {
     return (output);
   },
 
-  getReport: function(thisReport, folder_path, output_path) {
+  getReport: function(thisReport, folder_path) {
 
     var spectral = thisReport.SpectralCorrection;
     if (spectral == null) spectral = SpectralCorrection.create();
@@ -160,7 +160,7 @@ module.exports = {
         '\n[Project]' +
         '\ncreation_date=' + thisReport.createdAt +
         '\nlast_change_date=' + thisReport.updatedAt +
-        '\nfile_name=' + thisReport.id + '.eddypro' +
+        '\nfile_name=' + sails.config.eddyProConfig.directory + thisReport.id + '.eddypro' +
         '\nrun_mode=0' +
         '\nrun_fcc=0' +
         '\nproject_title=' + thisReport.Name +
@@ -210,7 +210,7 @@ module.exports = {
         '\nwpl_meth=1' +
         '\nfoot_meth=0' +
         '\ntob1_format=0' +
-        '\nout_path=' + output_path +
+        '\nout_path=' + sails.config.eddyProConfig.outPath +
         '\nfix_out_format=' + (output.Output_Format == "Use standard output format" ? 1 : 0) +
         '\nerr_label=' + output.Error_Label +
         '\nqc_meth=1' +

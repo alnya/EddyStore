@@ -66,7 +66,7 @@ module.exports = {
           if (!thisData) return res.notFound();
 
           var metadata = EddyPro.getMetadata(thisData);
-          var report = EddyPro.getReport(thisReport, thisData.Folder_Path, "");
+          var report = EddyPro.getReport(thisReport, thisData.Folder_Path);
 
           var filename = sails.config.eddyProConfig.directory + thisReport.id;
 
