@@ -7,6 +7,10 @@ module.exports = {
   formatBoolValue : function(value) {
     return value ? 1 : 0;
   },
+  formatDateValue : function(value) {
+    if (value == null) return '';
+    return new Date(value).toISOString().substr(0, 19);
+  },
   getMetadata: function(thisData) {
 
     var formatWDFValue = function(value) {
@@ -19,10 +23,10 @@ module.exports = {
         '\n[Project]' +
         '\ntitle=' +
         '\nid=' +
-        '\ncreation_date=' + EddyPro.formatValue(thisData.createdAt) +
-        '\nlast_change_date=' + EddyPro.formatValue(thisData.updatedAt) +
-        '\nstart_date=' + EddyPro.formatValue(thisData.Date_From) +
-        '\nend_date=' + EddyPro.formatValue(thisData.Date_To) +
+        '\ncreation_date=' + EddyPro.formatDateValue(thisData.createdAt) +
+        '\nlast_change_date=' + EddyPro.formatDateValue(thisData.updatedAt) +
+        '\nstart_date=' + EddyPro.formatDateValue(thisData.Date_From) +
+        '\nend_date=' + EddyPro.formatDateValue(thisData.Date_To) +
         '\nfile_name=' + thisData.id + '.metadata' +
         '\nsw_version=5.1.1' +
         '\nini_version=3.1' +
@@ -61,7 +65,7 @@ module.exports = {
       for (var i = 1; i <= thisData.Instruments.length; i++) {
         var instrument = thisData.Instruments[i-1];
 
-        if (instrument.Instrument_Type = 'Anemometer') {
+        if (instrument.Instrument_Type == 'Anemometer') {
           output = output +
           '\ninstr_' + i + '_manufacturer=' + EddyPro.formatValue(instrument.Manufacturer) +
           '\ninstr_' + i + '_model=' + EddyPro.formatValue(instrument.Model) +
@@ -98,7 +102,7 @@ module.exports = {
     }
 
       output = output + '\n' + '\n[FileDescription]' +
-      '\nseparator=' + thisData.Field_Separator_Character +
+      '\nseparator=' + thisData.Field_Separator_Character.toLowerCase() +
       '\nheader_rows=' + thisData.Number_Of_Header_Rows +
       '\ndata_label=Not set';
 
@@ -107,16 +111,16 @@ module.exports = {
         var column = thisData.Columns[i-1];
 
         output = output +
-        '\ncol_' + i + '_variable=' + (column.Numeric ? column.Variable : 'not_numeric') +
+        '\ncol_' + i + '_variable=' + (column.Numeric ? EddyPro.getVariable(column.Variable) : 'not_numeric') +
         '\ncol_' + i + '_instrument=' + EddyPro.formatValue(column.Instrument) +
-        '\ncol_' + i + '_measure_type=' + EddyPro.formatValue(column.Measurement_Type) +
-        '\ncol_' + i + '_unit_in=' + EddyPro.formatValue(column.Input_Unit) +
+        '\ncol_' + i + '_measure_type=' + EddyPro.getMeasureType(column.Measurement_Type) +
+        '\ncol_' + i + '_unit_in=' + EddyPro.getInputUnit(column.Input_Unit) +
         '\ncol_' + i + '_min_value=0.000000' +
         '\ncol_' + i + '_max_value=0.000000' +
         '\ncol_' + i + '_conversion=' +
-        '\ncol_' + i + '_unit_out=' + EddyPro.formatValue(column.Output_Unit) +
-        '\ncol_' + i + '_a_value=' +
-        '\ncol_' + i + '_b_value=' +
+        '\ncol_' + i + '_unit_out=' + EddyPro.getInputUnit(column.Output_Unit) +
+        '\ncol_' + i + '_a_value=1.000000' +
+        '\ncol_' + i + '_b_value=0.000000' +
         '\ncol_' + i + '_nom_timelag=' + EddyPro.formatValue(column.Nominal_Time_Lag, true) +
         '\ncol_' + i + '_min_timelag=' + EddyPro.formatValue(column.Minimum_Time_Lag, true) +
         '\ncol_' + i + '_max_timelag=' + EddyPro.formatValue(column.Maximum_Time_Lag, true);
@@ -158,8 +162,8 @@ module.exports = {
 
     var output = ';EDDYPRO_PROCESSING' +
         '\n[Project]' +
-        '\ncreation_date=' + thisReport.createdAt +
-        '\nlast_change_date=' + thisReport.updatedAt +
+        '\ncreation_date=' + EddyPro.formatDateValue(thisReport.createdAt) +
+        '\nlast_change_date=' + EddyPro.formatDateValue(thisReport.updatedAt) +
         '\nfile_name=' + sails.config.eddyProConfig.directory + thisReport.id + '.eddypro' +
         '\nrun_mode=0' +
         '\nrun_fcc=0' +
@@ -228,8 +232,8 @@ module.exports = {
         if (spectral != null) {
 
           output = output + '\n[FluxCorrection_SpectralAnalysis_General]' +
-          '\nsa_start_date=' + EddyPro.formatValue(spectral.Subperiod_Start) +
-          '\nsa_end_date=' + EddyPro.formatValue(spectral.Subperiod_End) +
+          '\nsa_start_date=' + EddyPro.formatDateValue(spectral.Subperiod_Start) +
+          '\nsa_end_date=' + EddyPro.formatDateValue(spectral.Subperiod_End) +
           '\nsa_mode=1' +
           '\nsa_file=' +
           '\nsa_min_smpl=' + EddyPro.formatValue(spectral.Minimum_Number_Of_Spectra) +
@@ -479,8 +483,8 @@ module.exports = {
     }
 
     output = output + '\n[RawProcess_TiltCorrection_Settings]' +
-      '\npf_start_date=' + processing.Planar_Start +
-      '\npf_end_date=' + processing.Planar_End +
+      '\npf_start_date=' + EddyPro.formatDateValue(processing.Planar_Start) +
+      '\npf_end_date=' + EddyPro.formatDateValue(processing.Planar_End) +
       '\npf_mode=' + EddyPro.getLookupValue("Planar_Calculations_Fail", processing.Time_Lag_Method) +
       '\npf_north_offset=' + processing.Planar_North_Offset_First_Sector +
       '\npf_min_num_per_sec=' + processing.Planar_Elements_Per_Sector +
@@ -493,8 +497,8 @@ module.exports = {
 
     if (processing != null) {
       output = output + '\n[RawProcess_TimelagOptimization_Settings]' +
-      '\nto_start_date=' + processing.Time_Lag_Start +
-      '\nto_end_date=' + processing.Time_Lag_End +
+      '\nto_start_date=' + EddyPro.formatDateValue(processing.Time_Lag_Start) +
+      '\nto_end_date=' + EddyPro.formatDateValue(processing.Time_Lag_End) +
       '\nto_mode=' + EddyPro.getLookupValue("Time_Lag_Method", processing.Time_Lag_Method) +
       '\nto_file=' +
       '\nto_h2o_nclass=' + processing.Time_Lag_RH_Classes +
@@ -537,6 +541,81 @@ module.exports = {
 
     return output;
   },
+  getVariable: function(value) {
+    switch (value) {
+      case "w":return "w";
+      case "u":return "u";
+      case "v":return "v";
+      case "p (pho)":return "v";
+      case "Speed of Sound":return "sos";
+      case "Sonic Temperature":return "ts";
+      case "Sampling Line Flow Rate":return "flowrate";
+      case "SO2":return "so2";
+      case "O2":return "o2";
+      case "NO2":return "no2";
+      case "NO":return "no";
+      case "NH4":return "nh4";
+      case "N2O":return "n2o";
+      case "LI-7700 Diagnostics":return "diag_77";
+      case "LI-7500(A) Diagnostics":return "diag_75";
+      case "LI-7200 Diagnostics":return "diag_72";
+      case "H2O":return "h2o";
+      case "Fast Ambient Temperature":return "fast_t";
+      case "Cell Temperature Out":return "int_t_2";
+      case "Cell Temperature In":return "int_t_1";
+      case "Cell Pressure":return "int_p";
+      case "CO2":return "co2";
+      case "CO":return "co";
+      case "CH4":return "ch4";
+      case "Average Cell Temperature":return "cell_t";
+      case "Ambient Temperature":return "air_t";
+      case "Ambient Pressure":return "air_p";
+      case "? (theta)":return "u";
+    }
+    return "";
+  },
+  getMeasureType: function(value) {
+    switch(value) {
+      case "Molar/Mass density": return "molar_density";
+      case "Mole fraction": return "mole_fraction";
+      case "Mixing ratio": return "mixing_ratio";
+      case "Other": return "other";
+    }
+    return "";
+  },
+  getInputUnit: function(value) {
+    switch(value) {
+      case "mV":return "mvolt";
+      case "V":return "volt";
+      case "Mm/s":return "mm_sec";
+      case "Cm/s":return "cm_sec";
+      case "m/s":return "m_sec";
+      case "K":return "kelvin";
+      case "cK":return "ckelvin";
+      case "°C":return "celsius";
+      case "C°C":return "ccelsius";
+      case "mmol/mol (ppt)":return "ppt";
+      case "µmol/mol (ppm)":return "ppm";
+      case "mmol/mol (ppb)":return "ppb";
+      case "mmol/m3":return "mmol_m3";
+      case "µmol/m3":return "umol_m3";
+      case "g/m3":return "g_m3";
+      case "mg/m3":return "mg_m3";
+      case "ug/m3":return "ug_m3";
+      case "Pa":return "pa";
+      case "hPa":return "hpa";
+      case "kPa":return "kpa";
+      case "l/min":return "lit_m";
+      case "m3/s":return "m3_s";
+      case "cm3/s":return "cm3_s";
+      case "ft3/s":return "ft3_s";
+      case "in3/s":return "in3_s";
+      case "Degrees":return "degrees";
+      case "Other":return "none";
+      case "Dimensionless":return "dimensionless";
+    }
+    return "";
+  },
   getLookupValue: function(field,value)
   {
     var lookups = {
@@ -555,7 +634,7 @@ module.exports = {
       "Quality_Check_Flagging_Policy": ["Mauder and Foken (2004) (0-1-2 system)","Foken (2003) (1 to 9 system)","Goeckede et al. (2004) (1 to 5 system)"],
       "Footprint_Method": ["Kljun et al. (2004)","Kormann and Meixner (2001)","Hsieh et al. (2000)"],
       "Planar_Calculations_Fail": ["Use closest valid sector, clockwise)"]
-    };
+      };
 
     var lookupArray = lookups[field];
     if (lookupArray != null) {

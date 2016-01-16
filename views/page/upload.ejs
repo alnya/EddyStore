@@ -359,7 +359,13 @@
                     <p class="form-control-static" data-bind="text: Instrument, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Measurement_Type">
-                    <input class="form-control" type="text" data-bind="value: Measurement_Type, visible: !$root.IsInMode('VIEW')" />
+                    <select class="form-control" data-bind="value: Measurement_Type, visible: !$root.IsInMode('VIEW')">
+                      <option></option>
+                      <option>Molar/Mass density</option>
+                      <option>Mole fraction</option>
+                      <option>Mixing ratio</option>
+                      <option>Other</option>
+                    </select>
                     <p class="form-control-static" data-bind="text: Measurement_Type, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Input_Unit">
@@ -421,14 +427,14 @@
                   </div>
                   <div class="form-group" id="Maximum_Time_Lag">
                     <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                      <input type="number" min="0" class="form-control" data-bind="value: Maximum_Time_Lag"/>
+                      <input type="number" min="0" class="form-control" data-bind="value: Minimum_Time_Lag"/>
                       <span class="input-group-addon">s</span>
                     </div>
                     <p class="form-control-static" data-bind="text: Maximum_Time_Lag, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Minimum_Time_Lag">
                     <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
-                      <input type="number" min="0" class="form-control" data-bind="value: Minimum_Time_Lag"/>
+                      <input type="number" min="0" class="form-control" data-bind="value: Maximum_Time_Lag"/>
                       <span class="input-group-addon">s</span>
                     </div>
                     <p class="form-control-static" data-bind="text: Minimum_Time_Lag, visible: $root.IsInMode('VIEW')"></p>
