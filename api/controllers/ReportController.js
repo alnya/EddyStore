@@ -1,6 +1,6 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
-
+var EasyZip = require('easy-zip').EasyZip;
 /**
  * ReportController
  *
@@ -72,6 +72,7 @@ module.exports = {
 
           console.log("Saving files to " + filename);
 
+          // build metadata
           fs.writeFile(filename + ".metadata", metadata, function (err) {
             if (err) {
               thisReport.Status = "Error";
@@ -80,6 +81,7 @@ module.exports = {
             }
           });
 
+          // build project file
           fs.writeFile(filename + ".eddypro", report, function (err) {
             if (err) {
               thisReport.Status = "Error";
@@ -91,12 +93,18 @@ module.exports = {
           var cmd = sails.config.eddyProConfig.cmdPath + "-e " + thisData.Folder_Path + " " + filename + ".eddypro";
           console.log("Executing " + cmd);
 
+          // run Eddy Pro command
           exec(cmd, function(error, stdout, stderr) {
            console.log(stdout);
           });
 
-          // TODO: zip the results
+          // write to zip file
+          var zip = new EasyZip();
+          zip.zipFolder(filename,function(){
+            zip.writeToFile(filename + '.zip');
+          });
 
+          // save report, ready for download
           thisReport.Status = "Available";
           thisReport.save();
 
