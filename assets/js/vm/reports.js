@@ -7,7 +7,7 @@
         this.tableViewModel = new baseTable.GridViewModel({
             columns: [
               { name: 'Name', value: 'Name', filterable: true, template: "nameCellTemplate"},
-              { name: 'Status', value: 'Status', filterable: true, dataType: "List", filterValues: ["New", "Requested", "Available"]}
+              { name: 'Status', value: 'Status', filterable: true, dataType: "List", filterValues: ["New", "Requested", "Available", "Error"]}
             ],
             sortable: false,
             filterMode: 'search',

@@ -11,7 +11,7 @@ function (ko, moment, api) {
     Status: ko.observable('New'),
     id: ko.observable(),
     CanDeleteEntity: true,
-
+    DownloadLink: ko.observable(''),
     Station: ko.observable(),
     DataList: ko.observableArray([]),
     Data: ko.observable().extend({required: true}),
@@ -64,6 +64,7 @@ function (ko, moment, api) {
 			if (!objFromServer) return;
 
       self.id(objFromServer.id);
+      self.DownloadLink('/reports/' + objFromServer.id + '.zip');
       self.Name(objFromServer.Name);
       if (objFromServer.Data != null) {
         self.Station(objFromServer.Data.Name);

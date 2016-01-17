@@ -16,6 +16,10 @@
           <div data-bind='template: { name: "formFieldEntityList",
                 data: {Property: "Data", Name: "Data",
                 Options: DataList, Caption: "Choose a dataset", OptionsText: "Name", OptionsValue:"id"}}'></div>
+
+          <div class="pull-right" data-bind="visible:(Status() == 'Available')">
+            <a data-bind="attr:{'href': DownloadLink}"><span class="glyphicon glyphicon-save"></span> Download Report Zip</a>
+          </div>
         </div>
       </div>
     </div>
@@ -32,12 +36,13 @@
             <div data-bind='template: { name: "formFieldList",
             data: {Property: "North_Reference", Name: "North Reference",
             Options: ["Use Magnetic North", "Use Geographic North"], Caption: "Select"}}'></div>
+            <div data-bind='template: { name: "formFieldEntityList", data: {Property: "Output", Name: "Output File Options", Options: OutputList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
+
           </div>
           <div role="tabpanel" class="tab-pane" id="advanced">
             <div data-bind='template: { name: "formFieldEntityList", data: {Property: "StatisticalAnalysis", Name: "Statistical Analysis", Options: StatisticalAnalysisList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
             <div data-bind='template: { name: "formFieldEntityList", data: {Property: "SpectralCorrection", Name: "Spectral Correction", Options: SpectralCorrectionList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
             <div data-bind='template: { name: "formFieldEntityList", data: {Property: "ProcessingOption", Name: "Processing Option", Options: ProcessingOptionList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
-            <div data-bind='template: { name: "formFieldEntityList", data: {Property: "Output", Name: "Output File Options", Options: OutputList, Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
           </div>
         </div>
       </div>

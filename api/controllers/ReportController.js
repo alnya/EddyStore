@@ -74,12 +74,16 @@ module.exports = {
 
           fs.writeFile(filename + ".metadata", metadata, function (err) {
             if (err) {
+              thisReport.Status = "Error";
+              thisReport.save();
               res.json({'error': 'Failed to write ' + filename + '.metadata'});
             }
           });
 
           fs.writeFile(filename + ".eddypro", report, function (err) {
             if (err) {
+              thisReport.Status = "Error";
+              thisReport.save();
               res.json({'error': 'Failed to write ' + filename + '.eddypro'});
             }
           });
@@ -90,6 +94,11 @@ module.exports = {
           exec(cmd, function(error, stdout, stderr) {
            console.log(stdout);
           });
+
+          // TODO: zip the results
+
+          thisReport.Status = "Available";
+          thisReport.save();
 
           return res.ok();
       });
