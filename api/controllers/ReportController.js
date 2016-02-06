@@ -1,5 +1,5 @@
 var fs = require('fs');
-var execSync = require('child_process').execSync;
+var exec = require('child_process').exec;
 var AdmZip = require('adm-zip');
 
 /**
@@ -69,7 +69,6 @@ module.exports = {
           var metadata = EddyPro.getMetadata(thisData);
           var report = EddyPro.getReport(thisReport, thisData);
 
-
           // build metadata
           var metadataPath = EddyPro.getMetadataFilePath(thisData.id);
           fs.writeFile(metadataPath, metadata, function (err) {
@@ -98,7 +97,7 @@ module.exports = {
           console.log("Executing " + cmd);
 
           // run Eddy Pro command
-          execSync(cmd, function(error, stdout, stderr) {
+          exec(cmd, function(error, stdout, stderr) {
 
             console.log(stdout);
 
