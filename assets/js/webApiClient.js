@@ -92,16 +92,16 @@
             });
         },
 
-        ajaxUploadCsv: function (method, file, callback, errorCallback) {
-
-            $.ajax({
+        ajaxUploadZip: function (method, file, callback, errorCallback) {
+          var formData = new FormData();
+          formData.append('data', file);
+          $.ajax({
                 url: baseUrl + method,
                 beforeSend: function (request) {
                     $('.progress-spinner').addClass('active');
-                    request.setRequestHeader("Content-Type", "text/csv");
                 },
-                type: "PUT",
-                data: file,
+                type: "POST",
+                data: formData,
                 processData: false,
                 contentType: false,
                 success: function(result) {

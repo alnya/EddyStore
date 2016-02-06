@@ -1,16 +1,37 @@
+var fs = require('fs');
+
 module.exports = {
-  formatValue: function(value, decimal) {
-    if (value == null && !decimal) return '';
-    if (value == null && decimal) return '0.00';
-    return value;
+
+  buildFolderStructure: function(id) {
+    var rootPath = EddyPro.getWorkingFolder(id);
+    console.log("Building Eddy Pro Folders at " + rootPath);
+
+    fs.mkdir(rootPath);
+    fs.mkdir(rootPath + '/ini');
+    fs.mkdir(rootPath + '/output');
+    fs.mkdir(rootPath + '/raw_files');
   },
-  formatBoolValue : function(value) {
-    return value ? 1 : 0;
+
+  getWorkingFolder: function(id) {
+    return sails.config.eddyProConfig.directory + id;
   },
-  formatDateValue : function(value) {
-    if (value == null) return '';
-    return new Date(value).toISOString().substr(0, 19);
+
+  getDataFolder: function(id) {
+    return EddyPro.getWorkingFolder(id) + '/raw_files';
   },
+
+  getMetadataFilePath: function(id) {
+    return EddyPro.getWorkingFolder(id) + '/' + id + '.metadata';
+  },
+
+  getOutputFolder: function(id) {
+    return EddyPro.getWorkingFolder(id) + '/output';
+  },
+
+  getEddyProFilePath: function(id) {
+    return EddyPro.getWorkingFolder(id) + '/ini/processing.eddypro';
+  },
+
   getMetadata: function(thisData) {
 
     var formatWDFValue = function(value) {
@@ -27,12 +48,12 @@ module.exports = {
         '\nlast_change_date=' + EddyPro.formatDateValue(thisData.updatedAt) +
         '\nstart_date=' + EddyPro.formatDateValue(thisData.Date_From) +
         '\nend_date=' + EddyPro.formatDateValue(thisData.Date_To) +
-        '\nfile_name=' + thisData.id + '.metadata' +
+        '\nfile_name=' + EddyPro.getMetadataFilePath(thisData.id) +
         '\nsw_version=5.1.1' +
         '\nini_version=3.1' +
         '\n' +
         '\n[Files]' +
-        '\ndata_path=' + EddyPro.formatValue(thisData.Folder_Path) +
+        '\ndata_path=' + EddyPro.getDataFolder(thisData.id) +
         '\nsaved_native=0' +
         '\ntimestamp=0' +
         '\niso_format=0' +
@@ -130,7 +151,7 @@ module.exports = {
     return (output);
   },
 
-  getReport: function(thisReport, folder_path) {
+  getReport: function(thisReport, thisData) {
 
     var spectral = thisReport.SpectralCorrection;
     if (spectral == null) spectral = SpectralCorrection.create();
@@ -164,7 +185,7 @@ module.exports = {
         '\n[Project]' +
         '\ncreation_date=' + EddyPro.formatDateValue(thisReport.createdAt) +
         '\nlast_change_date=' + EddyPro.formatDateValue(thisReport.updatedAt) +
-        '\nfile_name=' + sails.config.eddyProConfig.directory + thisReport.id + '.eddypro' +
+        '\nfile_name=' + EddyPro.getEddyProFilePath(thisData.id) +
         '\nrun_mode=0' +
         '\nrun_fcc=0' +
         '\nproject_title=' + thisReport.Name +
@@ -174,7 +195,7 @@ module.exports = {
         '\nfile_type=1' +
         '\nfile_prototype=EC_EB_yyyy_mm_dd_HH_MM.dat' +
         '\nuse_pfile=1' +
-        '\nproj_file=' + sails.config.eddyProConfig.directory + thisReport.id + '.metadata' +
+        '\nproj_file=' + EddyPro.getMetadataFilePath(thisData.id) +
         '\nuse_dyn_md_file=0' +
         '\ndyn_metadata_file=' +
         '\nbinary_hnlines=-1' +
@@ -214,7 +235,7 @@ module.exports = {
         '\nwpl_meth=1' +
         '\nfoot_meth=0' +
         '\ntob1_format=0' +
-        '\nout_path=' + sails.config.eddyProConfig.outPath +
+        '\nout_path=' + EddyPro.getOutputFolder(thisData.id) +
         '\nfix_out_format=' + (output.Output_Format == "Use standard output format" ? 1 : 0) +
         '\nerr_label=' + output.Error_Label +
         '\nqc_meth=1' +
@@ -276,7 +297,7 @@ module.exports = {
         }
 
         output = output + '\n[RawProcess_General]' +
-        '\ndata_path=' + folder_path +
+        '\ndata_path=' + EddyPro.getWorkingFolder(thisData.id) +
         '\nrecurse=' +
         '\nuse_geo_north=' +
         '\nmag_dec=' +
@@ -541,6 +562,22 @@ module.exports = {
 
     return output;
   },
+
+  formatValue: function(value, decimal) {
+    if (value == null && !decimal) return '';
+    if (value == null && decimal) return '0.00';
+    return value;
+  },
+
+  formatBoolValue : function(value) {
+    return value ? 1 : 0;
+  },
+
+  formatDateValue : function(value) {
+    if (value == null) return '';
+    return new Date(value).toISOString().substr(0, 19);
+  },
+
   getVariable: function(value) {
     switch (value) {
       case "w":return "w";
@@ -574,6 +611,7 @@ module.exports = {
     }
     return "";
   },
+
   getMeasureType: function(value) {
     switch(value) {
       case "Molar/Mass density": return "molar_density";
@@ -583,6 +621,7 @@ module.exports = {
     }
     return "";
   },
+
   getInputUnit: function(value) {
     switch(value) {
       case "mV":return "mvolt";
@@ -616,8 +655,8 @@ module.exports = {
     }
     return "";
   },
-  getLookupValue: function(field,value)
-  {
+
+  getLookupValue: function(field,value) {
     var lookups = {
       "Integral_turbulence_scale":["Cross-correlation first crossing 1/e","Cross-correlation first crossing zero","Integrate over the whole correlation period"],
       "Random_uncertainty_estimation_method":["Finkelstein and Sims (2001)","Mann and Lenshcow (1994)"],

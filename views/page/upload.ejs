@@ -29,8 +29,11 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-12">
-              <div data-bind='template: { name: "formFieldString", data: {Property: "Folder_Path", Name: "Data File Path"}}'></div>
-
+            <span id="uploadButton" class="btn btn-info btn-file" data-bind="visible: $root.IsInMode('EDIT')">
+              <span class="glyphicon glyphicon-upload"></span>
+              <span>Upload raw data zip</span>
+              <input type="file" accept=".zip" multiple="false" data-bind="event: { change: function() { if($element.files[0]){ UploadFile($element.files[0]); $element.value = null;}}}"/>
+            </span>
               <div data-bind='template: { name: "formFieldList",
                 data: {Property: "File_Format", Name: "Data Format",
                 Options: ["LI-COR GHG","ASCII Plain Text", "Generic Binary", "TOB1", "SLT (EddySoft)", "SLT (EdiSol)"], Caption: "Select"}}'></div>

@@ -1,6 +1,5 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
-var EasyZip = require('easy-zip').EasyZip;
 /**
  * ReportController
  *
@@ -33,7 +32,7 @@ module.exports = {
             if (err) return err;
             if (!thisData) return res.notFound();
 
-            return res.send(EddyPro.getReport(thisReport, thisData.Folder_Path, ""));
+            return res.send(EddyPro.getReport(thisReport, thisData));
           });
       });
   },
@@ -66,31 +65,32 @@ module.exports = {
           if (!thisData) return res.notFound();
 
           var metadata = EddyPro.getMetadata(thisData);
-          var report = EddyPro.getReport(thisReport, thisData.Folder_Path);
+          var report = EddyPro.getReport(thisReport, thisData);
 
-          var filename = sails.config.eddyProConfig.directory + thisReport.id;
-
-          console.log("Saving files to " + filename);
 
           // build metadata
-          fs.writeFile(filename + ".metadata", metadata, function (err) {
+          var metadataPath = EddyPro.getMetadataFilePath(thisData.id);
+          fs.writeFile(metadataPath, metadata, function (err) {
             if (err) {
               thisReport.Status = "Error";
               thisReport.save();
-              res.json({'error': 'Failed to write ' + filename + '.metadata'});
+              res.json({'error': 'Failed to write ' + metadataPath});
             }
           });
+          console.log("Metadata saved to " + metadataPath);
 
           // build project file
-          fs.writeFile(filename + ".eddypro", report, function (err) {
+          var projectPath = EddyPro.getEddyProFilePath(thisData.id);
+          fs.writeFile(projectPath, report, function (err) {
             if (err) {
               thisReport.Status = "Error";
               thisReport.save();
-              res.json({'error': 'Failed to write ' + filename + '.eddypro'});
+              res.json({'error': 'Failed to write ' + projectPath});
             }
           });
+          console.log("Project saved to " + projectPath);
 
-          var cmd = sails.config.eddyProConfig.cmdPath + "-e " + thisData.Folder_Path + " " + filename + ".eddypro";
+          var cmd = sails.config.eddyProConfig.cmdPath + "-e " + EddyPro.getWorkingFolder(thisData.id);
           console.log("Executing " + cmd);
 
           // run Eddy Pro command
@@ -99,10 +99,8 @@ module.exports = {
           });
 
           // write to zip file
-          var zip = new EasyZip();
-          zip.zipFolder(filename,function(){
-            zip.writeToFile(filename + '.zip');
-          });
+          var zipPath = EddyPro.getOutputFolder(thisData.id);
+          console.log("Zipping " + zipPath);
 
           // save report, ready for download
           thisReport.Status = "Available";

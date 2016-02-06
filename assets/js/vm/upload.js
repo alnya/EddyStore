@@ -1,5 +1,5 @@
-﻿define(['knockout', 'moment', 'webApiClient','column', 'instrument', 'validation'],
-function (ko, moment, api, column, instrument) {
+﻿define(['knockout', 'moment', 'webApiClient','column', 'instrument', 'messageBox', 'validation'],
+function (ko, moment, api, column, instrument, messageBox) {
 
 	"use strict";
 
@@ -7,7 +7,7 @@ function (ko, moment, api, column, instrument) {
 
     EntityName: "Upload", // name of this entity
     Url: "/Data",  // url to call to load / save / delete
-
+    id: null,
     Folder_Path: ko.observable().extend(),
     Status: ko.observable('New').extend(),
     Number_Of_Rows: ko.observable().extend({digit:true}),
@@ -45,6 +45,8 @@ function (ko, moment, api, column, instrument) {
 		SetModel: function(objFromServer) {
 			var self = this;
 			if (!objFromServer) return;
+
+      self.id = objFromServer.id;
 
       self.Folder_Path(objFromServer.Folder_Path);
       self.Status(objFromServer.Status);
@@ -192,6 +194,18 @@ function (ko, moment, api, column, instrument) {
       if (confirm("This will remove this column.  Are you sure?")) {
         self.Columns.remove(c);
       }
+    },
+
+    UploadFile: function(file) {
+      var self = this;
+      messageBox.Hide();
+      api.ajaxUploadZip("/Data/upload/" + self.id, file,
+        function(model) {
+          messageBox.ShowSuccess("Upload Successful!");
+        },
+        function(errorResponse) {
+          messageBox.ShowError("Upload Failed: " + errorResponse);
+        });
     },
 
     Initialise: function() {

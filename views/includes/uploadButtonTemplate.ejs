@@ -1,0 +1,7 @@
+<script type='text/html' id='uploadButtonTemplate'>
+  <span id="uploadButton" class="btn btn-info btn-file" data-bind="visible: !IsInMode('ADD') && CanEditEntity()">
+    <span class="glyphicon glyphicon-upload"></span>
+    <span data-bind="text: ' ' + UploadActionText"></span>
+    <input type="file" accept=".zip" multiple="false" data-bind="event: { change: function() { if($element.files[0]){ UploadFile($element.files[0]); $element.value = null;}}}"/>
+  </span>
+</script>

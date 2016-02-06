@@ -6,13 +6,14 @@
  */
 
 var fs = require('fs');
+var AdmZip = require('adm-zip');
 
 function fileExtension(fileName) {
   return fileName.split('.').slice(-1);
 }
 
 module.exports = {
-  upload: function (req, res) {
+  uploadMetaData: function (req, res) {
     var file = req.files.metadata;
 
     fs.readFile(file.path, function (err, data) {
@@ -21,6 +22,35 @@ module.exports = {
       } else {
         // TODO: import metadata
       }
+    });
+  },
+
+  upload: function(req, res) {
+    if (!req.param('id')) {
+      return res.badRequest('ID Missing');
+    }
+    req.file('data').upload({
+      dirname: require('path').resolve(sails.config.appPath, '/assets')
+    },function whenDone(err, uploadedFiles) {
+      if (err) {
+        console.log(err);
+        return res.negotiate(err);
+      }
+      console.log("Got File" + uploadedFiles[0].fd);
+
+      var zip = new AdmZip(uploadedFiles[0].fd);
+
+      var id = req.param('id');
+
+      EddyPro.buildFolderStructure(id);
+
+      var path = EddyPro.getDataFolder(id);
+
+      console.log("Extracting to " + path);
+
+      zip.extractAllTo(path, true);
+
+      return res.ok();
     });
   },
 
