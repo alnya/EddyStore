@@ -1,5 +1,7 @@
 var fs = require('fs');
-var exec = require('child_process').exec;
+var execSync = require('child_process').execSync;
+var AdmZip = require('adm-zip');
+
 /**
  * ReportController
  *
@@ -90,21 +92,33 @@ module.exports = {
           });
           console.log("Project saved to " + projectPath);
 
-          var cmd = sails.config.eddyProConfig.cmdPath + "-e " + EddyPro.getWorkingFolder(thisData.id);
+          var workingDirectory = EddyPro.getWorkingFolder(thisData.id);
+
+          var cmd = sails.config.eddyProConfig.cmdPath + "-e " + workingDirectory;
           console.log("Executing " + cmd);
 
           // run Eddy Pro command
-          exec(cmd, function(error, stdout, stderr) {
-           console.log(stdout);
+          execSync(cmd, function(error, stdout, stderr) {
+
+            console.log(stdout);
+
+            // write to zip file
+            var outputFolder = EddyPro.getOutputFolder(thisData.id);
+            var zipFile = workingDirectory + thisReport.id + '.zip';
+
+            console.log("Zipping Output Folder " + outputFolder);
+
+            var zip = new AdmZip();
+            zip.addLocalFolder(outputFolder);
+
+            console.log("Zipping To " + zipFile);
+
+            zip.writeZip(zipFile);
+
+            // save report, ready for download
+            thisReport.Status = "Available";
+            thisReport.save();
           });
-
-          // write to zip file
-          var zipPath = EddyPro.getOutputFolder(thisData.id);
-          console.log("Zipping " + zipPath);
-
-          // save report, ready for download
-          thisReport.Status = "Available";
-          thisReport.save();
 
           return res.ok();
       });

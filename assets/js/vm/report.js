@@ -64,7 +64,7 @@ function (ko, moment, api) {
 			if (!objFromServer) return;
 
       self.id(objFromServer.id);
-      self.DownloadLink('/reports/' + objFromServer.id + '.zip');
+      self.DownloadLink('/EddyPro/' + objFromServer.Data.id + '/' + objFromServer.id + '.zip');
       self.Name(objFromServer.Name);
       if (objFromServer.Data != null) {
         self.Station(objFromServer.Data.Name);
