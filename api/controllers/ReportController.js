@@ -21,6 +21,7 @@ module.exports = {
       .populate('ProcessingOption')
       .populate('Flags')
       .populate('Variables')
+      .populate('Master_Anemometer')
       .exec(function (err, thisReport) {
         if (err) return err;
         if (!thisReport) return res.notFound();

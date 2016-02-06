@@ -202,7 +202,7 @@ module.exports = {
         '\nbinary_eol=-1' +
         '\nbinary_nbytes=-1' +
         '\nbinary_little_end=-1' +
-        '\nmaster_sonic=' + thisReport.Master_Anemometer +
+        '\nmaster_sonic=' + thisReport.Master_Anemometer != null ? thisReport.Master_Anemometer.Model : '' +
         '\ncol_co2=' + getVariableColumn(9) +
         '\ncol_h2o=' + getVariableColumn(10) +
         '\ncol_ch4=' + getVariableColumn(11) +
