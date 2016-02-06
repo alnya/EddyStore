@@ -169,10 +169,9 @@ module.exports = {
 
       for (var i = 0; i < thisReport.Variables.length; i++) {
         var variable = thisReport.Variables[i];
-        if (variable.Variable == val) {
+        if (variable.Variable == val && variable.DataColumn != null) {
           DataColumn.findOne(variable.DataColumn)
             .exec(function (err, thisCol) {
-              if (thisCol != null)
                 return thisCol.Column_Number;
             });
         }
@@ -202,7 +201,7 @@ module.exports = {
         '\nbinary_eol=-1' +
         '\nbinary_nbytes=-1' +
         '\nbinary_little_end=-1' +
-        '\nmaster_sonic=' + thisReport.Master_Anemometer != null ? thisReport.Master_Anemometer.Model : '' +
+        '\nmaster_sonic=' + (thisReport.Master_Anemometer != null ? thisReport.Master_Anemometer.Model : '') +
         '\ncol_co2=' + getVariableColumn(9) +
         '\ncol_h2o=' + getVariableColumn(10) +
         '\ncol_ch4=' + getVariableColumn(11) +
