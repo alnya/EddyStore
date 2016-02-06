@@ -169,7 +169,7 @@ module.exports = {
       for (var i = 0; i < thisReport.Variables.length; i++) {
         var variable = thisReport.Variables[i];
         if (variable.Variable == val && variable.Column_Number != null) {
-                return thisCol.Column_Number;
+          return variable.Column_Number;
         }
       }
       return 0;
