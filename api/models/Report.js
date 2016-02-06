@@ -24,6 +24,7 @@ module.exports = {
 
     Master_Anemometer: {model:'StationInstrument'},
     Cross_Wind_Correction_Applied_By_Anemometer: {type:'boolean'},
+    ProcessLog: {type: 'text'},
 
     Flags: {
       collection: 'ReportFlag',

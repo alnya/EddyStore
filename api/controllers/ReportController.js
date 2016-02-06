@@ -78,7 +78,7 @@ module.exports = {
             if (err) {
               thisReport.Status = "Error";
               thisReport.save();
-              res.json({'error': 'Failed to write ' + metadataPath});
+              return res.json({'error': 'Failed to write ' + metadataPath});
             }
           });
           console.log("Metadata saved to " + metadataPath);
@@ -89,7 +89,7 @@ module.exports = {
             if (err) {
               thisReport.Status = "Error";
               thisReport.save();
-              res.json({'error': 'Failed to write ' + projectPath});
+              return res.json({'error': 'Failed to write ' + projectPath});
             }
           });
           console.log("Project saved to " + projectPath);
@@ -101,8 +101,16 @@ module.exports = {
 
           // run Eddy Pro command
           exec(cmd, function(error, stdout, stderr) {
-
             console.log(stdout);
+            thisReport.ProcessLog = stdout;
+            thisReport.save();
+
+            if  (stdout.indexOf('error') > -1) {
+              thisReport.Status = "Error";
+              thisReport.save();
+              var error = stdout.substring(stdout.indexOf('error'), stdout.length - stdout.indexOf('error'));
+              return res.badRequest(error);
+            }
 
             // write to zip file
             var outputFolder = EddyPro.getOutputFolder(thisData.id);
