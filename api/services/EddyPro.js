@@ -82,6 +82,15 @@ module.exports = {
         '\n' +
         '\n[Instruments]';
 
+    var getInstrumentName = function(instrument) {
+      var shortList = thisData.Instruments.filter(function (item) { return item.Model == instrument.Model; });
+      for(var i = 0; i < shortList.length; i += 1) {
+        if (shortList[i].id === instrument.id) {
+          return instrument.Model + "_" + (i + 1);
+        }
+      }
+    };
+
     if (thisData.Instruments != null) {
       for (var i = 1; i <= thisData.Instruments.length; i++) {
         var instrument = thisData.Instruments[i-1];
@@ -89,7 +98,7 @@ module.exports = {
         if (instrument.Instrument_Type == 'Anemometer') {
           output = output +
           '\ninstr_' + i + '_manufacturer=' + EddyPro.formatValue(instrument.Manufacturer) +
-          '\ninstr_' + i + '_model=' + EddyPro.formatValue(instrument.Model) +
+          '\ninstr_' + i + '_model=' + EddyPro.formatValue(getInstrumentName(instrument)) +
           '\ninstr_' + i + '_id=' + EddyPro.formatValue(instrument.Instrument_Id) +
           '\ninstr_' + i + '_height=' + EddyPro.formatValue(instrument.Height) +
           '\ninstr_' + i + '_wformat=' + formatWDFValue(instrument.Wind_Data_Format) +
@@ -104,7 +113,7 @@ module.exports = {
         } else {
           output = output +
           '\ninstr_' + i + '_manufacturer=' + EddyPro.formatValue(instrument.Manufacturer) +
-          '\ninstr_' + i + '_model=' + EddyPro.formatValue(instrument.Model) +
+          '\ninstr_' + i + '_model=' + EddyPro.formatValue(getInstrumentName(instrument)) +
           '\ninstr_' + i + '_sw_version=' + EddyPro.formatValue(instrument.Software_Version) +
           '\ninstr_' + i + '_id=' + EddyPro.formatValue(instrument.Instrument_Id) +
           '\ninstr_' + i + '_tube_length=' + EddyPro.formatValue(instrument.Tube_Length) +
