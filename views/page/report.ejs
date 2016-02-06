@@ -74,9 +74,9 @@
           <tbody data-bind="foreach:ReportVariables">
           <tr>
             <td data-bind="text:Name"></td>
-            <td><select class="form-control" data-bind="visible: !$root.IsInMode('VIEW'), value: DataColumn, options: $parent.DataColumns,
+            <td><select class="form-control" data-bind="visible: !$root.IsInMode('VIEW'), value: Column_Number, options: $parent.DataColumns,
                 optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None'"></select>
-                <p class="form-control-static" data-bind="text: DataColumn, visible: $root.IsInMode('VIEW')"></p>
+                <p class="form-control-static" data-bind="text: Column_Number, visible: $root.IsInMode('VIEW')"></p>
             </td>
           </tr>
           </tbody>

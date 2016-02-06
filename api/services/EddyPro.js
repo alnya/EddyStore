@@ -162,21 +162,16 @@ module.exports = {
     var statistical = thisReport.StatisticalAnalysis;
     if (statistical == null) statistical = StatisticalAnalysis.create();
 
-    var output = thisReport.Output;
-    if (output == null) output = new Output._model();
+    var outputOptions = thisReport.Output;
+    if (outputOptions == null) outputOptions = new Output._model();
 
     var getVariableColumn = function(val) {
-
       for (var i = 0; i < thisReport.Variables.length; i++) {
         var variable = thisReport.Variables[i];
-        if (variable.Variable == val && variable.DataColumn != null) {
-          DataColumn.findOne(variable.DataColumn)
-            .exec(function (err, thisCol) {
+        if (variable.Variable == val && variable.Column_Number != null) {
                 return thisCol.Column_Number;
-            });
         }
       }
-
       return 0;
     };
 
@@ -218,11 +213,11 @@ module.exports = {
         '\ngas_mw=0.0000' +
         '\ngas_diff=0.00000' +
         '\ncol_ts=' + getVariableColumn(6) +
-        '\nout_ghg_eu=' + output.GHG_Europe +
-        '\nout_amflux=' + output.AmeriFlux +
+        '\nout_ghg_eu=' + outputOptions.GHG_Europe +
+        '\nout_amflux=' + outputOptions.AmeriFlux +
         '\nout_rich=0' +
-        '\nout_metadata=' + output.Metadata +
-        '\nout_biomet=' + output.Biomet_Measurements +
+        '\nout_metadata=' + outputOptions.Metadata +
+        '\nout_biomet=' + outputOptions.Biomet_Measurements +
         '\nmake_dataset=0' +
         '\npr_subset=0' +
         '\npr_start_date=2007-01-01' +
@@ -235,15 +230,15 @@ module.exports = {
         '\nfoot_meth=0' +
         '\ntob1_format=0' +
         '\nout_path=' + EddyPro.getOutputFolder(thisData.id) +
-        '\nfix_out_format=' + (output.Output_Format == "Use standard output format" ? 1 : 0) +
-        '\nerr_label=' + output.Error_Label +
+        '\nfix_out_format=' + (outputOptions.Output_Format == "Use standard output format" ? 1 : 0) +
+        '\nerr_label=' + outputOptions.Error_Label +
         '\nqc_meth=1' +
         '\nuse_biom=0' +
         '\nbiom_file=' +
         '\nbiom_dir=' +
         '\nbiom_rec=0' +
         '\nbiom_ext=.txt' +
-        '\nout_mean_cosp=' + output.Spectral_Output_Averaged_Cospectra +
+        '\nout_mean_cosp=' + outputOptions.Spectral_Output_Averaged_Cospectra +
         '\nbin_sp_avail=0' +
         '\nfull_sp_avail=0' +
         '\nfiles_found=14544' +
@@ -302,12 +297,8 @@ module.exports = {
         '\nmag_dec=' +
         '\ndec_date=';
 
-    var getVariableColumn = function(v) {
-      if (flag.DataColumn == null) return 0;
-      DataColumn.findOne(flag.DataColumn)
-        .exec(function (err, thisCol) {
-          return thisCol.Column_Number;
-        });
+    var getFlagColumn = function(flag) {
+      return 0; //TODO
     };
 
     // flags
@@ -316,13 +307,13 @@ module.exports = {
         var flag = thisReport.Flags[i-1];
 
         output = output + '' +
-        '\nflag' + i + '_column=' + getVariableColumn(flag.DataColumn) +
+        '\nflag' + i + '_column=' + getFlagColumn(flag) +
         '\nflag' + i + '_threshold=' + EddyPro.formatValue(flag.Threshold) +
         '\nflag' + i + '_upper=1';
       }
     }
 
-    if (processing && output) {
+    if (processing && outputOptions) {
       output = output + '\n[RawProcess_Settings]' +
       '\nnfiles=' +
       '\nmax_lack=' +
@@ -338,47 +329,47 @@ module.exports = {
       '\ntap_win=' +
       '\nnbins=' +
       '\navrg_len=' +
-      '\nout_bin_sp=' + EddyPro.formatBoolValue(output.Spectral_Output_All) +
-      '\nout_bin_og=' + EddyPro.formatBoolValue(output.Spectral_Output_All_Ogives) +
-      '\nout_full_sp_u=' + EddyPro.formatBoolValue(output.Spectral_Output_U) +
-      '\nout_full_sp_v=' + EddyPro.formatBoolValue(output.Spectral_Output_V) +
-      '\nout_full_sp_w=' + EddyPro.formatBoolValue(output.Spectral_Output_W) +
-      '\nout_full_sp_ts=' + EddyPro.formatBoolValue(output.Spectral_Output_TS) +
-      '\nout_full_sp_co2=' + EddyPro.formatBoolValue(output.Spectral_Output_CO2) +
-      '\nout_full_sp_h2o=' + EddyPro.formatBoolValue(output.Spectral_Output_H20) +
-      '\nout_full_sp_ch4=' + EddyPro.formatBoolValue(output.Spectral_Output_CH4) +
-      '\nout_full_sp_n2o=' + EddyPro.formatBoolValue(output.Spectral_Output_4th_Gas) +
-      '\nout_st_1=' + EddyPro.formatBoolValue(output.Process_Stats_1) +
-      '\nout_st_2=' + EddyPro.formatBoolValue(output.Process_Stats_2) +
-      '\nout_st_3=' + EddyPro.formatBoolValue(output.Process_Stats_3) +
-      '\nout_st_4=' + EddyPro.formatBoolValue(output.Process_Stats_4) +
-      '\nout_st_5=' + EddyPro.formatBoolValue(output.Process_Stats_5) +
-      '\nout_st_6=' + EddyPro.formatBoolValue(output.Process_Stats_6) +
-      '\nout_st_7=' + EddyPro.formatBoolValue(output.Process_Stats_7) +
-      '\nout_raw_1=' +EddyPro.formatBoolValue( output.Process_Time_1) +
-      '\nout_raw_2=' + EddyPro.formatBoolValue(output.Process_Time_2) +
-      '\nout_raw_3=' + EddyPro.formatBoolValue(output.Process_Time_3) +
-      '\nout_raw_4=' + EddyPro.formatBoolValue(output.Process_Time_4) +
-      '\nout_raw_5=' + EddyPro.formatBoolValue(output.Process_Time_5) +
-      '\nout_raw_6=' + EddyPro.formatBoolValue(output.Process_Time_6) +
-      '\nout_raw_7=' + EddyPro.formatBoolValue(output.Process_Time_7) +
-      '\nout_raw_u=' + EddyPro.formatBoolValue(output.Process_Time_U) +
-      '\nout_raw_v=' + EddyPro.formatBoolValue(output.Process_Time_V) +
-      '\nout_raw_w=' + EddyPro.formatBoolValue(output.Process_Time_W) +
-      '\nout_raw_ts=' + EddyPro.formatBoolValue(output.Process_Time_TS) +
-      '\nout_raw_co2=' + EddyPro.formatBoolValue(output.Process_Time_CO2) +
-      '\nout_raw_h2o=' + EddyPro.formatBoolValue(output.Process_Time_H20) +
-      '\nout_raw_ch4=' + EddyPro.formatBoolValue(output.Process_Time_CH4) +
-      '\nout_raw_gas4=' + EddyPro.formatBoolValue(output.Process_Time_4th) +
-      '\nout_raw_t_air=' + EddyPro.formatBoolValue(output.Process_Time_T) +
-      '\nout_raw_p_air=' + EddyPro.formatBoolValue(output.Process_Time_P) +
-      '\nout_full_cosp_w_u=' + EddyPro.formatBoolValue(output.Spectral_Output_WU) +
-      '\nout_full_cosp_w_v=' + EddyPro.formatBoolValue(output.Spectral_Output_WV) +
-      '\nout_full_cosp_w_ts=' + EddyPro.formatBoolValue(output.Spectral_Output_WTS) +
-      '\nout_full_cosp_w_co2=' + EddyPro.formatBoolValue(output.Spectral_Output_WC02) +
-      '\nout_full_cosp_w_h2o=' + EddyPro.formatBoolValue(output.Spectral_Output_WH20) +
-      '\nout_full_cosp_w_ch4=' + EddyPro.formatBoolValue(output.Spectral_Output_WCH4) +
-      '\nout_full_cosp_w_n2o=' + EddyPro.formatBoolValue(output.Spectral_Output_W4th_Gas) +
+      '\nout_bin_sp=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_All) +
+      '\nout_bin_og=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_All_Ogives) +
+      '\nout_full_sp_u=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_U) +
+      '\nout_full_sp_v=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_V) +
+      '\nout_full_sp_w=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_W) +
+      '\nout_full_sp_ts=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_TS) +
+      '\nout_full_sp_co2=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_CO2) +
+      '\nout_full_sp_h2o=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_H20) +
+      '\nout_full_sp_ch4=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_CH4) +
+      '\nout_full_sp_n2o=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_4th_Gas) +
+      '\nout_st_1=' + EddyPro.formatBoolValue(outputOptions.Process_Stats_1) +
+      '\nout_st_2=' + EddyPro.formatBoolValue(outputOptions.Process_Stats_2) +
+      '\nout_st_3=' + EddyPro.formatBoolValue(outputOptions.Process_Stats_3) +
+      '\nout_st_4=' + EddyPro.formatBoolValue(outputOptions.Process_Stats_4) +
+      '\nout_st_5=' + EddyPro.formatBoolValue(outputOptions.Process_Stats_5) +
+      '\nout_st_6=' + EddyPro.formatBoolValue(outputOptions.Process_Stats_6) +
+      '\nout_st_7=' + EddyPro.formatBoolValue(outputOptions.Process_Stats_7) +
+      '\nout_raw_1=' +EddyPro.formatBoolValue(outputOptions.Process_Time_1) +
+      '\nout_raw_2=' + EddyPro.formatBoolValue(outputOptions.Process_Time_2) +
+      '\nout_raw_3=' + EddyPro.formatBoolValue(outputOptions.Process_Time_3) +
+      '\nout_raw_4=' + EddyPro.formatBoolValue(outputOptions.Process_Time_4) +
+      '\nout_raw_5=' + EddyPro.formatBoolValue(outputOptions.Process_Time_5) +
+      '\nout_raw_6=' + EddyPro.formatBoolValue(outputOptions.Process_Time_6) +
+      '\nout_raw_7=' + EddyPro.formatBoolValue(outputOptions.Process_Time_7) +
+      '\nout_raw_u=' + EddyPro.formatBoolValue(outputOptions.Process_Time_U) +
+      '\nout_raw_v=' + EddyPro.formatBoolValue(outputOptions.Process_Time_V) +
+      '\nout_raw_w=' + EddyPro.formatBoolValue(outputOptions.Process_Time_W) +
+      '\nout_raw_ts=' + EddyPro.formatBoolValue(outputOptions.Process_Time_TS) +
+      '\nout_raw_co2=' + EddyPro.formatBoolValue(outputOptions.Process_Time_CO2) +
+      '\nout_raw_h2o=' + EddyPro.formatBoolValue(outputOptions.Process_Time_H20) +
+      '\nout_raw_ch4=' + EddyPro.formatBoolValue(outputOptions.Process_Time_CH4) +
+      '\nout_raw_gas4=' + EddyPro.formatBoolValue(outputOptions.Process_Time_4th) +
+      '\nout_raw_t_air=' + EddyPro.formatBoolValue(outputOptions.Process_Time_T) +
+      '\nout_raw_p_air=' + EddyPro.formatBoolValue(outputOptions.Process_Time_P) +
+      '\nout_full_cosp_w_u=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_WU) +
+      '\nout_full_cosp_w_v=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_WV) +
+      '\nout_full_cosp_w_ts=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_WTS) +
+      '\nout_full_cosp_w_co2=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_WC02) +
+      '\nout_full_cosp_w_h2o=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_WH20) +
+      '\nout_full_cosp_w_ch4=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_WCH4) +
+      '\nout_full_cosp_w_n2o=' + EddyPro.formatBoolValue(outputOptions.Spectral_Output_W4th_Gas) +
       '\nto_mixratio=' +
       '\nfilter_sr=' +
       '\nfilter_al=' +

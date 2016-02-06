@@ -19,9 +19,10 @@ module.exports = {
       .populate('StatisticalAnalysis')
       .populate('SpectralCorrection')
       .populate('ProcessingOption')
+      .populate('Output')
+      .populate('Master_Anemometer')
       .populate('Flags')
       .populate('Variables')
-      .populate('Master_Anemometer')
       .exec(function (err, thisReport) {
         if (err) return err;
         if (!thisReport) return res.notFound();
@@ -49,6 +50,7 @@ module.exports = {
       .populate('SpectralCorrection')
       .populate('ProcessingOption')
       .populate('Output')
+      .populate('Master_Anemometer')
       .populate('Flags')
       .populate('Variables')
       .exec(function (err, thisReport) {

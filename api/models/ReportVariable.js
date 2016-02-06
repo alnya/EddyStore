@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
     Report: {model: 'Report'},
     Variable: {model: 'Variable'},
-    DataColumn: {model: 'DataColumn'}
+    Column_Number: {type: 'integer'}
   }
 };
 

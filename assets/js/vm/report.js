@@ -45,7 +45,7 @@ function (ko, moment, api) {
         id: ko.observable(),
         Name: ko.observable(),
         Variable: ko.observable(),
-        DataColumn:ko.observable()
+        Column_Number:ko.observable()
       }
     },
 
@@ -74,12 +74,13 @@ function (ko, moment, api) {
       self.Missing_Samples_Allowance(objFromServer.Missing_Samples_Allowance);
       self.Flux_Averaging_Interval(objFromServer.Flux_Averaging_Interval);
       self.North_Reference(objFromServer.North_Reference);
-      self.Master_Anemometer(objFromServer.Master_Anemometer ? objFromServer.Master_Anemometer.id : null);
       self.Cross_Wind_Correction_Applied_By_Anemometer(objFromServer.Cross_Wind_Correction_Applied_By_Anemometer);
 
-      self.StatisticalAnalysis(objFromServer.StatisticalAnalysis ? objFromServer.StatisticalAnalysis.id : null);
-      self.SpectralCorrection(objFromServer.SpectralCorrection ? objFromServer.SpectralCorrection.id : null);
-      self.ProcessingOption(objFromServer.ProcessingOption ? objFromServer.ProcessingOption.id : null);
+      self.StatisticalAnalysis(objFromServer.StatisticalAnalysis != null ? objFromServer.StatisticalAnalysis.id : null);
+      self.SpectralCorrection(objFromServer.SpectralCorrection != null ? objFromServer.SpectralCorrection.id : null);
+      self.ProcessingOption(objFromServer.ProcessingOption != null ? objFromServer.ProcessingOption.id : null);
+      self.Output(objFromServer.Output != null ? objFromServer.Output.id : null);
+      self.Master_Anemometer(objFromServer.Master_Anemometer != null ? objFromServer.Master_Anemometer.id : null);
 
       self.ReportFlags([]);
       ko.utils.arrayForEach(objFromServer.Flags, function(objFlag) {
@@ -101,7 +102,7 @@ function (ko, moment, api) {
           return v.id == objVariable.Variable;
         });
         variable.Name(thisVar.Name);
-        variable.DataColumn(objVariable.DataColumn);
+        variable.Column_Number(objVariable.Column_Number);
         self.ReportVariables.push(variable);
       });
     },
@@ -192,7 +193,7 @@ function (ko, moment, api) {
         ko.utils.arrayForEach(data.Columns, function(col) {
           if (col.Variable)
             self.DataColumns.push({
-              id: col.id,
+              id: col.Column_Number,
               Name: col.Variable
             });
         });
@@ -222,6 +223,7 @@ function (ko, moment, api) {
         Variables: self.ReportVariables(),
         StatisticalAnalysis: self.StatisticalAnalysis(),
         SpectralCorrection: self.SpectralCorrection(),
+        Output: self.Output(),
         ProcessingOption: self.ProcessingOption()
 			};
 
