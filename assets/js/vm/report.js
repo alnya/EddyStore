@@ -1,5 +1,5 @@
-﻿define(['knockout', 'moment', 'webApiClient', 'validation'],
-function (ko, moment, api) {
+﻿define(['knockout', 'moment', 'webApiClient', 'modalDialog', 'validation'],
+function (ko, moment, api, modalDialog) {
 
 	"use strict";
 
@@ -21,6 +21,7 @@ function (ko, moment, api) {
     SpectralCorrection: ko.observable(),
     ProcessingOption: ko.observable(),
     Output: ko.observable(),
+    ProcessLog: ko.observable(),
 
     Missing_Samples_Allowance: ko.observable(10).extend({number: true}),
     Flux_Averaging_Interval:  ko.observable(30).extend({number: true}),
@@ -80,7 +81,9 @@ function (ko, moment, api) {
       self.SpectralCorrection(objFromServer.SpectralCorrection != null ? objFromServer.SpectralCorrection.id : null);
       self.ProcessingOption(objFromServer.ProcessingOption != null ? objFromServer.ProcessingOption.id : null);
       self.Output(objFromServer.Output != null ? objFromServer.Output.id : null);
-      self.Master_Anemometer(objFromServer.Master_Anemometer != null ? objFromServer.Master_Anemometer.id : null);
+      self.Master_Anemometer(objFromServer.Master_Anemometer);
+
+      self.ProcessLog(objFromServer.ProcessLog);
 
       self.ReportFlags([]);
       ko.utils.arrayForEach(objFromServer.Flags, function(objFlag) {
@@ -166,6 +169,14 @@ function (ko, moment, api) {
       });
     },
 
+    getDataColumn: function (value) {
+      var self = this;
+        var selectedItem = ko.utils.arrayFilter(self.DataColumns(), function (option) {
+          return option.id == value();
+        });
+        if (selectedItem != null && selectedItem.length == 1) { return selectedItem[0].Name; }
+    },
+
     GetData: function(data) {
       var self = this;
 
@@ -236,7 +247,12 @@ function (ko, moment, api) {
       return model;
 		},
 
-		Panels: []
+		Panels: [],
+
+    ShowLog: function() {
+      var self = this;
+      modalDialog.ShowModalDialog(false, 'EddyPro Log', self.ProcessLog(), "", "", false, false, "", "", "Close");
+    }
 
   });
 

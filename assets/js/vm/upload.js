@@ -29,6 +29,7 @@ function (ko, moment, api, column, instrument, messageBox) {
     Longitude: ko.observable().extend({number:true}),
 
     Instruments: ko.observableArray(),
+    InstrumentsForColumns: ko.observableArray(),
 
     Variables: ko.observableArray(),
 
@@ -40,6 +41,15 @@ function (ko, moment, api, column, instrument, messageBox) {
 
     Models: ko.observableArray(),
 
+    getInstrumentName: function(instrument) {
+      var self = this;
+      var shortList = self.Instruments().filter(function (item) { return item.Model == instrument.Model; });
+      for(var i = 0; i < shortList.length; i += 1) {
+        if (shortList[i].id === instrument.id) {
+          return instrument.Model() + "_" + (i + 1);
+        }
+      }
+    },
 
     // Set view model from server JSON object
 		SetModel: function(objFromServer) {
@@ -91,6 +101,7 @@ function (ko, moment, api, column, instrument, messageBox) {
             }
           });
           self.Instruments.push(i);
+          self.InstrumentsForColumns.push({id: i.id, Name: self.getInstrumentName(i)});
         });
       }
 
@@ -173,11 +184,14 @@ function (ko, moment, api, column, instrument, messageBox) {
       });
 
       self.Instruments.push(i);
+      self.InstrumentsForColumns.push({id: i.Number, Name: self.getInstrumentName(i)});
     },
 
     RemoveInstrument: function(i) {
       var self = this;
       if (confirm("This will remove this instrument.  Are you sure?")) {
+        var x = self.InstrumentsForColumns.find(function(item) {return item.id == i.id || item.id == i.Number});
+        self.InstrumentsForColumns.remove(x);
         self.Instruments.remove(i);
       }
     },

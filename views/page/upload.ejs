@@ -357,8 +357,8 @@
                   <div class="form-group">
                     <select class="form-control"
                             data-bind="value: Instrument,
-                            options: $root.EntityViewModel.Instruments(), visible: !$root.IsInMode('VIEW'),
-                            optionsText: 'Model', optionsValue: 'Model', optionsCaption:'Select'"></select>
+                            options: $root.EntityViewModel.InstrumentsForColumns(), visible: !$root.IsInMode('VIEW'),
+                            optionsText: 'Name', optionsValue: 'Name', optionsCaption:'Select'"></select>
                     <p class="form-control-static" data-bind="text: Instrument, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Measurement_Type">

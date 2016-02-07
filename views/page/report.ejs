@@ -20,6 +20,10 @@
           <div class="pull-right" data-bind="visible:(Status() == 'Available')">
             <a class="btn btn-success" data-bind="attr:{'href': DownloadLink}"><span class="glyphicon glyphicon-save"></span> Download Report Zip</a>
           </div>
+          <div class="pull-left" data-bind="visible:(Status() != 'New')">
+            <a class="btn btn-info" data-bind="click:ShowLog"><span class="glyphicon glyphicon-exclamation-sign"></span> View Log</a>
+          </div>
+
         </div>
       </div>
     </div>
@@ -53,10 +57,13 @@
   </div>
   <div class="row" data-bind="with: EntityViewModel">
     <div class="col-sm-12">
-      <div data-bind='template: { name: "formFieldEntityList",
-        data: {Property: "Master_Anemometer", Name: "Master Anemometer",
-                Options: Anemometers, Caption: "Select", Caption: "None", OptionsText: "Name", OptionsValue:"Name"}}'></div>
-
+      <div class="form-group">
+        <label class="control-label" >Master Anenometer</label>
+        <p class="form-control-static" data-bind="text: Master_Anemometer, visible: $root.IsInMode('VIEW')"></p>
+        <select class="form-control" data-bind="value: Master_Anemometer,valueAllowUnset: true,
+                              options: Anemometers(), visible: !$root.IsInMode('VIEW'),
+                              optionsText: 'Name', optionsValue: 'Name', optionsCaption:'Select'"></select>
+      </div>
       <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Cross_Wind_Correction_Applied_By_Anemometer",
       Name: "Cross Wind Correction Applied By Anemometer", Suffix: ""}}'></div>
 
@@ -75,8 +82,8 @@
           <tr>
             <td data-bind="text:Name"></td>
             <td><select class="form-control" data-bind="visible: !$root.IsInMode('VIEW'), value: Column_Number, options: $parent.DataColumns,
-                optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None'"></select>
-                <p class="form-control-static" data-bind="text: Column_Number, visible: $root.IsInMode('VIEW')"></p>
+                optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None', valueAllowUnset: true"></select>
+                <p class="form-control-static" data-bind="text: $parent.getDataColumn(Column_Number), visible: $root.IsInMode('VIEW')"></p>
             </td>
           </tr>
           </tbody>
