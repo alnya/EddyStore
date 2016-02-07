@@ -10,14 +10,14 @@
 			</div>
 			<div class="alert" data-bind="css: ModalMessageType" id="modalMessageBox" role="alert">
 			<span class="glyphicon" data-bind="css: ModalMessageIcon"></span>
-			<span id="modalMessageBoxContent" data-bind="html: ModalMessage"></span>
+			<span id="modalMessageBoxContent" data-bind="text: ModalMessage"></span>
 			</div>
 			<div class="modal-body">
 			<!-- ko if: ModalDialogTemplate  -->
 			<div data-bind="template: { name: ModalDialogTemplate }"></div>
 			<!-- /ko -->
 			<!-- ko ifnot: ModalDialogTemplate  -->
-			<span data-bind="text: ModalDialogBody"></span>
+			<span data-bind="html: ModalDialogBody"></span>
 			<!-- /ko -->
 			</div>
 			<div class="modal-footer">
