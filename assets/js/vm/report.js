@@ -251,7 +251,8 @@ function (ko, moment, api, modalDialog) {
 
     ShowLog: function() {
       var self = this;
-      modalDialog.ShowModalDialog(false, 'EddyPro Log', self.ProcessLog(), "", "", false, false, "", "", "Close");
+      var text = self.ProcessLog().replace(/(?:\r\n|\r|\n)/g, '<br />');
+      modalDialog.ShowModalDialog(false, 'EddyPro Log', text, "", "", false, false, "", "", "Close");
     }
 
   });
