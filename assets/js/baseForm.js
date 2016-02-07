@@ -217,13 +217,13 @@
         return value;
       };
 
-        window.onbeforeunload = function (e) {
-            if (self.IsDirty()) {
-                return "You have made changes to the '" + self.EntityViewModel.EntityName + "'.";
-            }
+        //window.onbeforeunload = function (e) {
+        //    if (self.IsDirty()) {
+        //        return "You have made changes to the '" + self.EntityViewModel.EntityName + "'.";
+        //    }
 
-            return null;
-        };
+        //    return undefined;
+        //};
 
         self.Submit = function() {
             messageBox.Hide();
