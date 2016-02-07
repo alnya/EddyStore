@@ -105,7 +105,7 @@ module.exports = {
             thisReport.ProcessLog = stdout;
             thisReport.save();
 
-            if  (stdout.indexOf('error') > -1) {
+            if (stdout.indexOf('error') > -1) {
               thisReport.Status = "Error";
               thisReport.save();
               var error = stdout.substring(stdout.indexOf('error'), stdout.length - stdout.indexOf('error'));
@@ -128,9 +128,10 @@ module.exports = {
             // save report, ready for download
             thisReport.Status = "Available";
             thisReport.save();
-          });
 
-          return res.ok();
+            return res.ok();
+
+          });
       });
     });
   }
