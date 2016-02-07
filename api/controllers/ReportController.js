@@ -111,7 +111,7 @@ module.exports = {
 
             // write to zip file
             var outputFolder = EddyPro.getOutputFolder(thisData.id);
-            var zipFile = workingDirectory + thisReport.id + '/' + thisReport.id + '.zip';
+            var zipFile = workingDirectory + '/' + thisReport.id + '.zip';
 
             console.log("Zipping Output Folder " + outputFolder);
 
