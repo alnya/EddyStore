@@ -22,7 +22,7 @@ module.exports = {
     Flux_Averaging_Interval: {type: 'float'},
     North_Reference: {type:'string'},
 
-    Master_Anemometer: {model:'StationInstrument'},
+    Master_Anemometer: {type:'string'},
     Cross_Wind_Correction_Applied_By_Anemometer: {type:'boolean'},
     ProcessLog: {type: 'text'},
 

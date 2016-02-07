@@ -18,7 +18,7 @@
                 Options: DataList, Caption: "Choose a dataset", OptionsText: "Name", OptionsValue:"id"}}'></div>
 
           <div class="pull-right" data-bind="visible:(Status() == 'Available')">
-            <a data-bind="attr:{'href': DownloadLink}"><span class="glyphicon glyphicon-save"></span> Download Report Zip</a>
+            <a class="btn btn-success" data-bind="attr:{'href': DownloadLink}"><span class="glyphicon glyphicon-save"></span> Download Report Zip</a>
           </div>
         </div>
       </div>
@@ -55,7 +55,7 @@
     <div class="col-sm-12">
       <div data-bind='template: { name: "formFieldEntityList",
         data: {Property: "Master_Anemometer", Name: "Master Anemometer",
-                Options: Anemometers, Caption: "Select", Caption: "None", OptionsText: "Name", OptionsValue:"id"}}'></div>
+                Options: Anemometers, Caption: "Select", Caption: "None", OptionsText: "Name", OptionsValue:"Name"}}'></div>
 
       <div data-bind='template: { name: "formFieldCheckBox", data: {Property: "Cross_Wind_Correction_Applied_By_Anemometer",
       Name: "Cross Wind Correction Applied By Anemometer", Suffix: ""}}'></div>

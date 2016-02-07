@@ -20,7 +20,6 @@ module.exports = {
       .populate('SpectralCorrection')
       .populate('ProcessingOption')
       .populate('Output')
-      .populate('Master_Anemometer')
       .populate('Flags')
       .populate('Variables')
       .exec(function (err, thisReport) {
@@ -50,7 +49,6 @@ module.exports = {
       .populate('SpectralCorrection')
       .populate('ProcessingOption')
       .populate('Output')
-      .populate('Master_Anemometer')
       .populate('Flags')
       .populate('Variables')
       .exec(function (err, thisReport) {

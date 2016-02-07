@@ -177,15 +177,21 @@ function (ko, moment, api) {
       api.ajaxGet("/Data/" + data, null, null, function (data, method) {
         self.DataObject(data);
 
+        var getInstrumentName = function(instrument) {
+          var shortList = data.Instruments.filter(function (item) { return item.Model == instrument.Model; });
+          for(var i = 0; i < shortList.length; i += 1) {
+            if (shortList[i].id === instrument.id) {
+              return instrument.Model + "_" + (i + 1);
+            }
+          }
+        };
+
         // get anemometers
-        var i = 1;
         ko.utils.arrayForEach(data.Instruments, function(instrument) {
           if (instrument.Instrument_Type == 'Anemometer')
           self.Anemometers.push({
-            id: instrument.id,
-            Name: 'Anemometer ' + i
+            Name: getInstrumentName(instrument)
           });
-          i++;
         });
 
         // get columns with variables defined
