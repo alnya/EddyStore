@@ -300,7 +300,7 @@ module.exports = {
         }
 
         output = output + '\n[RawProcess_General]' +
-        '\ndata_path=' + EddyPro.getWorkingFolder(thisData.id) +
+        '\ndata_path=' + EddyPro.getDataFolder(thisData.id) +
         '\nrecurse=' +
         '\nuse_geo_north=' +
         '\nmag_dec=' +

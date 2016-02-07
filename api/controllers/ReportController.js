@@ -108,13 +108,12 @@ module.exports = {
             if (stdout.indexOf('error') > -1) {
               thisReport.Status = "Error";
               thisReport.save();
-              var error = stdout.substring(stdout.indexOf('error'), stdout.length - stdout.indexOf('error'));
-              return res.badRequest(error);
+              return res.badRequest("There was an error processing the report - see the log for details");
             }
 
             // write to zip file
             var outputFolder = EddyPro.getOutputFolder(thisData.id);
-            var zipFile = workingDirectory + thisReport.id + '.zip';
+            var zipFile = workingDirectory + thisReport.id + '/' + thisReport.id + '.zip';
 
             console.log("Zipping Output Folder " + outputFolder);
 
