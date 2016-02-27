@@ -35,9 +35,9 @@ module.exports = {
   },
   reports: function (req, res) {
     if (req.param('id') != null) {
-      return res.view("page/report", {title:"Report", vm: "report"});
+      return res.view("page/report", {title:"Processing", vm: "report"});
     }
-    return res.view("page/list", {title:"Reports", vm: "reports"});
+    return res.view("page/list", {title:"Processing", vm: "reports"});
   },
   outputs: function (req, res) {
     if (req.param('id') != null) {

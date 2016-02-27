@@ -17,6 +17,7 @@
       'messageBox': 'js/vm/messageBox',
       // View Models
       'login': 'js/vm/login',
+      'dashboard': 'js/vm/dashboard',
       'upload': 'js/vm/upload',
       'column': 'js/vm/column',
       'instrument': 'js/vm/instrument',

@@ -68,8 +68,10 @@ h1 {
   content: "";
 }
 
-.dashboardActions .panel-heading h3 { margin-top: 0px;}
-.dashboardActions .panel-heading .glyphicon { font-size: 40px;}
+.dashboardActions .panel { text-align:center;}
+.dashboardActions .glyphicon { font-size: 60px; margin-top:20px;}
+.dashboardActions .btn { width:100%; margin-top:20px;}
+
 
 #accordion .panel-heading a { display: block;}
 #accordion .panel-heading a:after {
