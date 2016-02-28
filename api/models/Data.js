@@ -12,7 +12,6 @@ module.exports = {
     User: { model: 'User' },
 
     Folder_Path: {type: 'string'},
-    Status: {type: 'string'},
     Number_Of_Rows: {type: 'integer'},
     Date_From: {type: 'datetime'},
     Date_To: {type: 'datetime'},
@@ -29,6 +28,7 @@ module.exports = {
     Altitude: {type: 'float'},
     Latitude: {type: 'float'},
     Longitude: {type: 'float'},
+    AccessLevel: {type: 'integer'},
 
     Instruments: {
       collection: 'StationInstrument',

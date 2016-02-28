@@ -7,9 +7,8 @@ function (ko, moment, api, column, instrument, messageBox) {
 
     EntityName: "Upload", // name of this entity
     Url: "/Data",  // url to call to load / save / delete
-    id: null,
+    id: ko.observable().extend(),
     Folder_Path: ko.observable().extend(),
-    Status: ko.observable('New').extend(),
     Number_Of_Rows: ko.observable().extend({digit:true}),
     Date_From: ko.observable().extend({date: true}),
     Date_To: ko.observable().extend({date: true}),
@@ -27,7 +26,7 @@ function (ko, moment, api, column, instrument, messageBox) {
     Altitude: ko.observable().extend({number:true}),
     Latitude: ko.observable().extend({number:true}),
     Longitude: ko.observable().extend({number:true}),
-
+    AccessLevel: ko.observable(1),
     Instruments: ko.observableArray(),
     InstrumentsForColumns: ko.observableArray(),
 
@@ -40,6 +39,8 @@ function (ko, moment, api, column, instrument, messageBox) {
     AnemometerManufacturers: ko.observableArray(),
 
     Models: ko.observableArray(),
+
+    TransferTo: ko.observable(),
 
     getInstrumentName: function(instrument) {
       var self = this;
@@ -56,10 +57,9 @@ function (ko, moment, api, column, instrument, messageBox) {
 			var self = this;
 			if (!objFromServer) return;
 
-      self.id = objFromServer.id;
+      self.id(objFromServer.id);
 
       self.Folder_Path(objFromServer.Folder_Path);
-      self.Status(objFromServer.Status);
       self.Number_Of_Rows(objFromServer.Number_Of_Rows);
       if (objFromServer.Date_From) {
         self.Date_From(moment(objFromServer.Date_From).format("D MMM YYYY"));
@@ -81,7 +81,7 @@ function (ko, moment, api, column, instrument, messageBox) {
       self.Altitude(objFromServer.Altitude);
       self.Latitude(objFromServer.Latitude);
       self.Longitude(objFromServer.Longitude);
-
+      self.AccessLevel(objFromServer.AccessLevel);
       self.Instruments([]);
       if (objFromServer.Instruments) {
         ko.utils.arrayForEach(objFromServer.Instruments, function(objInstrument) {
@@ -121,7 +121,7 @@ function (ko, moment, api, column, instrument, messageBox) {
 
 			var result= {
         Folder_Path: self.Folder_Path(),
-        Status: self.Status(),
+        AccessLevel: self.AccessLevel(),
         Number_Of_Rows: self.Number_Of_Rows(),
         Date_From: self.Date_From(),
         Date_To: self.Date_To(),
@@ -213,13 +213,25 @@ function (ko, moment, api, column, instrument, messageBox) {
     UploadFile: function(file) {
       var self = this;
       messageBox.Hide();
-      api.ajaxUploadZip("/Data/upload/" + self.id, file,
+      api.ajaxUploadZip("/Data/upload/" + self.id(), file,
         function(model) {
           messageBox.ShowSuccess("Upload Successful!");
         },
         function(errorResponse) {
           messageBox.ShowError("Upload Failed: " + errorResponse);
         });
+    },
+
+    TransferUser: function() {
+      var self = this;
+      if (confirm("This will transfer ownership to this user.  Are you sure?")) {
+        api.ajaxPost("/Data/transfer", ko.toJSON({id: self.id(), email: self.TransferTo()}), null, function (model) {
+            messageBox.ShowSuccess("Ownership transferred successfully");
+          },
+          function (errorResponse) {
+            messageBox.ShowError(errorResponse.responseText);
+          });
+      }
     },
 
     Initialise: function() {

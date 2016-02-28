@@ -13,6 +13,34 @@ function fileExtension(fileName) {
 }
 
 module.exports = {
+  transfer: function (req, res) {
+    if (!req.param('id')) {
+      return res.badRequest('ID Missing');
+    }
+    if (!req.param('email')) {
+      return res.badRequest('Email Missing');
+    }
+
+    Data.findOne(req.param('id'))
+      .exec(function (err, thisData) {
+        if (err) return err;
+        if (!thisData) return res.notFound();
+
+        var userQuery = User.find();
+        userQuery.where({'Email':req.param('email')});
+        userQuery.exec(function callBack(err,users) {
+          if (err) return err;
+          if (!users || users.length == 0)
+            return res.badRequest('Could not find an active user with email address ' + req.param('email'));
+
+          Data.update({id:req.param('id')},{User:users[0].id}).exec(function afterwards(err, updated){
+            if (err) return err;
+            return res.ok();
+          });
+        });
+      });
+  },
+
   uploadMetaData: function (req, res) {
     var file = req.files.metadata;
 
@@ -55,8 +83,7 @@ module.exports = {
   },
 
   stations: function (req, res) {
-    // TODO: Only allow validated data
-    Data.find({ Status: 'New' }).exec(function(err, stations) {
+    Data.find().exec(function(err, stations) {
       if (err) return res(err);
       var response = [];
       stations.forEach(function(station) {
@@ -77,11 +104,13 @@ module.exports = {
       if (err) return res(err);
       var response = [];
       uploads.forEach(function(upload) {
+        if (upload.AccessLevel == 1) {
           response.push({
             id: upload.id,
-            Date_From:upload.Date_From,
+            Date_From: upload.Date_From,
             Date_To: upload.Date_To
           });
+        }
       });
       res.ok({items: response});
     });

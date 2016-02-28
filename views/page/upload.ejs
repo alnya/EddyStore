@@ -10,11 +10,9 @@
         <div class="panel-body">
           <div class="row">
             <div class="col-sm-6">
-              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Status", Name: "Status"}}'></div>
               <div data-bind='template: { name: "formFieldDate", data: {Property: "Date_From", Name: "Date From"}}'></div>
             </div>
             <div class="col-sm-6">
-              <div data-bind='template: { name: "formFieldReadOnly", data: {Property: "Number_Of_Rows", Name: "Number Of Rows"}}'></div>
               <div data-bind='template: { name: "formFieldDate", data: {Property: "Date_To", Name: "Date To"}}'></div>
             </div>
           </div>
@@ -52,6 +50,8 @@
           </div>
         </div>
       </div>
+      <%- partial('../includes/FormButtons.ejs') %>
+
     </div>
   </div>
 
@@ -60,6 +60,8 @@
       <li role="presentation" class="active"><a href="#station" aria-controls="profile" role="tab" data-toggle="tab">Station</a></li>
       <li role="presentation"><a href="#instruments" aria-controls="messages" role="tab" data-toggle="tab">Instruments</a></li>
       <li role="presentation"><a href="#columns" aria-controls="settings" role="tab" data-toggle="tab">Raw File Description</a></li>
+      <li role="presentation"><a href="#access" aria-controls="access" role="tab" data-toggle="tab">Data Access Rights</a></li>
+      <li role="presentation" data-bind="visible:EntityViewModel.id() != null"><a href="#originator" aria-controls="originator" role="tab" data-toggle="tab">Data Originator</a></li>
     </ul>
 
     <!-- Tab panes -->
@@ -456,9 +458,66 @@
           </div>
         </div>
       </div>
+      <div role="tabpanel" class="tab-pane" id="access" data-bind="with: EntityViewModel">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title clearfix">Rights Level</h3>
+              </div>
+              <div class="panel-body">
+                <div class="radio">
+                <label class="text-success">
+                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" data-bind="checkedValue:1, checked: AccessLevel">
+                  Freely accessible
+                </label>
+              </div>
+              <div class="radio">
+                <label class="text-warning">
+                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="2" data-bind="checkedValue:2, checked: AccessLevel">
+                  Controlled access: downloader requests access to use raw data outlining the intended use; data provider needs to give consent
+                </label>
+              </div>
+              <div class="radio">
+                <label class="text-danger">
+                  <input type="radio" name="optionsRadios" id="optionsRadios3" value="3" data-bind="checkedValue:3, checked: AccessLevel">
+                  Restricted access: data only available to originator and pool of users (colleagues) defined by originator.
+                </label>
+              </div>
+              </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title clearfix">Users With Rights</h3>
+              </div>
+              <div class="panel-body">
+
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="originator" data-bind="with: EntityViewModel">
+        <p class="help-block">The data originator is the owner of this data (currently you).  If you wish to transfer
+        ownership to another user, search for them below</p>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title clearfix">Transfer Ownership</h3>
+          </div>
+          <div class="panel-body">
+            <div class="form-group" data-bind="validationElement: TransferTo">
+              <label class="control-label">Transfer To (email address)</label>
+              <input type="text" class="form-control" id="transferUser" placeholder="Transfer To"  data-bind="value: TransferTo">
+            </div>
+            <button type="button" class="btn btn-warning" data-bind="click: TransferUser">Transfer</button>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>
   </div>
-  <%- partial('../includes/FormButtons.ejs') %>
 </form>
 
 <script type="text/javascript">
