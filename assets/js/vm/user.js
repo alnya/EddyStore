@@ -10,6 +10,9 @@ function (ko, moment, api) {
     Name: ko.observable().extend({required: true}),
     Email: ko.observable().extend({email:true, required: true}),
     Password: ko.observable(),
+    PasswordConfirm: ko.observable(),
+    Role_Uploader: ko.observable(),
+    Role_Admin: ko.observable(),
 
     SetModel: function(objFromServer) {
 			var self = this;
@@ -17,6 +20,8 @@ function (ko, moment, api) {
 
       self.Name(objFromServer.Name);
       self.Email(objFromServer.Email);
+      self.Role_Uploader(objFromServer.Role_Uploader);
+      self.Role_Admin(objFromServer.Role_Admin);
       self.Password();
     },
 
@@ -26,7 +31,9 @@ function (ko, moment, api) {
       var model= {
         Name : self.Name(),
         Email : self.Email(),
-        Password : self.Password()
+        Password : self.Password(),
+        Role_Uploader : self.Role_Uploader(),
+        Role_Admin : self.Role_Admin()
       };
 
       return model;
@@ -36,6 +43,9 @@ function (ko, moment, api) {
 
   });
 
-	return userVm;
+  userVm().PasswordConfirm = ko.observable().extend({equal: userVm().Password});
+
+
+  return userVm;
 });
 

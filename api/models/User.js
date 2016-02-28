@@ -1,4 +1,4 @@
-/**
+/**w
 * User.js
 *
 * @description :: TODO: You might write a short summary of how this model works and what it represents here.
@@ -16,7 +16,9 @@ module.exports = {
     Password: {
       type: 'string',
       required: true
-    }
+    },
+    Role_Uploader: {type: 'boolean'},
+    Role_Admin: {type: 'boolean'}
   },
 
   beforeCreate: function (attrs, next) {

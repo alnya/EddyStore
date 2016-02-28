@@ -11,6 +11,13 @@
     <input type="text" class="form-control" data-bind="value: $root.getProperty(Property), visible: !$root.IsInMode('VIEW')" />
   </div>
 </script>
+<script type="text/html" id="formFieldPassword">
+  <div class="form-group" data-bind="attr:{ id:Property }, validationElement: $root.getProperty(Property)">
+    <label class="control-label" data-bind="text: Name" />
+    <p class="form-control-static" data-bind="visible: $root.IsInMode('VIEW')">********</p>
+    <input type="password" class="form-control" data-bind="value: $root.getProperty(Property), visible: !$root.IsInMode('VIEW')" />
+  </div>
+</script>
 <script type="text/html" id="formFieldNumber">
   <div class="form-group" data-bind="attr:{ id:Property }, validationOptions: { insertMessages: false }">
     <label class="control-label" data-bind="text: Name" />

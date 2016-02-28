@@ -11,18 +11,22 @@
 		</div>
 	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		<ul class="nav navbar-nav">
+      <% if (req.session.isUploader) {%>
 			<li><a href="/page/uploads"><span class="glyphicon glyphicon-list-alt"></span> Data Uploads </a></li>
+      <% } %>
       <li><a href="/page/options"><span class="glyphicon glyphicon-cog"></span> Advanced </a></li>
       <li><a href="/page/reports"><span class="glyphicon glyphicon-tasks"></span> Processing </a></li>
+      <% if (req.session.isAdmin) {%>
       <li><a href="/page/users"><span class="glyphicon glyphicon-user"></span> Users </a></li>
-		</ul>
+      <% } %>
+    </ul>
 
 		<ul class="nav navbar-nav navbar-right">
 			<li><span class='progress-spinner'><i class='glyphicon glyphicon-refresh'></i></span></li>
 			<li class="dropdown">
 				<a href="#" id="navigationUserMenu" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> User <span class="caret"></span></a>
 				<ul class="dropdown-menu" role="menu">
-					<li><a id="navigationMyDetails" href="/pages/users/<%=req.session.user%>">My Details</a></li>
+					<li><a id="navigationMyDetails" href="/page/users/<%=req.session.user%>">My Details</a></li>
 					<li class="divider"></li>
 					<li><a id="navigationLogout" href="/">Logout</a></li>
 				</ul>

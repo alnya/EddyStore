@@ -20,6 +20,8 @@ module.exports = {
           if (match) {
             // password match
             req.session.user = user.id;
+            req.session.isAdmin = user.Role_Admin;
+            req.session.isUploader = user.Role_Uploader;
             req.session.authenticated = true;
             res.json(user);
           } else {
