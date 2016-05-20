@@ -466,21 +466,21 @@
                 <h3 class="panel-title clearfix">Rights Level</h3>
               </div>
               <div class="panel-body">
-                <div class="radio">
+                <div class="radio" data-bind="visible: !$root.IsInMode('VIEW') || AccessLevel() == 1">
                 <label class="text-success">
-                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" data-bind="checkedValue:1, checked: AccessLevel">
+                  <input type="radio" name="optionsRadios" id="optionsRadios1" value="1" data-bind="checkedValue:1, checked: AccessLevel, visible: !$root.IsInMode('VIEW')">
                   Freely accessible
                 </label>
               </div>
-              <div class="radio">
+              <div class="radio" data-bind="visible: !$root.IsInMode('VIEW') || AccessLevel() == 2">
                 <label class="text-warning">
-                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="2" data-bind="checkedValue:2, checked: AccessLevel">
+                  <input type="radio" name="optionsRadios" id="optionsRadios2" value="2" data-bind="checkedValue:2, checked: AccessLevel, visible: !$root.IsInMode('VIEW')">
                   Controlled access: downloader requests access to use raw data outlining the intended use; data provider needs to give consent
                 </label>
               </div>
-              <div class="radio">
+              <div class="radio" data-bind="visible: !$root.IsInMode('VIEW') || AccessLevel() == 3">
                 <label class="text-danger">
-                  <input type="radio" name="optionsRadios" id="optionsRadios3" value="3" data-bind="checkedValue:3, checked: AccessLevel">
+                  <input type="radio" name="optionsRadios" id="optionsRadios3" value="3" data-bind="checkedValue:3, checked: AccessLevel, visible: !$root.IsInMode('VIEW')">
                   Restricted access: data only available to originator and pool of users (colleagues) defined by originator.
                 </label>
               </div>
@@ -488,14 +488,27 @@
               </div>
           </div>
           <div class="col-md-6">
-            <div class="panel panel-default">
+            <div class="panel panel-default" data-bind="visible: AccessLevel() != 1">
               <div class="panel-heading">
                 <h3 class="panel-title clearfix">Users With Rights</h3>
               </div>
-              <div class="panel-body">
-
+              <div class="panel-body" data-bind="visible: !$root.IsInMode('VIEW')">
+                <div class="form-group">
+                  <label class="control-label">Add User Access</label>
+                  <input type="text" class="form-control" id="transferUser" data-bind="value: UserEmailAddressToAdd" placeholder="Email Address">
                 </div>
+                <button type="button" class="btn btn-warning" data-bind="click: AddUser">Add</button>
               </div>
+              <ul class="list-group" data-bind="foreach:Users">
+                <li class="list-group-item">
+                  <span data-bind="text:Name"></span>
+                  <button type="button" class="btn btn-danger pull-right"
+                          data-bind="click: $root.EntityViewModel.RemoveUser.bind($root.EntityViewModel, $data), visible: !$root.IsInMode('VIEW')">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

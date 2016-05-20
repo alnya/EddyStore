@@ -18,7 +18,12 @@ module.exports = {
       required: true
     },
     Role_Uploader: {type: 'boolean'},
-    Role_Admin: {type: 'boolean'}
+    Role_Admin: {type: 'boolean'},
+
+    Uploads: {
+      collection: 'Data',
+      via: 'Users'
+    }
   },
 
   beforeCreate: function (attrs, next) {

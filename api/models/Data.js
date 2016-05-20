@@ -30,6 +30,12 @@ module.exports = {
     Longitude: {type: 'float'},
     AccessLevel: {type: 'integer'},
 
+    Users: {
+      collection: 'User',
+      via: 'Uploads',
+      dominant: true
+    },
+
     Instruments: {
       collection: 'StationInstrument',
       via: 'Data'

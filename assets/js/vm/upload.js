@@ -33,6 +33,7 @@ function (ko, moment, api, column, instrument, messageBox) {
     Variables: ko.observableArray(),
 
     Columns: ko.observableArray(),
+    Users: ko.observableArray(),
 
     GasManufacturers: ko.observableArray(),
 
@@ -41,6 +42,7 @@ function (ko, moment, api, column, instrument, messageBox) {
     Models: ko.observableArray(),
 
     TransferTo: ko.observable(),
+    UserEmailAddressToAdd: ko.observable(),
 
     getInstrumentName: function(instrument) {
       var self = this;
@@ -113,6 +115,7 @@ function (ko, moment, api, column, instrument, messageBox) {
           self.Columns.push(c);
         });
       }
+      self.Users(objFromServer.Users);
     },
 
 		// Create JSON object to send to save
@@ -139,7 +142,8 @@ function (ko, moment, api, column, instrument, messageBox) {
         Latitude: self.Latitude(),
         Longitude: self.Longitude(),
         Instruments: [],
-        Columns: []
+        Columns: [],
+        Users: self.Users()
 			};
 
       ko.utils.arrayForEach(this.Columns(), function(c) {
@@ -207,6 +211,24 @@ function (ko, moment, api, column, instrument, messageBox) {
       var self = this;
       if (confirm("This will remove this column.  Are you sure?")) {
         self.Columns.remove(c);
+      }
+    },
+
+    AddUser: function() {
+      var self = this;
+      api.ajaxPost("/Data/adduser", ko.toJSON({email: self.UserEmailAddressToAdd()}), null, function (model) {
+          self.Users.push(model);
+          self.UserEmailAddressToAdd('');
+        },
+        function (errorResponse) {
+          messageBox.ShowError(errorResponse.responseText);
+        });
+    },
+
+    RemoveUser: function(c) {
+      var self = this;
+      if (confirm("This will remove this user's data access.  Are you sure?")) {
+        self.Users.remove(c);
       }
     },
 

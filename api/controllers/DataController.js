@@ -41,6 +41,21 @@ module.exports = {
       });
   },
 
+  adduser: function (req, res) {
+    if (!req.param('email')) {
+      return res.badRequest('Email Missing');
+    }
+
+    var userQuery = User.find();
+    userQuery.where({'Email':req.param('email')});
+    userQuery.exec(function callBack(err,users) {
+      if (err) return err;
+      if (!users || users.length == 0)
+        return res.badRequest('Could not find an active user with email address ' + req.param('email'));
+      return res.ok(users[0]);
+    });
+  },
+
   uploadMetaData: function (req, res) {
     var file = req.files.metadata;
 
