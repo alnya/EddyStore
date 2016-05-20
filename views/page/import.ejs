@@ -1,0 +1,30 @@
+<div class="row" id="import">
+  <div class="col-sm-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h2 class="panel-title">Import Eddy Pro Files</h2>
+      </div>
+      <div class="panel-body">
+            <span id="uploadMetadataButton" class="btn btn-info btn-file">
+              <span class="glyphicon glyphicon-upload"></span>
+              <span>Upload Metadata</span>
+              <input type="file" accept=".metadata" multiple="false" data-bind="event: { change: function() { if($element.files[0]){ UploadMetaDataFile($element.files[0]); $element.value = null;}}}"/>
+            </span>
+
+            <span id="uploadProjectButton" class="btn btn-info btn-file">
+              <span class="glyphicon glyphicon-upload"></span>
+              <span>Upload EddyPro Project File</span>
+              <input type="file" accept=".eddypro" multiple="false" data-bind="event: { change: function() { if($element.files[0]){ UploadProjectFile($element.files[0]); $element.value = null;}}}"/>
+            </span>
+      </div>
+    </div>
+    </div>
+</div>
+
+</div>
+<script type="text/javascript">
+  require(['knockout', 'jquery', 'import'],
+    function(ko, $, vm) {
+      ko.applyBindings(vm(), $("#import")[0]);
+    });
+</script>

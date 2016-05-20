@@ -26,7 +26,8 @@
       'analysis': 'js/vm/statisticalanalysis',
       'report': 'js/vm/report',
       'user': 'js/vm/user',
-      'output': 'js/vm/output'
+      'output': 'js/vm/output',
+      'import': 'js/vm/import'
     },
     shim: {
         "bootstrap": {

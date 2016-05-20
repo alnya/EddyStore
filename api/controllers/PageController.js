@@ -50,6 +50,9 @@ module.exports = {
       return res.view("page/user", {title:"User", vm: "user"});
     }
     return res.view("page/list", {title:"Users", vm: "users"});
+  },
+  import: function (req, res) {
+    return res.view("page/import", {title:"Import", vm: "import"});
   }
 };
 
