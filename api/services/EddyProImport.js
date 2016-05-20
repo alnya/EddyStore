@@ -1,7 +1,13 @@
 module.exports = {
 
   importMetaData: function(file, user) {
-    var metadata = {Name: 'Unknown', User: user, Instruments: [], Columns: []};
+    var metadata = {
+      Name: 'Unknown',
+      User: user,
+      Instruments: [],
+      Columns: []
+    };
+
     EddyProImport.importFile(file, metadata);
     console.log(metadata);
     Data.create(metadata).then(function(data) {
@@ -10,12 +16,19 @@ module.exports = {
   },
 
   importProject: function(file, user) {
-    var project = {User: user, SpectralCorrection: {}, ProcessingOption: {}, StatisticalAnalysis: {}, Output: {}};
+    var project = {
+      User: user,
+      SpectralCorrection: {Name:'Imported '},
+      ProcessingOption: {Name:'Imported'},
+      StatisticalAnalysis: {Name:'Imported'},
+      Output: {Name:'Imported'}
+    };
+
     EddyProImport.importFile(file, project);
     console.log(project);
-    //Report.create(project).then(function(report) {
-      //report.save();
-    //});
+    Report.create(project).then(function(report) {
+      report.save();
+    });
   },
 
   importFile: function(file, object) {
@@ -46,8 +59,10 @@ module.exports = {
   },
   setValue: function(section, object, key, value, itemNumber) {
 
-    switch(section) {
-      case "Project":
+    value = value.replace(/(\r\n|\n|\r)/gm,"");
+
+    switch(section.toLowerCase().trim()) {
+      case "project":
       {
         switch (key) {
           case "creation_date":
@@ -74,11 +89,11 @@ module.exports = {
         }
         break;
       }
-      case "Files":
+      case "files":
       {
         break;
       }
-      case "Site":
+      case "site":
       {
         switch (key) {
           case "altitude":
@@ -96,7 +111,7 @@ module.exports = {
         }
         break;
       }
-      case "Station":
+      case "station":
       {
         switch (key) {
           case "station_name":
@@ -105,7 +120,7 @@ module.exports = {
         }
         break;
       }
-      case "Timing":
+      case "timing":
       {
         switch (key) {
           case "acquisition_frequency":
@@ -117,7 +132,7 @@ module.exports = {
         }
         break;
       }
-      case "Instruments":
+      case "instruments":
       {
         if (itemNumber > object.Instruments.length) {
           object.Instruments.push({Instrument_Type: 'Anemometer'});
@@ -183,7 +198,7 @@ module.exports = {
         }
         break;
       }
-      case "FileDescription":
+      case "filedescription":
       {
         if (itemNumber > object.Columns.length) {
           object.Columns.push({});
@@ -218,7 +233,7 @@ module.exports = {
         }
         break;
       }
-      case "FluxCorrection_SpectralAnalysis_General":
+      case "fluxcorrection_spectralanalysis_general":
       {
         switch (key) {
           case "sa_start_date": object.SpectralCorrection.Subperiod_Start = value;break;
@@ -241,11 +256,11 @@ module.exports = {
         }
         break;
       }
-      case "RawProcess_General":
+      case "rawprocess_general":
       {
         break;
       }
-      case "RawProcess_Settings":
+      case "rawprocess_settings":
       {
         switch (key) {
           case "cross_wind": object.ProcessingOption.Angle_Of_Attack_Correction_For_Wind_Components = value;break;
@@ -336,7 +351,7 @@ module.exports = {
         }
         break;
       }
-      case "RawProcess_Tests":
+      case "rawprocess_tests":
       {
         switch (key) {
           case "test_sr": object.StatisticalAnalysis.Spike_count = value;break;
@@ -351,7 +366,7 @@ module.exports = {
         }
         break;
       }
-      case "RawProcess_ParameterSettings":
+      case "rawprocess_parametersettings":
       {
         switch (key) {
           case "sr_num_spk": object.StatisticalAnalysis.Accepted_spikes = value; break;
@@ -415,7 +430,7 @@ module.exports = {
         }
         break;
       }
-      case "RawProcess_TiltCorrection_Settings":
+      case "rawprocess_tiltcorrection_settings":
       {
         switch (key) {
           case "pf_start_date": object.ProcessingOption.Planar_Start = value; break;
@@ -428,7 +443,7 @@ module.exports = {
         }
         break;
       }
-      case "RawProcess_TimelagOptimization_Settings":
+      case "rawprocess_timelagoptimization_settings":
       {
         switch (key) {
           case "to_start_date": object.ProcessingOption.Time_Lag_Start = value; break;
@@ -450,7 +465,7 @@ module.exports = {
         }
         break;
       }
-      case "RawProcess_RandomUncertainty_Settings":
+      case "rawprocess_randomuncertainty_settings":
       {
         switch (key) {
           case "ru_meth": object.StatisticalAnalysis.Random_uncertainty_estimation = value; break;
@@ -459,7 +474,7 @@ module.exports = {
         }
         break;
       }
-      case "RawProcess_BiometMeasurements":
+      case "rawprocess_biometmeasurements":
       {
         break;
       }
