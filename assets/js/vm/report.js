@@ -249,8 +249,21 @@ function (ko, moment, api, modalDialog) {
 
     RequestReport: function() {
       var self = this;
+      function updateReportStatus() {
+        api.ajaxGet("/Report/getProcessStatus/" + self.EntityViewModel.id(), null, null, function(data, method){
+          modalDialog.ModalDialogBody(data.console);
+          if (data.status == "Available") {
+            clearInterval(self.timer);
+          }
+        });
+      }
+
       if (confirm("This will run Eddy Pro and generate the output data. Are you sure?")) {
         api.ajaxGet("/Report/Request/" + self.EntityViewModel.id(), null, null, null);
+
+        // open dialog, set timer to get status
+        modalDialog.ShowModalDialog(false, 'Eddy Pro Processing', "", "", "", false, false, "", "", "Close");
+        self.timer = setInterval(function() {updateReportStatus()}, 3000);
       }
     },
 

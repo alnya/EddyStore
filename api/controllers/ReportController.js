@@ -1,5 +1,5 @@
 var fs = require('fs');
-var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var AdmZip = require('adm-zip');
 
 /**
@@ -37,6 +37,22 @@ module.exports = {
 
             return res.send(EddyPro.getReport(thisReport, thisData));
           });
+      });
+  },
+
+  getProcessStatus: function (req, res) {
+    if (!req.param('id')) {
+      return res.badRequest('ID Missing');
+    }
+    Report.findOne(req.param('id'))
+      .exec(function (err, thisReport) {
+        if (err) return err;
+        if (!thisReport) return res.notFound();
+
+        return res.ok({
+          status: thisReport.Status,
+          console: thisReport.ProcessLog
+        });
       });
   },
 
@@ -98,17 +114,21 @@ module.exports = {
           console.log("Executing " + cmd);
 
           // run Eddy Pro command
-          exec(cmd, function(error, stdout, stderr) {
-            console.log(stdout);
-            thisReport.ProcessLog = stdout;
-            thisReport.save();
-
-            if (stdout.indexOf('error') > -1) {
-              thisReport.Status = "Error";
+          var eddyProProcess = spawn(cmd);
+          eddyProProcess.stdout.on('data', function(data) {
+              console.log('stdout:' + data);
+              thisReport.ProcessLog = stdout;
               thisReport.save();
-              return res.badRequest("There was an error processing the report - see the log for details");
-            }
+          });
 
+          eddyProProcess.stderr.on('data', function(data) {
+            console.log('stderr:' + data);
+            thisReport.Status = "Error";
+            thisReport.save();
+          });
+
+          eddyProProcess.on('close', function(code) {
+            console.log("Process ended");
             // write to zip file
             var outputFolder = EddyPro.getOutputFolder(thisData.id);
             var zipFile = workingDirectory + '/' + thisReport.id + '.zip';
@@ -125,10 +145,9 @@ module.exports = {
             // save report, ready for download
             thisReport.Status = "Available";
             thisReport.save();
-
-            return res.ok();
-
           });
+
+          return res.ok();
       });
     });
   }
