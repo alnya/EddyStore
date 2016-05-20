@@ -115,11 +115,20 @@ module.exports = {
     if (!req.param('station')) {
       return res.badRequest('station Missing');
     }
-    Data.find({ Name: req.param('station') }).exec(function(err, uploads) {
+    Data.find({ Name: req.param('station') }).populate('Users').exec(function(err, uploads) {
       if (err) return res(err);
       var response = [];
       uploads.forEach(function(upload) {
+        var authorized = false;
         if (upload.AccessLevel == 1) {
+          authorized = true;
+        } else {
+          if (upload.Users.filter(function (u) { return u.id == req.session.user}).length > 0) {
+            authorized = true;
+          }
+        }
+
+        if (authorized) {
           response.push({
             id: upload.id,
             Date_From: upload.Date_From,
