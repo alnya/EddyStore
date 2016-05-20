@@ -26,6 +26,9 @@ module.exports = {
     Cross_Wind_Correction_Applied_By_Anemometer: {type:'boolean'},
     ProcessLog: {type: 'text'},
 
+    Molecular_Weight: {type: 'float'},
+    Molecular_Diffusivity_In_Air: {type: 'float'},
+
     Flags: {
       collection: 'ReportFlag',
       via: 'Report'

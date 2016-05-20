@@ -33,7 +33,7 @@
             deps: ["jquery"]
         }
     },
-    urlArgs: "v=" +  (new Date()).getTime()
+    //urlArgs: "v=" +  (new Date()).getTime()
 });
 
 require(['jquery', 'knockout', 'common','page','knockout.validation', 'bootstrap'], function ($, ko, common, page) {

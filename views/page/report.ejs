@@ -77,17 +77,63 @@
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="variables">
         <h3>Items for Flux Computation</h3>
-        <table class="table">
-          <tbody data-bind="foreach:ReportVariables">
-          <tr>
-            <td data-bind="text:Name"></td>
-            <td><select class="form-control" data-bind="visible: !$root.IsInMode('VIEW'), value: Column_Number, options: $parent.DataColumns,
-                optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None', valueAllowUnset: true"></select>
-                <p class="form-control-static" data-bind="text: $parent.getDataColumn(Column_Number), visible: $root.IsInMode('VIEW')"></p>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+
+        <h4>Gas Measurements</h4>
+        <div class="form-horizontal">
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "C02", Variable: 9}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "H20", Variable: 10}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "CH4", Variable: 11}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "4th Gas", Variable: 666}}'></div>
+
+          <div class="form-group">
+            <label class="control-label col-xs-8">Molecular Weight</label>
+            <div class="col-xs-4">
+              <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
+                <input type="text" class="form-control" data-bind="value: Molecular_Weight" />
+                <span class="input-group-addon">g/mol</span>
+              </div>
+              <p class="form-control-static" data-bind="text: Molecular_Weight, visible: $root.IsInMode('VIEW')"></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-xs-8">Molecular Diffusivity in Air</label>
+            <div class="col-xs-4">
+              <div class="input-group" data-bind="visible: !$root.IsInMode('VIEW')">
+                <input type="text" class="form-control" data-bind="value: Molecular_Diffusivity_In_Air" />
+                <span class="input-group-addon">cm2/s</span>
+              </div>
+              <p class="form-control-static" data-bind="text: Molecular_Diffusivity_In_Air, visible: $root.IsInMode('VIEW')"></p>
+            </div>
+          </div>
+
+
+        </div>
+        <h4>Cell Measurements</h4>
+
+        <div class="form-horizontal">
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Average Cell Temperature", Variable: 20}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Cell Temperature In", Variable: 21}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Cell Temperature Out", Variable: 22}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Cell Pressure", Variable: 23}}'></div>
+        </div>
+        <h4>Ambient Measurements</h4>
+
+        <div class="form-horizontal">
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Ambient Temperature", Variable: 24}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Ambient Pressure", Variable: 25}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Ambient Relative Humidity", Variable: 0}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Global Radiation", Variable: 0}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Longwave Incoming Radiation", Variable: 0}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "Photosythetically Active Radiations", Variable: 0}}'></div>
+        </div>
+        <h4>Diagnostic Measurements</h4>
+
+        <div class="form-horizontal">
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "LI-7500(A) Diagnostics", Variable: 26}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "LI-7200 Diagnostics", Variable: 27}}'></div>
+          <div data-bind='template: { name: "variableTemplate", data: {Name: "LI-7700 Diagnostics", Variable: 28}}'></div>
+        </div>
+
       </div>
       <div role="tabpanel" class="tab-pane" id="flags">
         <p>Optionally, each variable in raw data can be used as a mask to filter out individual records that do not
@@ -104,7 +150,7 @@
           </thead>
           <tbody data-bind="foreach: ReportFlags">
             <tr>
-              <td><select class="form-control" data-bind="value:Variable, options: $parent.Variables,
+              <td><select class="form-control" data-bind="value:Variable, options: $parent.DataColumns,
                 optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None', visible: !$root.IsInMode('VIEW')"></select>
                 <p class="form-control-static" data-bind="text: Variable, visible: $root.IsInMode('VIEW')"></p>
               </td>
@@ -128,6 +174,17 @@
     </div>
   </div>
 </form>
+
+<script type='text/html' id='variableTemplate'>
+  <div class="form-group">
+    <label class="control-label col-xs-4" data-bind="text:Name"></label>
+    <div class="col-xs-8">
+      <select class="form-control" data-bind="visible: !$root.IsInMode('VIEW'), options: $parent.getDataColumnsForThisVariable(Variable), value: $parent.getVariableById(Variable),
+                optionsText: 'Name', optionsValue: 'id', optionsCaption: 'None', valueAllowUnset: true, disable: $parent.noOptionsForThisVariable(Variable)"></select>
+      <p class="form-control-static" data-bind="text: $parent.getDataColumn($parent.getVariableById(Variable)), visible: $root.IsInMode('VIEW')"></p>
+    </div>
+  </div>
+</script>
 
 <script type='text/html' id='reportButtonTemplate'>
   <span id="reportButton" class="btn btn-info" data-bind="visible: !IsInMode('ADD'), click:EntityViewModel.RequestReport">

@@ -8,8 +8,7 @@
             columns: [
               { name: 'Station', value: 'Name', filterable: true, template: "nameCellTemplate"},
               { name: "From", value: "Date_From", dataType: "Date", filterable: false  },
-              { name: "To", value: "Date_To", dataType: "Date", filterable: false },
-              { name: "Status", value: "Status", dataType: "List", filterValues: ['New', 'InProgress','Processed']}
+              { name: "To", value: "Date_To", dataType: "Date", filterable: false }
             ],
             sortable: false,
             filterMode: 'search',

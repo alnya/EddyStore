@@ -14,6 +14,7 @@ function (ko, moment, api, modalDialog) {
     DownloadLink: ko.observable(''),
     Station: ko.observable(),
     DataList: ko.observableArray([]),
+    Variables: ko.observableArray([]),
     Data: ko.observable().extend({required: true}),
     SetData: null,
     DataObject: ko.observable(),
@@ -33,13 +34,14 @@ function (ko, moment, api, modalDialog) {
     Stations: ko.observableArray([]),
     Anemometers: ko.observableArray([]),
     DataColumns: ko.observableArray([]),
-    Variables: ko.observableArray([]),
     ReportFlags: ko.observableArray([]),
     ReportVariables: ko.observableArray([]),
     StatisticalAnalysisList: ko.observableArray(),
     SpectralCorrectionList: ko.observableArray(),
     ProcessingOptionList: ko.observableArray(),
     OutputList: ko.observableArray(),
+    Molecular_Weight: ko.observable(0),
+    Molecular_Diffusivity_In_Air: ko.observable(0),
 
     NewReportVariable: function() {
       return {
@@ -76,6 +78,9 @@ function (ko, moment, api, modalDialog) {
       self.Flux_Averaging_Interval(objFromServer.Flux_Averaging_Interval);
       self.North_Reference(objFromServer.North_Reference);
       self.Cross_Wind_Correction_Applied_By_Anemometer(objFromServer.Cross_Wind_Correction_Applied_By_Anemometer);
+
+      self.Molecular_Weight(objFromServer.Molecular_Weight);
+      self.Molecular_Diffusivity_In_Air(objFromServer.Molecular_Diffusivity_In_Air);
 
       self.StatisticalAnalysis(objFromServer.StatisticalAnalysis != null ? objFromServer.StatisticalAnalysis.id : null);
       self.SpectralCorrection(objFromServer.SpectralCorrection != null ? objFromServer.SpectralCorrection.id : null);
@@ -121,16 +126,6 @@ function (ko, moment, api, modalDialog) {
       self.Station.subscribe(self.GetStationData, self);
       self.Data.subscribe(self.GetData, self);
 
-      api.ajaxGet("/Variable", null, null, function(data, method){
-        self.Variables(data.items);
-        // add report variables
-          ko.utils.arrayForEach(data.items, function(item) {
-            var reportVariable = self.NewReportVariable();
-            reportVariable.Variable = item.id;
-            reportVariable.Name = item.Name;
-            self.ReportVariables.push(reportVariable);
-          });
-      });
       api.ajaxGet("/Data/stations", null, null, function(data, method){
         self.Stations(data.items);
       });
@@ -145,6 +140,16 @@ function (ko, moment, api, modalDialog) {
       });
       api.ajaxGet("/Output", null, null, function(data, method) {
         self.OutputList(data.items);
+      });
+      api.ajaxGet("/Variable", null, null, function(data, method) {
+        self.Variables(data.items);
+        // set default varaibles
+        ko.utils.arrayForEach(data.items, function(item) {
+          var reportVariable = self.NewReportVariable();
+          reportVariable.Variable = item.id;
+          reportVariable.Name = item.Name;
+          self.ReportVariables.push(reportVariable);
+        });
       });
     },
 
@@ -169,12 +174,30 @@ function (ko, moment, api, modalDialog) {
       });
     },
 
-    getDataColumn: function (value) {
+    getVariableById: function(id) {
       var self = this;
+      return ko.utils.arrayFilter(self.ReportVariables(), function(item) {
+        return item.Variable == id;
+      });
+    },
+
+    getDataColumn: function (value) {
+        var self = this;
         var selectedItem = ko.utils.arrayFilter(self.DataColumns(), function (option) {
-          return option.id == value();
+          return option.id == value;
         });
         if (selectedItem != null && selectedItem.length == 1) { return selectedItem[0].Name; }
+    },
+
+    getDataColumnsForThisVariable: function (variable) {
+      var self = this;
+      return ko.utils.arrayFilter(self.DataColumns(), function (option) {
+        return option.Variable == variable;
+      });
+    },
+
+    noOptionsForThisVariable: function(variable) {
+      return this.getDataColumnsForThisVariable(variable).length === 0;
     },
 
     GetData: function(data) {
@@ -208,11 +231,18 @@ function (ko, moment, api, modalDialog) {
         // get columns with variables defined
         self.DataColumns([]);
         ko.utils.arrayForEach(data.Columns, function(col) {
-          if (col.Variable)
+          if (col.Variable) {
+
+            var thisVar = ko.utils.arrayFirst(self.Variables(), function(v) {
+              return v.Name == col.Variable;
+            });
+
             self.DataColumns.push({
               id: col.Column_Number,
-              Name: col.Variable
+              Variable: thisVar.id,
+              Name: col.Variable + ' ' + col.Measurement_Type + ' from ' + col.Instrument
             });
+          }
         });
       });
     },
@@ -234,6 +264,8 @@ function (ko, moment, api, modalDialog) {
         Missing_Samples_Allowance : self.Missing_Samples_Allowance(),
         Flux_Averaging_Interval : self.Flux_Averaging_Interval(),
         North_Reference : self.North_Reference(),
+        Molecular_Weight : self.Molecular_Weight(),
+        Molecular_Diffusivity_In_Air : self.Molecular_Diffusivity_In_Air(),
         Master_Anemometer : self.Master_Anemometer(),
         Cross_Wind_Correction_Applied_By_Anemometer : self.Cross_Wind_Correction_Applied_By_Anemometer(),
         Flags: self.ReportFlags(),
