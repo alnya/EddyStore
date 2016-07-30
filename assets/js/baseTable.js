@@ -124,13 +124,13 @@ define(['knockout', 'common', 'webApiClient'], function(ko, common, webApiClient
       var filter = "";
       ko.utils.arrayForEach(self.filterTerms(), function (term) {
         if (term.filterValue !== "") {
-          if (filter != "") filter+=",";
-          filter += term.fieldName + ":" + term.filterValue;
+          filter+="&";
+          filter += term.fieldName + "=" + term.filterValue;
         }
       });
 
       if (filter != "") {
-        params += "&where={" + filter + "}";
+        params += filter;
       }
 
       return params;

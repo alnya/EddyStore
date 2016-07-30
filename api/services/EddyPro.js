@@ -236,7 +236,7 @@ module.exports = {
         '\nhf_meth=1' +
         '\nlf_meth=1' +
         '\nwpl_meth=1' +
-        '\nfoot_meth=0' +
+        '\nfoot_meth=' + EddyPro.getLookupValue("Footprint_Method", processing.Footprint_Method) +
         '\ntob1_format=0' +
         '\nout_path=' + EddyPro.getOutputFolder(thisData.id) +
         '\nfix_out_format=' + (outputOptions.Output_Format == "Use standard output format" ? 1 : 0) +
