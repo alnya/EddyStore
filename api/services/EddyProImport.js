@@ -89,9 +89,56 @@ module.exports = {
           case "project_title": object.Name = formatValue(value); break;
           case "err_label": object.Error_Label = formatValue(value); break;
           case "out_mean_cosp": object.Spectral_Output_Averaged_Cospectra = formatValue(value, "bool"); break;
-          case "file_name": object.Name = formatValue(value); break;
-          case "foot_meth": object.ProcessingOption.Footprint_Method = EddyProImport.getLookupValue(key, value); break;
+          case "amflux": object.Output.AmeriFlux = formatValue(value, "bool"); break;
+          case "out_ghg_eu": object.Output.GHG_Europe = formatValue(value, "bool"); break;
+          case "out_biomet": object.Output.Biomet_Measurements = formatValue(value, "bool"); break;
+          case "out_metadata": object.Output.Metadata = formatValue(value, "bool"); break;
+          case "make_dataset": object.Output.Continuous_Dataset = formatValue(value, "bool"); break;
 
+          case "out_mean_spec": object.Output.Spectral_Output_Averaged_Spectra = formatValue(value, "bool"); break;
+          case "out_mean_cosp": object.Output.Spectral_Output_Averaged_Cospectra = formatValue(value, "bool"); break;
+
+          case "lf_meth": object.SpectralCorrection.Analytic_Correction_Of_High_Pass_Filtering_Effects = formatValue(value, "bool"); break;
+          case "hf_meth":
+            if (value ==0) {
+              object.SpectralCorrection.Correction_Of_Low_Pass_Filtering_Effects = false;
+            } else {
+              object.SpectralCorrection.Correction_Of_Low_Pass_Filtering_Effects = true;
+              object.SpectralCorrection.Correction_Of_Low_Pass_Filtering_Effects_Method = EddyProImport.getLookupValue(key, value-1);
+            }
+
+            break;
+
+          case "file_name": object.Name = formatValue(value); break;
+          case "foot_meth":
+            if (value ==0) {
+              object.ProcessingOption.Footprint_Estimation = false;
+            } else {
+              object.ProcessingOption.Footprint_Estimation = true;
+              object.ProcessingOption.Footprint_Method = EddyProImport.getLookupValue(key, value-1);
+            }
+
+            break;
+          case "qc_meth":
+            if (value ==0)
+              object.ProcessingOption.Quality_Check = false;
+            else
+            {
+              object.ProcessingOption.Quality_Check = true;
+              object.ProcessingOption.Quality_Check_Flagging_Policy = EddyProImport.getLookupValue(key, value);
+            }
+
+            break;
+          case "wpl_meth":
+            if (value ==0)
+              object.ProcessingOption.Compensate_Density_Fluctuations = false;
+            else
+            {
+              object.ProcessingOption.Compensate_Density_Fluctuations = true;
+              object.ProcessingOption.Compensate_Density_Fluctuations_Method = EddyProImport.getLookupValue(key, value);
+            }
+
+            break;
         }
         break;
       }
@@ -286,11 +333,39 @@ module.exports = {
       case "rawprocess_settings":
       {
         switch (key) {
-          case "cross_wind": object.ProcessingOption.Angle_Of_Attack_Correction_For_Wind_Components = formatValue(value);break;
-          case "rot_meth": object.ProcessingOption.Rotation_Method = EddyProImport.getLookupValue(key, value);break;
+          case "cross_wind":
+            if (value ==0)
+              object.ProcessingOption.Angle_Of_Attack_Correction_For_Wind_Components = false;
+            else
+            {
+              object.ProcessingOption.Angle_Of_Attack_Correction_For_Wind_Components = true;
+              object.ProcessingOption.Angle_Of_Attach_Method = EddyProImport.getLookupValue(key, value01);
+            }
+
+            break;
+          case "rot_meth":
+            if (value ==0)
+              object.ProcessingOption.Axis_Rotation_For_Tilt_Correction = false;
+            else
+            {
+              object.ProcessingOption.Axis_Rotation_For_Tilt_Correction = true;
+              object.ProcessingOption.Rotation_Method = EddyProImport.getLookupValue(key, value-1);
+            }
+
+            break;
           case "detrend_meth": object.ProcessingOption.Detrend_Method = EddyProImport.getLookupValue(key, value);break;
           case "timeconst": object.ProcessingOption.Turbulent_Fluctuations_Time_Constant = formatValue(value);break;
-          case "tlag_meth": object.ProcessingOption.Time_Lag_Method = EddyProImport.getLookupValue(key, value);break;
+          case "tlag_meth":
+            if (value ==0)
+              object.ProcessingOption.Time_Lag_Compensation = false;
+            else
+            {
+              object.ProcessingOption.Time_Lag_Compensation = true;
+              object.ProcessingOption.Time_Lag_Method = EddyProImport.getLookupValue(key, value-1);
+            }
+
+            break;
+
           case "out_bin_sp" : object.Output.Spectral_Output_All = formatValue(value, "bool"); break;
           case "out_bin_og" : object.Output.Spectral_Output_All_Ogives = formatValue(value, "bool"); break;
           case "out_full_sp_u" : object.Output.Spectral_Output_U = formatValue(value, "bool"); break;
@@ -491,7 +566,14 @@ module.exports = {
       case "rawprocess_randomuncertainty_settings":
       {
         switch (key) {
-          case "ru_meth": object.StatisticalAnalysis.Random_uncertainty_estimation = formatValue(value); break;
+          case "ru_meth":
+            if (value == 0) {
+              object.StatisticalAnalysis.Random_uncertainty_estimation = false;
+            } else {
+              object.StatisticalAnalysis.Random_uncertainty_estimation = true;
+              object.StatisticalAnalysis.Random_uncertainty_estimation_method = EddyProImport.getLookupValue(key, value-1);
+            }
+            break;
           case "ru_its_meth": object.StatisticalAnalysis.Random_uncertainty_estimation_method = EddyProImport.getLookupValue(key, value); break;
           case "ru_tlag_max": object.StatisticalAnalysis.Maximum_correlation_period = formatValue(value); break;
         }
@@ -541,18 +623,19 @@ module.exports = {
   getLookupValue: function(field,value) {
     var lookups = {
       "Integral_turbulence_scale":["Cross-correlation first crossing 1/e","Cross-correlation first crossing zero","Integrate over the whole correlation period"],
-      "ru_its_meth":["Finkelstein and Sims (2001)","Mann and Lenshcow (1994)"],
+      "ru_meth": ["Finkelstein and Sims (2001)","Mann and Lenshcow (1994)"],
+      "ru_its_meth":["Cross-correlation first crossing 1/e","Cross-correlation first crossing zero","Integrate over the whole correlation period"],
       "Correction_For_Instruments_Separation_Method":["Horst and Lenshow (2009), along-wind, crosswind and vertical","Horst and Lenshow (2009), only crosswind and vertical"],
-      "Correction_Of_Low_Pass_Filtering_Effects_Method": ["Moncrieff et al. (1997) – Fully analytic","Massmann (2000, 2001) – Fully analytic","Horst (1997) – Analytic with in situ parameterization","Ibrom et al. (2007) – In situ / analytic","Fratini et al. (2012) – In situ/analytic"],
+      "hf_meth": ["Moncrieff et al. (1997) – Fully analytic","Massmann (2000, 2001) – Fully analytic","Horst (1997) – Analytic with in situ parameterization","Ibrom et al. (2007) – In situ / analytic","Fratini et al. (2012) – In situ/analytic"],
       "North_Reference": ["Use Magnetic North", "Use Geographic North"],
-      "Angle_Of_Attach_Method": ["Field calibration (Nakai and Shimoyama 2012)", "Wind tunnel calibration (Nakai et al. 2006)"],
+      "cross_wind": ["Field calibration (Nakai and Shimoyama 2012)", "Wind tunnel calibration (Nakai et al. 2006)"],
       "rot_meth":["Double rotation","Triple rotation","Planar fit (Wilczak et al. 2001)","Planar fit with not velocity bias (van Dijk et al. 2004)"],
       "detrend_meth": ["Block average","Linear detrending","Running mean","Exponential running mean"],
       "tlag_meth": ["Constant","Covariance maximization with default","Covariance maximization","Automatic time lag optimization"],
-      "Compensate_Density_Fluctuations_Method": ["Use/convert to mixing ratio, if possible(Burba et al. 2012)","Webb et al. 1980 (open-path) / Ibrom et al. 2007 (closed-path)"],
+      "wpl_meth": ["Use/convert to mixing ratio, if possible(Burba et al. 2012)","Webb et al. 1980 (open-path) / Ibrom et al. 2007 (closed-path)"],
       "bu_multi": ["Simple linear regressions", "Multiple regressions"],
       "Tapering_Window": ["Spared (no window)","Bartlett","Welch","Hamming","Hann"],
-      "Quality_Check_Flagging_Policy": ["Mauder and Foken (2004) (0-1-2 system)","Foken (2003) (1 to 9 system)","Goeckede et al. (2004) (1 to 5 system)"],
+      "qc_meth": ["Mauder and Foken (2004) (0-1-2 system)","Foken (2003) (1 to 9 system)","Goeckede et al. (2004) (1 to 5 system)"],
       "Footprint_Method": ["Kljun et al. (2004)","Kormann and Meixner (2001)","Hsieh et al. (2000)"],
       "pf_mode": ["Use closest valid sector, clockwise)"]
     };
