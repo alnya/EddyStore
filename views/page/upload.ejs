@@ -366,44 +366,44 @@
                   <div class="form-group" id="Measurement_Type">
                     <select class="form-control" data-bind="value: Measurement_Type, visible: !$root.IsInMode('VIEW')">
                       <option></option>
-                      <option>Molar/Mass density</option>
-                      <option>Mole fraction</option>
-                      <option>Mixing ratio</option>
-                      <option>Other</option>
+                      <option value="density">Molar/Mass density</option>
+                      <option value="mole_fraction">Mole fraction</option>
+                      <option value="mixing_ratio">Mixing ratio</option>
+                      <option value="other">Other</option>
                     </select>
                     <p class="form-control-static" data-bind="text: Measurement_Type, visible: $root.IsInMode('VIEW')"></p>
                   </div>
                   <div class="form-group" id="Input_Unit">
                     <select class="form-control" data-bind="value: Input_Unit, visible: !$root.IsInMode('VIEW')">
                       <option></option>
-                      <option>mV</option>
-                      <option>V</option>
-                      <option>Mm/s</option>
-                      <option>Cm/s</option>
-                      <option>m/s</option>
-                      <option>K</option>
-                      <option>cK</option>
-                      <option>°C</option>
-                      <option>C°C</option>
-                      <option>mmol/mol (ppt)</option>
-                      <option>µmol/mol (ppm)</option>
-                      <option>mmol/mol (ppb)</option>
-                      <option>mmol/m3</option>
-                      <option>µmol/m3</option>
-                      <option>g/m3</option>
-                      <option>mg/m3</option>
-                      <option>ug/m3</option>
-                      <option>Pa</option>
-                      <option>hPa</option>
-                      <option>kPa</option>
-                      <option>l/min</option>
-                      <option>m3/s</option>
-                      <option>cm3/s</option>
-                      <option>ft3/s</option>
-                      <option>in3/s</option>
-                      <option>Degrees</option>
-                      <option>Other</option>
-                      <option>Dimensionless</option>
+                      <option value="mv">mV</option>
+                      <option value="v">V</option>
+                      <option value="mm_sec">Mm/s</option>
+                      <option value="cm_sec">Cm/s</option>
+                      <option value="m_sec">m/s</option>
+                      <option value="k">K</option>
+                      <option value="ck">cK</option>
+                      <option value="celsius">°C</option>
+                      <option value="">C°C</option>
+                      <option value="ppt">mmol/mol (ppt)</option>
+                      <option value="ppm">µmol/mol (ppm)</option>
+                      <option value="ppb">mmol/mol (ppb)</option>
+                      <option value="mmol">mmol/m3</option>
+                      <option value="umol">µmol/m3</option>
+                      <option value="g_m3">g/m3</option>
+                      <option value="mg_m3">mg/m3</option>
+                      <option value="ug_m3">ug/m3</option>
+                      <option value="pa">Pa</option>
+                      <option value="hpa">hPa</option>
+                      <option value="kpa">kPa</option>
+                      <option value="l_min">l/min</option>
+                      <option value="m3_sec">m3/s</option>
+                      <option value="cm3_sec">cm3/s</option>
+                      <option value="ft3_sec">ft3/s</option>
+                      <option value="in3_sec">in3/s</option>
+                      <option value="degree">Degrees</option>
+                      <option value="other">Other</option>
+                      <option value="">Dimensionless</option>
                     </select>
                     <p class="form-control-static" data-bind="text: Input_Unit, visible: $root.IsInMode('VIEW')"></p>
                   </div>

@@ -15,12 +15,12 @@ module.exports = {
     });
   },
 
-  importProject: function(file, user) {
+  importProject: function(filename, file, user) {
     var importDate = new Date();
     var importName = 'Imported ' + importDate.toString();
 
     var project = {
-      Name: importName,
+      Name: filename,
       User: user,
       SpectralCorrection: {Name: importName, User: user},
       ProcessingOption: {Name: importName, User: user},
@@ -97,6 +97,15 @@ module.exports = {
       }
       case "files":
       {
+        switch(key) {
+          case "tstamp_end":
+            var end = formatValue(value, "bool");
+            if (end)
+              object.Timestamp_Refers_To = "End of averaging period";
+            else
+              object.Timestamp_Refers_To = "Beginning of averaging period";
+            break;
+        }
         break;
       }
       case "site":
@@ -146,7 +155,7 @@ module.exports = {
             instrument.Manufacturer = formatValue(value);
             break;
           case "model":
-            instrument.Altitude = formatValue(value);
+            instrument.Model = formatValue(value.substr(0, value.length-2));
             break;
           case "sw_version":
             instrument.Software_Version = formatValue(value);
@@ -203,13 +212,25 @@ module.exports = {
       case "filedescription":
       {
         if (itemNumber > object.Columns.length) {
-          object.Columns.push({});
+          object.Columns.push({Column_Number: itemNumber});
         }
         var column = object.Columns[object.Columns.length - 1];
 
         switch (key) {
+          case "separator":
+              object.Field_Separator_Character = formatValue(value);
+                break;
+          case "header_rows":
+            object.Number_Of_Header_Rows = formatValue(value);
+            break;
           case "variable":
-            column.Numeric = formatValue(value);
+            if (value.toLowerCase() == "not_numeric") {
+              column.Numeric = false;
+              column.Ignore = true;
+            } else {
+              column.Numeric = true;
+              column.Variable = EddyProImport.getVariable(value);
+            }
             break;
           case "instrument":
             column.Instrument = formatValue(value);
@@ -481,6 +502,40 @@ module.exports = {
         break;
       }
     }
+  },
+
+  getVariable: function(value) {
+    switch (value) {
+      case "w": return "w";
+      case "u":  return "u";
+      case "v":  return "v";
+      case "p":  return "p (pho)";
+      case "sos": return "Speed of Sound";
+      case "ts": return "Sonic Temperature";
+      case "flowrate":  return "Sampling Line Flow Rate";
+      case "so2":  return "SO2";
+      case "o2": return "O2";
+      case "no2": return "NO2";
+      case "no": return "NO";
+      case "nh4": return "NH4";
+      case "n2o": return "N2O";
+      case "diag_77": return "LI-7700 Diagnostics";
+      case "diag_75":  return "LI-7500(A) Diagnostics";
+      case "diag_72":  return "LI-7200 Diagnostics";
+      case "h2o":return "H2O";
+      case "fast_t":return "Fast Ambient Temperature";
+      case "int_t_2":return "Cell Temperature Out";
+      case "int_t_1":return "Cell Temperature In";
+      case "int_p":return "Cell Pressure";
+      case "co2":return "CO2";
+      case "co":return "CO";
+      case "ch4":return "CH4";
+      case "cell_t":return "Average Cell Temperature";
+      case "air_t": return "Ambient Temperature";
+      case "air_p":return "Ambient Pressure";
+      case "theta": return "? (theta)";
+    }
+    return "";
   },
 
   getLookupValue: function(field,value) {

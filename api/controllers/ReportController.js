@@ -64,10 +64,13 @@ module.exports = {
         console.log(err);
         return res.negotiate(err);
       }
-      console.log("Got File" + uploadedFiles[0].fd);
+
+      var filename = uploadedFiles[0].fd.substring(uploadedFiles[0].fd.lastIndexOf('/')+1);
+
+      console.log("Got File" + filename);
 
       fs.readFile(uploadedFiles[0].fd, 'utf8', function(err, contents) {
-        EddyProImport.importProject(contents, req.session.user);
+        EddyProImport.importProject(filename, contents, req.session.user);
       });
 
       return res.ok();

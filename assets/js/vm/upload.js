@@ -114,6 +114,10 @@ function (ko, moment, api, column, instrument, messageBox) {
           c.SetModel(objColumn);
           self.Columns.push(c);
         });
+
+        self.Columns.sort(function(a, b) {
+          return a.Column_Number - b.Column_Number;
+        });
       }
       self.Users(objFromServer.Users);
     },
