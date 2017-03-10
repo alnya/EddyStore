@@ -88,15 +88,13 @@ module.exports = {
           case "end_date": object.Date_To = formatValue(value); break;
           case "project_title": object.Name = formatValue(value); break;
           case "err_label": object.Error_Label = formatValue(value); break;
-          case "out_mean_cosp": object.Spectral_Output_Averaged_Cospectra = formatValue(value, "bool"); break;
+          case "out_mean_cosp": object.Output.Spectral_Output_Averaged_Cospectra = formatValue(value, "bool"); break;
           case "amflux": object.Output.AmeriFlux = formatValue(value, "bool"); break;
           case "out_ghg_eu": object.Output.GHG_Europe = formatValue(value, "bool"); break;
           case "out_biomet": object.Output.Biomet_Measurements = formatValue(value, "bool"); break;
           case "out_metadata": object.Output.Metadata = formatValue(value, "bool"); break;
           case "make_dataset": object.Output.Continuous_Dataset = formatValue(value, "bool"); break;
-
           case "out_mean_spec": object.Output.Spectral_Output_Averaged_Spectra = formatValue(value, "bool"); break;
-          case "out_mean_cosp": object.Output.Spectral_Output_Averaged_Cospectra = formatValue(value, "bool"); break;
 
           case "lf_meth": object.SpectralCorrection.Analytic_Correction_Of_High_Pass_Filtering_Effects = formatValue(value, "bool"); break;
           case "hf_meth":
@@ -467,21 +465,28 @@ module.exports = {
       case "rawprocess_parametersettings":
       {
         switch (key) {
-          case "sr_num_spk": object.StatisticalAnalysis.Accepted_spikes = formatValue(value); break;
+          case "sr_num_spk": object.StatisticalAnalysis.Max_consecutive_outliers = formatValue(value); break;
           case "sr_lim_w": object.StatisticalAnalysis.Plausibility_ranges_W = formatValue(value); break;
           case "sr_lim_co2": object.StatisticalAnalysis.Plausibility_ranges_CO2 = formatValue(value); break;
           case "sr_lim_h2o": object.StatisticalAnalysis.Plausibility_ranges_H20 = formatValue(value); break;
           case "sr_lim_ch4": object.StatisticalAnalysis.Plausibility_ranges_CH4 = formatValue(value); break;
           case "sr_lim_n2o": object.StatisticalAnalysis.Plausibility_ranges_4th = formatValue(value); break;
-          case "sr_lim_hf": object.StatisticalAnalysis.Plausibility_ranges_Other = formatValue(value); break;
+          case "sr_lim_w": object.StatisticalAnalysis.Plausibility_ranges_W = formatValue(value); break;
+          case "sr_lim_u": object.StatisticalAnalysis.Plausibility_ranges_Other = formatValue(value); break;
           case "ar_lim": object.StatisticalAnalysis.Range_of_variation = formatValue(value); break;
           case "ar_bins": object.StatisticalAnalysis.Number_of_bins = formatValue(value); break;
           case "ar_hf_lim": object.StatisticalAnalysis.Accepted_empty_bins = formatValue(value); break;
           case "do_extlim_dw": object.StatisticalAnalysis.Percentile_defining_extreme_bins = formatValue(value); break;
           case "do_hf1_lim": object.StatisticalAnalysis.Accepted_central_dropouts = formatValue(value); break;
           case "do_hf2_lim": object.StatisticalAnalysis.Accepted_extreme_dropouts = formatValue(value); break;
-          case "al_u_max": object.StatisticalAnalysis.Absolute_limits_max_U = formatValue(value); break;
-          case "al_w_max": object.StatisticalAnalysis.Absolute_limits_max_W = formatValue(value); break;
+          case "al_u_max":
+            object.StatisticalAnalysis.Absolute_limits_max_U = formatValue(value);
+            object.StatisticalAnalysis.Absolute_limits_min_U = 0 - formatValue(value);
+            break;
+          case "al_w_max":
+            object.StatisticalAnalysis.Absolute_limits_max_W = formatValue(value);
+            object.StatisticalAnalysis.Absolute_limits_min_W = 0 - formatValue(value);
+            break;
           case "al_tson_min": object.StatisticalAnalysis.Absolute_limits_min_TS = formatValue(value); break;
           case "al_tson_max": object.StatisticalAnalysis.Absolute_limits_max_TS = formatValue(value); break;
           case "al_co2_min": object.StatisticalAnalysis.Absolute_limits_min_C02 = formatValue(value); break;
@@ -574,7 +579,7 @@ module.exports = {
               object.StatisticalAnalysis.Random_uncertainty_estimation_method = EddyProImport.getLookupValue(key, value-1);
             }
             break;
-          case "ru_its_meth": object.StatisticalAnalysis.Random_uncertainty_estimation_method = EddyProImport.getLookupValue(key, value); break;
+          //case "ru_its_meth": object.StatisticalAnalysis.Random_uncertainty_estimation_method = EddyProImport.getLookupValue(key, value); break;
           case "ru_tlag_max": object.StatisticalAnalysis.Maximum_correlation_period = formatValue(value); break;
         }
         break;
